@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QA Skill Hub — AI-Powered QA Skills Grounded in ISTQB Standards</title>
+<meta name="description" content="Plug-and-play AI skills for your QA workflow — designed by a certified QA engineer, grounded in ISTQB standards.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+<script id="skill-data" type="application/json">
+[
+  {
+    "id": "test-case-generator",
+    "name": "Test Case Generator",
+    "category": "Test Design",
+    "tier": "free",
+    "summary": "Generate comprehensive, ISTQB-aligned test cases from user stories using EP, BVA, decision tables, and state transition techniques.",
+    "istqbTopics": ["Test Design Techniques", "Equivalence Partitioning", "BVA", "Decision Tables"],
+    "aiTools": ["Claude Code", "Claude Chat", "ChatGPT"],
+    "tags": ["test-cases", "test-design", "user-stories"],
+    "detailMd": "### What it does\nGenerates structured, traceable test cases from user stories or requirements. Applies ISTQB black-box techniques — Equivalence Partitioning, Boundary Value Analysis, Decision Tables, and State Transition Testing — to ensure thorough coverage without redundancy.\n\n### When to use\n- During sprint planning to break stories into testable scenarios\n- When reviewing acceptance criteria and identifying gaps\n- To quickly generate regression candidates for new features\n- When onboarding new testers who need examples of well-structured test cases\n\n### Sample prompt\n```\nYou are a senior QA engineer with ISTQB CTFL certification.\n\nAnalyze the following user story and generate test cases using these techniques:\n1. Equivalence Partitioning — identify valid/invalid classes\n2. Boundary Value Analysis — test edges of each partition\n3. Decision Table — cover rule combinations for business logic\n4. State Transition — if the feature has states, map transitions\n\nUser Story:\n\"As a registered user, I want to reset my password via email so that I can regain access if I forget it.\"\n\nAcceptance Criteria:\n- User must enter a registered email address\n- Reset link expires after 24 hours\n- Password must be 8-64 characters with at least one uppercase, one lowercase, and one digit\n- User is locked out after 5 failed reset attempts for 30 minutes\n\nFor each test case, provide: ID, technique used, preconditions, steps, test data, expected result, and priority (high/medium/low).\n```\n\n### ISTQB alignment\nDirectly maps to **CTFL Section 4.2 — Black-Box Test Techniques**. Reinforces the principle that test design techniques systematically derive test conditions and test cases from the test basis, improving coverage and reducing ad-hoc testing."
+  },
+  {
+    "id": "requirements-analyst",
+    "name": "Requirements Analyst",
+    "category": "Requirements",
+    "tier": "free",
+    "summary": "Reviews requirements, PBIs, and user stories for ambiguity, testability gaps, missing acceptance criteria, and ISTQB quality characteristics.",
+    "istqbTopics": ["Test Basis", "Requirements Review", "Testability", "Static Testing"],
+    "aiTools": ["Claude Code", "Claude Chat", "ChatGPT"],
+    "tags": ["requirements", "review", "testability", "static-testing"],
+    "detailMd": "### What it does\nPerforms a structured static analysis of requirements, product backlog items, or user stories. Flags ambiguous language, missing testability attributes, incomplete acceptance criteria, and gaps in quality characteristic coverage (per ISO 25010). Acts as a virtual review partner before formal review sessions.\n\n### When to use\n- Before sprint refinement to pre-screen stories for testability\n- During requirements review meetings as a checklist companion\n- When inheriting legacy requirements that lack structure\n- To train junior team members on what \"good\" requirements look like\n\n### Sample prompt\n```\nAct as an ISTQB-certified QA analyst performing a requirements review.\n\nReview the following user story for:\n1. Ambiguity — flag vague terms (e.g., \"fast\", \"user-friendly\", \"seamless\")\n2. Testability — can each criterion be verified with a concrete pass/fail check?\n3. Completeness — are edge cases, error states, and negative scenarios covered?\n4. Missing acceptance criteria — suggest criteria that should be added\n5. Quality characteristics — check coverage against ISO 25010 (functionality, performance, security, usability, reliability)\n\nUser Story:\n\"As an admin, I want the dashboard to load quickly and display real-time analytics so I can monitor system health efficiently.\"\n\nAcceptance Criteria:\n- Dashboard shows active users, error rate, and response time\n- Data refreshes automatically\n\nFor each issue found, provide: severity (critical/major/minor), the problematic text, why it's an issue, and a suggested rewrite.\n```\n\n### ISTQB alignment\nCovers **CTFL Section 3.1 — Static Testing Basics** and the role of reviews in defect prevention. Aligns with the ISTQB principle that early testing (shifting left) saves cost — finding ambiguities in requirements is far cheaper than finding them in code."
+  },
+  {
+    "id": "bug-pattern-analyzer",
+    "name": "Bug Pattern Analyzer",
+    "category": "Defect Management",
+    "tier": "free",
+    "summary": "Analyzes defect datasets to identify clustering patterns, severity trends, high-risk modules, and root cause categories.",
+    "istqbTopics": ["Defect Management", "Defect Clustering", "Risk-Based Testing", "Test Monitoring"],
+    "aiTools": ["Claude Code", "Claude Chat", "ChatGPT"],
+    "tags": ["bugs", "defects", "analysis", "risk", "clustering"],
+    "detailMd": "### What it does\nTakes a dataset of bug reports (CSV, table, or pasted list) and identifies patterns: defect clustering by module, severity distribution trends, recurring root causes, and correlations between components and defect types. Outputs actionable insights for test prioritization and process improvement.\n\n### When to use\n- At the end of a release cycle to analyze where bugs concentrated\n- During test planning to identify high-risk areas for focused testing\n- In retrospectives to surface systemic quality issues\n- When building a case for investing in specific quality improvements\n\n### Sample prompt\n```\nYou are a QA analytics specialist. Analyze the following bug dataset and produce a defect analysis report.\n\nFor each analysis, provide:\n1. Defect clustering — which modules/components have the highest defect density?\n2. Severity trends — is the ratio of critical/major bugs improving or worsening over sprints?\n3. Root cause categories — group defects by root cause (requirements gap, code logic, integration, environment, data)\n4. Risk hotspots — which areas should receive more testing in the next cycle?\n5. Escape analysis — which defects were found in production vs. caught in testing?\n\nDataset:\n[Paste your bug data here — columns: ID, Title, Module, Severity, Root Cause, Found In, Sprint]\n\nProvide a summary table, top 3 actionable recommendations, and a suggested risk-based test focus for the next sprint.\n```\n\n### ISTQB alignment\nImplements **CTFL Section 5.3 — Test Monitoring and Control** and the **Defect Clustering principle** (ISTQB Principle #4). Supports risk-based testing by using historical defect data to guide future test effort allocation."
+  },
+  {
+    "id": "ai-test-architect",
+    "name": "AI Test Architect",
+    "category": "AI Testing",
+    "tier": "premium",
+    "summary": "Designs end-to-end test strategies for AI/ML systems covering model performance, fairness, hallucination detection, data drift, and EU AI Act compliance.",
+    "istqbTopics": ["AI Testing", "CT-AI Syllabus", "ML Model Testing", "EU AI Act", "Fairness Testing"],
+    "aiTools": ["Claude Code", "Claude Chat"],
+    "tags": ["ai-testing", "ml-testing", "fairness", "compliance", "drift"],
+    "detailMd": "### What it does\nDesigns a comprehensive test strategy for AI/ML-integrated systems. Covers functional correctness, model performance metrics (precision, recall, F1), fairness and bias testing across protected attributes, hallucination and confabulation detection, data/concept drift monitoring, and regulatory compliance mapping (EU AI Act risk tiers). Produces a structured test plan with specific test types, tools, and acceptance criteria.\n\n### When to use\n- When your team is building or integrating an AI/ML feature for the first time\n- During architecture reviews to ensure AI-specific quality risks are addressed\n- When preparing for regulatory audits or compliance assessments\n- To upskill your QA team on AI-specific testing techniques\n\n### Sample prompt\n```\nYou are a QA architect specializing in AI/ML system testing, aligned with the ISTQB CT-AI syllabus.\n\nDesign a test strategy for the following AI feature:\n\nFeature: Customer support chatbot using a fine-tuned LLM to answer product questions and escalate complex issues to human agents.\n\nCover these testing dimensions:\n1. Functional testing — does the bot answer correctly, escalate appropriately, handle edge cases?\n2. Model performance — precision, recall, F1 for intent classification; BLEU/ROUGE for response quality\n3. Fairness & bias — test across demographic groups, languages, and dialects for equitable response quality\n4. Hallucination detection — identify confabulated product info, fabricated policies, or incorrect URLs\n5. Data drift monitoring — define metrics and thresholds for detecting when the model degrades\n6. Security — prompt injection resistance, data leakage prevention, PII handling\n7. EU AI Act compliance — classify the risk tier and map required conformity checks\n\nFor each dimension, specify: test types, sample test cases, tools/frameworks, acceptance criteria, and monitoring approach for production.\n```\n\n### ISTQB alignment\nMaps to the **ISTQB CT-AI (Certified Tester AI Testing)** syllabus. Covers AI-specific test types, the test pyramid for ML systems, and non-functional quality attributes unique to AI (fairness, explainability, robustness). Also references **EU AI Act** risk classification for compliance testing."
+  },
+  {
+    "id": "regression-optimizer",
+    "name": "Regression Optimizer",
+    "category": "Test Management",
+    "tier": "premium",
+    "summary": "Creates risk-prioritized regression test suites that balance maximum coverage against execution time constraints.",
+    "istqbTopics": ["Regression Testing", "Risk-Based Testing", "Test Prioritization", "Test Management"],
+    "aiTools": ["Claude Code", "Claude Chat"],
+    "tags": ["regression", "optimization", "risk", "prioritization", "coverage"],
+    "detailMd": "### What it does\nTakes your existing regression test inventory and optimizes it for risk-based execution. Analyzes test cases against risk factors (business impact, change frequency, defect history, complexity) and produces tiered regression suites: a fast smoke suite for CI, a core regression for sprint releases, and a full regression for major releases. Includes cut recommendations for redundant or low-value tests.\n\n### When to use\n- When regression suite execution time exceeds your sprint capacity\n- During test planning to decide which tests run in CI vs. nightly vs. release\n- After a major feature delivery to re-prioritize the regression backlog\n- When stakeholders ask \"can we ship faster without sacrificing quality?\"\n\n### Sample prompt\n```\nYou are a test management consultant applying ISTQB risk-based testing principles.\n\nI have a regression suite of 200+ test cases that takes 8 hours to run. We need to ship every 2 weeks and can only allocate 3 hours for regression per sprint.\n\nHere is our test inventory:\n[Paste test case list with columns: ID, Title, Module, Last Run Result, Execution Time, Business Priority (H/M/L), Times Failed in Last 5 Runs]\n\nOptimize this into three tiers:\n1. Smoke Suite (30 min) — critical path, highest risk, run on every PR merge\n2. Core Regression (3 hrs) — sprint release gate, risk-prioritized selection\n3. Full Regression (8 hrs) — major release only, complete coverage\n\nFor each test case, provide: assigned tier, risk score (1-5), justification, and any recommendations to retire/merge/automate specific tests. Include a coverage matrix showing which business-critical paths each tier covers.\n```\n\n### ISTQB alignment\nImplements **CTFL Section 5.2 — Risk-Based Testing** and **Test Prioritization** concepts from test management. Applies the ISTQB principle that exhaustive testing is impossible — risk-based selection optimizes the cost/benefit ratio of test execution."
+  },
+  {
+    "id": "test-oracle-creator",
+    "name": "Test Oracle Creator",
+    "category": "Test Design",
+    "tier": "premium",
+    "summary": "Defines precise expected results and pass/fail criteria for test cases derived from business rules, specifications, and domain knowledge.",
+    "istqbTopics": ["Test Oracle", "Expected Results", "Test Design", "Acceptance Criteria"],
+    "aiTools": ["Claude Code", "Claude Chat"],
+    "tags": ["test-oracle", "expected-results", "pass-fail", "business-rules"],
+    "detailMd": "### What it does\nTransforms business rules, specifications, and domain logic into precise, unambiguous expected results for test cases. Generates test oracles — the mechanism by which you determine whether a test has passed or failed. Handles complex scenarios including calculations, state-dependent outputs, conditional business logic, and multi-system integration points where expected results aren't trivial to derive.\n\n### When to use\n- When business logic is complex and expected results aren't obvious from the story\n- For financial, regulatory, or safety-critical features where precision matters\n- When testers struggle to define \"what should happen\" for edge cases\n- To create reusable oracle definitions that survive requirement changes\n\n### Sample prompt\n```\nYou are a senior test designer specializing in test oracle definition.\n\nGiven the following business rules for an insurance premium calculator, define precise expected results for each test scenario.\n\nBusiness Rules:\n- Base premium = $500/year for drivers aged 25-65\n- Age < 25: +40% surcharge\n- Age > 65: +25% surcharge\n- Clean driving record (0 incidents in 3 years): -15% discount\n- Multi-policy bundle: -10% discount\n- Discounts stack multiplicatively, surcharges apply before discounts\n- Minimum premium: $200, maximum premium: $5,000\n- All amounts rounded to nearest cent\n\nFor each scenario below, provide:\n1. Step-by-step calculation showing how the expected result is derived\n2. The exact expected output value\n3. Boundary conditions that could affect the result\n4. Pass/fail tolerance (if applicable — e.g., rounding)\n\nScenarios:\n- 22-year-old, clean record, no bundle\n- 45-year-old, clean record, with bundle\n- 70-year-old, no discounts\n- 24-year-old turning 25 mid-policy (boundary)\n```\n\n### ISTQB alignment\nAddresses the **test oracle problem** from **CTFL Section 4.1 — Test Design** and the concept of expected results in test case specification. The ISTQB glossary defines a test oracle as \"a source to determine expected results to compare with the actual result of the software under test.\" This skill operationalizes that definition."
+  }
+]
+</script>
+
+<style>
+/* ==================== Reset & Base ==================== */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --bg-primary: #0f0f1a;
+  --bg-secondary: #1a1a2e;
+  --bg-card: #16213e;
+  --bg-card-hover: #1a2745;
+  --bg-code: #0d1117;
+  --text-primary: #e8e8f0;
+  --text-secondary: #a0a0b8;
+  --text-muted: #6c6c84;
+  --accent: #00d4aa;
+  --accent-dim: rgba(0, 212, 170, 0.15);
+  --accent-hover: #00f0c0;
+  --premium-color: #f0a030;
+  --premium-dim: rgba(240, 160, 48, 0.15);
+  --free-color: #00d4aa;
+  --free-dim: rgba(0, 212, 170, 0.15);
+  --border: #2a2a44;
+  --border-light: #3a3a55;
+  --radius: 10px;
+  --radius-sm: 6px;
+  --shadow-card: 0 2px 8px rgba(0,0,0,0.3);
+  --shadow-hover: 0 8px 24px rgba(0,0,0,0.4);
+  --transition: 0.2s ease;
+  --font-heading: 'JetBrains Mono', monospace;
+  --font-body: 'DM Sans', sans-serif;
+  --max-width: 960px;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ==================== Hero ==================== */
+.hero {
+  text-align: center;
+  padding: 4rem 1.5rem 3rem;
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
+
+.hero__title {
+  font-family: var(--font-heading);
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+  margin-bottom: 0.5rem;
+}
+
+.hero__title-accent {
+  color: var(--accent);
+}
+
+.hero__subtitle {
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  color: var(--text-secondary);
+  font-weight: 400;
+  margin-bottom: 1.25rem;
+}
+
+.hero__description {
+  font-size: 1.05rem;
+  color: var(--text-secondary);
+  max-width: 600px;
+  margin: 0 auto 1.5rem;
+  line-height: 1.7;
+}
+
+.hero__badge {
+  display: inline-block;
+  font-family: var(--font-heading);
+  font-size: 0.8rem;
+  color: var(--accent);
+  background: var(--accent-dim);
+  border: 1px solid rgba(0, 212, 170, 0.3);
+  padding: 0.35rem 1rem;
+  border-radius: 50px;
+  letter-spacing: 0.02em;
+}
+
+/* ==================== Filter Bar ==================== */
+.filter-bar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(15, 15, 26, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 1rem 1.5rem;
+}
+
+.filter-bar__inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.filter-bar__search {
+  position: relative;
+}
+
+.filter-bar__search-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  pointer-events: none;
+  font-size: 0.95rem;
+}
+
+.filter-bar__input {
+  width: 100%;
+  padding: 0.6rem 0.75rem 0.6rem 2.25rem;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color var(--transition);
+}
+
+.filter-bar__input::placeholder {
+  color: var(--text-muted);
+}
+
+.filter-bar__input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px var(--accent-dim);
+}
+
+.filter-bar__row {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.filter-bar__divider {
+  width: 1px;
+  height: 24px;
+  background: var(--border);
+  margin: 0 0.25rem;
+  display: none;
+}
+
+.filter-pill {
+  font-family: var(--font-heading);
+  font-size: 0.72rem;
+  padding: 0.3rem 0.7rem;
+  border-radius: 50px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all var(--transition);
+  white-space: nowrap;
+  letter-spacing: 0.01em;
+}
+
+.filter-pill:hover {
+  border-color: var(--text-muted);
+  color: var(--text-primary);
+}
+
+.filter-pill:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.filter-pill--active {
+  background: var(--accent-dim);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.filter-pill--tier-free.filter-pill--active {
+  background: var(--free-dim);
+  border-color: var(--free-color);
+  color: var(--free-color);
+}
+
+.filter-pill--tier-premium.filter-pill--active {
+  background: var(--premium-dim);
+  border-color: var(--premium-color);
+  color: var(--premium-color);
+}
+
+/* ==================== Skill Grid ==================== */
+.skills {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 1.5rem;
+}
+
+.skills__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+.skills__empty {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  grid-column: 1 / -1;
+}
+
+.skills__empty-icon {
+  font-size: 2rem;
+  margin-bottom: 0.75rem;
+  opacity: 0.5;
+}
+
+/* ==================== Skill Card ==================== */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+  cursor: pointer;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-hover);
+  border-color: var(--border-light);
+}
+
+.card:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.card--expanded {
+  border-color: var(--accent);
+  transform: none;
+}
+
+.card--expanded:hover {
+  transform: none;
+}
+
+.card__header {
+  padding: 1.25rem;
+}
+
+.card__top-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.card__name {
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  flex-shrink: 0;
+}
+
+.card__badges {
+  display: flex;
+  gap: 0.4rem;
+  align-items: center;
+  margin-left: auto;
+}
+
+.badge {
+  font-family: var(--font-heading);
+  font-size: 0.65rem;
+  padding: 0.2rem 0.55rem;
+  border-radius: 50px;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.badge--category {
+  background: rgba(100, 100, 180, 0.15);
+  color: #8888cc;
+  border: 1px solid rgba(100, 100, 180, 0.25);
+}
+
+.badge--free {
+  background: var(--free-dim);
+  color: var(--free-color);
+  border: 1px solid rgba(0, 212, 170, 0.3);
+}
+
+.badge--premium {
+  background: var(--premium-dim);
+  color: var(--premium-color);
+  border: 1px solid rgba(240, 160, 48, 0.3);
+}
+
+.card__summary {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin-bottom: 0.75rem;
+}
+
+.card--expanded .card__summary {
+  -webkit-line-clamp: unset;
+}
+
+.card__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-bottom: 0.5rem;
+}
+
+.chip {
+  font-size: 0.68rem;
+  padding: 0.15rem 0.5rem;
+  border-radius: 50px;
+  background: rgba(0, 212, 170, 0.08);
+  color: var(--text-muted);
+  border: 1px solid rgba(0, 212, 170, 0.12);
+  font-family: var(--font-heading);
+}
+
+.card__tools {
+  display: flex;
+  gap: 0.4rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.tool-tag {
+  font-size: 0.68rem;
+  padding: 0.15rem 0.5rem;
+  border-radius: var(--radius-sm);
+  background: var(--bg-secondary);
+  color: var(--text-muted);
+  font-family: var(--font-heading);
+}
+
+/* ==================== Card Detail (expanded) ==================== */
+.card__detail {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease;
+}
+
+.card--expanded .card__detail {
+  max-height: 2000px;
+}
+
+.card__detail-inner {
+  padding: 0 1.25rem 1.25rem;
+  border-top: 1px solid var(--border);
+  margin-top: 0;
+  padding-top: 1.25rem;
+}
+
+.card__detail-inner h3 {
+  font-family: var(--font-heading);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--accent);
+  margin: 1.25rem 0 0.5rem;
+}
+
+.card__detail-inner h3:first-child {
+  margin-top: 0;
+}
+
+.card__detail-inner p {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  margin-bottom: 0.5rem;
+}
+
+.card__detail-inner ul {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 0.5rem;
+}
+
+.card__detail-inner li {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  padding-left: 1.2rem;
+  position: relative;
+}
+
+.card__detail-inner li::before {
+  content: ">";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-family: var(--font-heading);
+  font-size: 0.8rem;
+}
+
+.card__detail-inner code {
+  font-family: var(--font-heading);
+  font-size: 0.82rem;
+  background: var(--bg-code);
+  color: var(--accent);
+  padding: 0.15rem 0.4rem;
+  border-radius: 4px;
+}
+
+.card__detail-inner pre {
+  background: var(--bg-code);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  border-radius: var(--radius-sm);
+  padding: 1rem;
+  overflow-x: auto;
+  margin: 0.75rem 0;
+}
+
+.card__detail-inner pre code {
+  background: none;
+  padding: 0;
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  line-height: 1.6;
+}
+
+.card__premium-cta {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  padding: 0.75rem 1rem;
+  background: var(--premium-dim);
+  border: 1px solid rgba(240, 160, 48, 0.25);
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  color: var(--premium-color);
+}
+
+.card__premium-cta a {
+  color: var(--premium-color);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.card__premium-cta a:hover {
+  color: #ffbb55;
+}
+
+/* ==================== Footer ==================== */
+.footer {
+  text-align: center;
+  padding: 3rem 1.5rem 2rem;
+  border-top: 1px solid var(--border);
+  margin-top: 2rem;
+  max-width: var(--max-width);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.footer__credit {
+  font-family: var(--font-heading);
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.75rem;
+}
+
+.footer__cert {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-bottom: 1rem;
+}
+
+.footer__links {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.footer__link {
+  font-family: var(--font-heading);
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color var(--transition);
+}
+
+.footer__link:hover {
+  color: var(--accent);
+}
+
+.footer__link:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* ==================== Responsive ==================== */
+@media (min-width: 640px) {
+  .skills__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .filter-bar__divider {
+    display: block;
+  }
+
+  .hero__title {
+    font-size: 3rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .hero {
+    padding: 5rem 1.5rem 3.5rem;
+  }
+
+  .hero__title {
+    font-size: 3.25rem;
+  }
+}
+
+/* ==================== Card expand on grid — full width ==================== */
+.card--expanded {
+  grid-column: 1 / -1;
+}
+
+/* ==================== Scrollbar ==================== */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--border-light);
+}
+
+/* ==================== Selection ==================== */
+::selection {
+  background: var(--accent-dim);
+  color: var(--accent);
+}
+</style>
+</head>
+<body>
+
+<!-- ==================== Hero ==================== -->
+<header class="hero" role="banner">
+  <h1 class="hero__title">QA <span class="hero__title-accent">Skill Hub</span></h1>
+  <p class="hero__subtitle">AI-powered QA skills grounded in ISTQB standards. Built by a certified QA engineer.</p>
+  <p class="hero__description">
+    Plug-and-play AI prompt templates for your QA workflow. Each skill is mapped to ISTQB syllabus topics and ready to use with your favorite AI tools.
+  </p>
+  <span class="hero__badge" id="skill-count">6 skills and growing</span>
+</header>
+
+<!-- ==================== Filter Bar ==================== -->
+<nav class="filter-bar" role="navigation" aria-label="Skill filters">
+  <div class="filter-bar__inner">
+    <div class="filter-bar__search">
+      <span class="filter-bar__search-icon" aria-hidden="true">&#x2315;</span>
+      <input
+        type="search"
+        class="filter-bar__input"
+        id="search-input"
+        placeholder="Search skills by name, keyword, or tag..."
+        aria-label="Search skills"
+      >
+    </div>
+    <div class="filter-bar__row">
+      <button class="filter-pill filter-pill--active" data-category="all" aria-pressed="true">All</button>
+      <button class="filter-pill" data-category="Test Design" aria-pressed="false">Test Design</button>
+      <button class="filter-pill" data-category="Requirements" aria-pressed="false">Requirements</button>
+      <button class="filter-pill" data-category="Defect Management" aria-pressed="false">Defect Mgmt</button>
+      <button class="filter-pill" data-category="AI Testing" aria-pressed="false">AI Testing</button>
+      <button class="filter-pill" data-category="Test Management" aria-pressed="false">Test Mgmt</button>
+
+      <span class="filter-bar__divider" aria-hidden="true"></span>
+
+      <button class="filter-pill filter-pill--active" data-tier="all" aria-pressed="true">All Tiers</button>
+      <button class="filter-pill filter-pill--tier-free" data-tier="free" aria-pressed="false">Free</button>
+      <button class="filter-pill filter-pill--tier-premium" data-tier="premium" aria-pressed="false">Premium</button>
+    </div>
+  </div>
+</nav>
+
+<!-- ==================== Skill Grid ==================== -->
+<main class="skills" role="main">
+  <div class="skills__grid" id="skills-grid">
+    <!-- Cards rendered by JS -->
+  </div>
+</main>
+
+<!-- ==================== Footer ==================== -->
+<footer class="footer" role="contentinfo">
+  <p class="footer__credit">Built by Pavel</p>
+  <p class="footer__cert">ISTQB CTFL &middot; AI Testing &middot; GenAI Testing</p>
+  <div class="footer__links">
+    <a href="https://github.com/" class="footer__link" target="_blank" rel="noopener noreferrer">GitHub</a>
+    <a href="https://linkedin.com/" class="footer__link" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+    <a href="mailto:qa-skill-hub@example.com?subject=Skill%20Suggestion" class="footer__link">Suggest a Skill</a>
+  </div>
+</footer>
+
+<script>
+(function() {
+  'use strict';
+
+  // ==================== Load Data ====================
+  const skills = JSON.parse(document.getElementById('skill-data').textContent);
+
+  // ==================== State ====================
+  let activeCategory = 'all';
+  let activeTier = 'all';
+  let searchQuery = '';
+  let expandedId = null;
+
+  // ==================== DOM Refs ====================
+  const grid = document.getElementById('skills-grid');
+  const searchInput = document.getElementById('search-input');
+  const categoryPills = document.querySelectorAll('[data-category]');
+  const tierPills = document.querySelectorAll('[data-tier]');
+
+  // ==================== Minimal Markdown Parser ====================
+  function parseMd(md) {
+    const lines = md.split('\n');
+    let html = '';
+    let inCodeBlock = false;
+    let codeContent = '';
+    let inList = false;
+
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i];
+
+      // Code block toggle
+      if (line.trim().startsWith('```')) {
+        if (inCodeBlock) {
+          html += '<pre><code>' + escapeHtml(codeContent.trim()) + '</code></pre>';
+          codeContent = '';
+          inCodeBlock = false;
+        } else {
+          if (inList) { html += '</ul>'; inList = false; }
+          inCodeBlock = true;
+        }
+        continue;
+      }
+
+      if (inCodeBlock) {
+        codeContent += line + '\n';
+        continue;
+      }
+
+      // Empty line
+      if (line.trim() === '') {
+        if (inList) { html += '</ul>'; inList = false; }
+        continue;
+      }
+
+      // Heading
+      if (line.startsWith('### ')) {
+        if (inList) { html += '</ul>'; inList = false; }
+        html += '<h3>' + inlineFormat(line.slice(4)) + '</h3>';
+        continue;
+      }
+
+      // List item
+      if (line.trim().startsWith('- ')) {
+        if (!inList) { html += '<ul>'; inList = true; }
+        html += '<li>' + inlineFormat(line.trim().slice(2)) + '</li>';
+        continue;
+      }
+
+      // Paragraph
+      if (inList) { html += '</ul>'; inList = false; }
+      html += '<p>' + inlineFormat(line) + '</p>';
+    }
+
+    if (inList) html += '</ul>';
+    if (inCodeBlock) html += '<pre><code>' + escapeHtml(codeContent.trim()) + '</code></pre>';
+
+    return html;
+  }
+
+  function inlineFormat(text) {
+    // Bold
+    text = text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+    // Inline code
+    text = text.replace(/`([^`]+)`/g, '<code>$1</code>');
+    return text;
+  }
+
+  function escapeHtml(text) {
+    return text
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  // ==================== Render ====================
+  function render() {
+    const filtered = skills.filter(skill => {
+      // Category filter
+      if (activeCategory !== 'all' && skill.category !== activeCategory) return false;
+      // Tier filter
+      if (activeTier !== 'all' && skill.tier !== activeTier) return false;
+      // Search filter
+      if (searchQuery) {
+        const q = searchQuery.toLowerCase();
+        const haystack = [
+          skill.name,
+          skill.summary,
+          skill.category,
+          ...skill.tags,
+          ...skill.istqbTopics
+        ].join(' ').toLowerCase();
+        if (!haystack.includes(q)) return false;
+      }
+      return true;
+    });
+
+    if (filtered.length === 0) {
+      grid.innerHTML = '<div class="skills__empty"><div class="skills__empty-icon">&#x2609;</div>No skills match your filters.<br>Try adjusting your search or category.</div>';
+      return;
+    }
+
+    grid.innerHTML = filtered.map(skill => {
+      const isExpanded = expandedId === skill.id;
+      const isPremium = skill.tier === 'premium';
+      const lockIcon = isPremium ? '<span aria-hidden="true">&#x1f512;</span> ' : '';
+
+      return `
+        <article
+          class="card${isExpanded ? ' card--expanded' : ''}"
+          data-id="${skill.id}"
+          tabindex="0"
+          role="button"
+          aria-expanded="${isExpanded}"
+          aria-label="${skill.name} — click to ${isExpanded ? 'collapse' : 'expand'} details"
+        >
+          <div class="card__header">
+            <div class="card__top-row">
+              <span class="card__name">${lockIcon}${escapeHtml(skill.name)}</span>
+              <div class="card__badges">
+                <span class="badge badge--category">${escapeHtml(skill.category)}</span>
+                <span class="badge badge--${skill.tier}">${skill.tier === 'free' ? 'Free' : 'Premium'}</span>
+              </div>
+            </div>
+            <p class="card__summary">${escapeHtml(skill.summary)}</p>
+            <div class="card__chips">
+              ${skill.istqbTopics.map(t => `<span class="chip">${escapeHtml(t)}</span>`).join('')}
+            </div>
+            <div class="card__tools">
+              ${skill.aiTools.map(t => `<span class="tool-tag">${escapeHtml(t)}</span>`).join('')}
+            </div>
+          </div>
+          <div class="card__detail">
+            <div class="card__detail-inner">
+              ${parseMd(skill.detailMd)}
+              ${isPremium ? `
+                <div class="card__premium-cta">
+                  <span aria-hidden="true">&#x1f512;</span>
+                  <span>Coming soon — <a href="mailto:qa-skill-hub@example.com?subject=Waitlist%20-%20${encodeURIComponent(skill.name)}">join the waitlist</a></span>
+                </div>
+              ` : ''}
+            </div>
+          </div>
+        </article>
+      `;
+    }).join('');
+  }
+
+  // ==================== Events ====================
+  // Card click
+  grid.addEventListener('click', function(e) {
+    const card = e.target.closest('.card');
+    if (!card) return;
+    // Don't toggle if clicking a link
+    if (e.target.tagName === 'A') return;
+    const id = card.dataset.id;
+    expandedId = expandedId === id ? null : id;
+    render();
+  });
+
+  grid.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' || e.key === ' ') {
+      const card = e.target.closest('.card');
+      if (!card) return;
+      e.preventDefault();
+      const id = card.dataset.id;
+      expandedId = expandedId === id ? null : id;
+      render();
+    }
+  });
+
+  // Search
+  searchInput.addEventListener('input', function() {
+    searchQuery = this.value.trim();
+    expandedId = null;
+    render();
+  });
+
+  // Category pills
+  categoryPills.forEach(pill => {
+    pill.addEventListener('click', function() {
+      activeCategory = this.dataset.category;
+      categoryPills.forEach(p => {
+        p.classList.toggle('filter-pill--active', p.dataset.category === activeCategory);
+        p.setAttribute('aria-pressed', p.dataset.category === activeCategory);
+      });
+      expandedId = null;
+      render();
+    });
+  });
+
+  // Tier pills
+  tierPills.forEach(pill => {
+    pill.addEventListener('click', function() {
+      activeTier = this.dataset.tier;
+      tierPills.forEach(p => {
+        const isActive = p.dataset.tier === activeTier;
+        p.setAttribute('aria-pressed', isActive);
+        // Keep type-specific class, toggle active
+        if (p.dataset.tier === 'free') {
+          p.classList.toggle('filter-pill--active', isActive);
+        } else if (p.dataset.tier === 'premium') {
+          p.classList.toggle('filter-pill--active', isActive);
+        } else {
+          p.classList.toggle('filter-pill--active', isActive);
+        }
+      });
+      expandedId = null;
+      render();
+    });
+  });
+
+  // ==================== Initial Render ====================
+  render();
+})();
+</script>
+</body>
+</html>
