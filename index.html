@@ -423,6 +423,84 @@ body {
   letter-spacing: 0.02em;
 }
 
+/* ==================== How to Use ==================== */
+.how-to {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 1.5rem 2rem;
+}
+
+.how-to__inner {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 2rem;
+}
+
+.how-to__title {
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.how-to__steps {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+}
+
+.how-to__step {
+  display: flex;
+  gap: 0.85rem;
+  align-items: flex-start;
+}
+
+.how-to__step-num {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 28px;
+  height: 28px;
+  background: var(--accent-dim);
+  color: var(--accent);
+  font-family: var(--font-heading);
+  font-size: 0.8rem;
+  font-weight: 700;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 212, 170, 0.3);
+  flex-shrink: 0;
+  margin-top: 0.1rem;
+}
+
+.how-to__step-title {
+  font-family: var(--font-heading);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 0.2rem;
+}
+
+.how-to__step-desc {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+@media (min-width: 640px) {
+  .how-to__steps {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .how-to__steps {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
 /* ==================== Filter Bar ==================== */
 .filter-bar {
   position: sticky;
@@ -972,6 +1050,35 @@ body {
   </p>
   <span class="hero__badge" id="skill-count">26 skills and growing</span>
 </header>
+
+<!-- ==================== How to Use ==================== -->
+<section class="how-to" aria-label="How to use">
+  <div class="how-to__inner">
+    <h2 class="how-to__title">How to Use These Skills</h2>
+    <div class="how-to__steps">
+      <div class="how-to__step">
+        <span class="how-to__step-num">1</span>
+        <h3 class="how-to__step-title">Pick a Skill</h3>
+        <p class="how-to__step-desc">Browse by section, category, or tier. Click any card to see the full description, sample prompt, and alignment details.</p>
+      </div>
+      <div class="how-to__step">
+        <span class="how-to__step-num">2</span>
+        <h3 class="how-to__step-title">Copy the Prompt</h3>
+        <p class="how-to__step-desc">Each skill includes a ready-to-use prompt template. Copy it, replace the placeholders with your own context (user story, code, spec, etc.).</p>
+      </div>
+      <div class="how-to__step">
+        <span class="how-to__step-num">3</span>
+        <h3 class="how-to__step-title">Paste into Your AI Tool</h3>
+        <p class="how-to__step-desc">Use with Claude Code, Claude Chat, ChatGPT, or any AI assistant. The prompts are tool-agnostic and work across platforms.</p>
+      </div>
+      <div class="how-to__step">
+        <span class="how-to__step-num">4</span>
+        <h3 class="how-to__step-title">Review &amp; Adapt</h3>
+        <p class="how-to__step-desc">AI output is your starting point, not the final answer. Review, refine, and adapt the results to fit your project's specific needs.</p>
+      </div>
+    </div>
+  </div>
+</section>
 
 <!-- ==================== Filter Bar ==================== -->
 <nav class="filter-bar" role="navigation" aria-label="Skill filters">
