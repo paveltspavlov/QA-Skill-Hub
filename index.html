@@ -14,6 +14,7 @@
   {
     "id": "test-case-generator",
     "name": "Test Case Generator",
+    "section": "qa",
     "category": "Test Design",
     "tier": "free",
     "summary": "Generate comprehensive, ISTQB-aligned test cases from user stories using EP, BVA, decision tables, and state transition techniques.",
@@ -25,6 +26,7 @@
   {
     "id": "requirements-analyst",
     "name": "Requirements Analyst",
+    "section": "qa",
     "category": "Requirements",
     "tier": "free",
     "summary": "Reviews requirements, PBIs, and user stories for ambiguity, testability gaps, missing acceptance criteria, and ISTQB quality characteristics.",
@@ -36,6 +38,7 @@
   {
     "id": "bug-pattern-analyzer",
     "name": "Bug Pattern Analyzer",
+    "section": "qa",
     "category": "Defect Management",
     "tier": "free",
     "summary": "Analyzes defect datasets to identify clustering patterns, severity trends, high-risk modules, and root cause categories.",
@@ -47,6 +50,7 @@
   {
     "id": "ai-test-architect",
     "name": "AI Test Architect",
+    "section": "qa",
     "category": "AI Testing",
     "tier": "premium",
     "summary": "Designs end-to-end test strategies for AI/ML systems covering model performance, fairness, hallucination detection, data drift, and EU AI Act compliance.",
@@ -58,6 +62,7 @@
   {
     "id": "regression-optimizer",
     "name": "Regression Optimizer",
+    "section": "qa",
     "category": "Test Management",
     "tier": "premium",
     "summary": "Creates risk-prioritized regression test suites that balance maximum coverage against execution time constraints.",
@@ -69,6 +74,7 @@
   {
     "id": "test-oracle-creator",
     "name": "Test Oracle Creator",
+    "section": "qa",
     "category": "Test Design",
     "tier": "premium",
     "summary": "Defines precise expected results and pass/fail criteria for test cases derived from business rules, specifications, and domain knowledge.",
@@ -76,6 +82,246 @@
     "aiTools": ["Claude Code", "Claude Chat"],
     "tags": ["test-oracle", "expected-results", "pass-fail", "business-rules"],
     "detailMd": "### What it does\nTransforms business rules, specifications, and domain logic into precise, unambiguous expected results for test cases. Generates test oracles — the mechanism by which you determine whether a test has passed or failed. Handles complex scenarios including calculations, state-dependent outputs, conditional business logic, and multi-system integration points where expected results aren't trivial to derive.\n\n### When to use\n- When business logic is complex and expected results aren't obvious from the story\n- For financial, regulatory, or safety-critical features where precision matters\n- When testers struggle to define \"what should happen\" for edge cases\n- To create reusable oracle definitions that survive requirement changes\n\n### Sample prompt\n```\nYou are a senior test designer specializing in test oracle definition.\n\nGiven the following business rules for an insurance premium calculator, define precise expected results for each test scenario.\n\nBusiness Rules:\n- Base premium = $500/year for drivers aged 25-65\n- Age < 25: +40% surcharge\n- Age > 65: +25% surcharge\n- Clean driving record (0 incidents in 3 years): -15% discount\n- Multi-policy bundle: -10% discount\n- Discounts stack multiplicatively, surcharges apply before discounts\n- Minimum premium: $200, maximum premium: $5,000\n- All amounts rounded to nearest cent\n\nFor each scenario below, provide:\n1. Step-by-step calculation showing how the expected result is derived\n2. The exact expected output value\n3. Boundary conditions that could affect the result\n4. Pass/fail tolerance (if applicable — e.g., rounding)\n\nScenarios:\n- 22-year-old, clean record, no bundle\n- 45-year-old, clean record, with bundle\n- 70-year-old, no discounts\n- 24-year-old turning 25 mid-policy (boundary)\n```\n\n### ISTQB alignment\nAddresses the **test oracle problem** from **CTFL Section 4.1 — Test Design** and the concept of expected results in test case specification. The ISTQB glossary defines a test oracle as \"a source to determine expected results to compare with the actual result of the software under test.\" This skill operationalizes that definition."
+  },
+  {
+    "id": "api-contract-tester",
+    "name": "API Contract Tester",
+    "section": "qa",
+    "category": "API Testing",
+    "tier": "free",
+    "summary": "Generate comprehensive API test scenarios from OpenAPI/Swagger specs — covering happy paths, error codes, auth edge cases, and schema validation.",
+    "istqbTopics": ["Integration Testing", "Equivalence Partitioning", "Error Guessing"],
+    "aiTools": ["Claude Code", "Claude Chat", "ChatGPT"],
+    "tags": ["api", "rest", "openapi", "swagger", "backend", "contract-testing"],
+    "detailMd": "### What it does\nTakes an OpenAPI/Swagger spec (or a plain-English description of an endpoint) and generates structured test cases covering:\n- Happy path with valid payloads\n- Boundary values for numeric/string fields\n- Missing/null/empty required fields\n- Invalid auth tokens, expired sessions, wrong roles\n- Rate limiting and pagination edge cases\n- Response schema validation assertions\n\n### When to use\n- Before writing integration tests for a new endpoint\n- During PR review to verify test coverage for API changes\n- When onboarding to an unfamiliar API and need to understand its failure modes\n\n### Sample prompt\n```\nHere is the OpenAPI spec for our /users endpoint:\n[paste spec]\n\nGenerate test cases grouped by: happy path, input validation,\nauth/authz, error handling, and performance edge cases.\nFor each test case provide: ID, description, method, path,\nrequest body, expected status code, expected response shape.\nApply equivalence partitioning to all string and numeric fields.\n```\n\n### ISTQB alignment\nMaps to CTFL §4.2 (Black-box test techniques) applied to API interfaces. Combines EP and BVA with error guessing for auth and infrastructure scenarios."
+  },
+  {
+    "id": "code-review-checklist-gen",
+    "name": "Code Review Checklist Generator",
+    "section": "qa",
+    "category": "Code Quality",
+    "tier": "free",
+    "summary": "Generate context-aware code review checklists from a diff or PR description — catching logic errors, security flaws, and missed edge cases before merge.",
+    "istqbTopics": ["Static Testing", "Review Techniques", "Defect Prevention"],
+    "aiTools": ["Claude Code", "Claude Chat", "ChatGPT"],
+    "tags": ["code-review", "static-analysis", "pull-request", "frontend", "backend"],
+    "detailMd": "### What it does\nAnalyzes a code diff, PR description, or feature summary and produces a tailored review checklist covering:\n- Logic correctness and off-by-one risks\n- Null/undefined handling and type safety\n- Security concerns (injection, XSS, auth bypass, secrets in code)\n- Performance pitfalls (N+1 queries, unnecessary re-renders, memory leaks)\n- Error handling completeness (missing try/catch, unhandled promise rejections)\n- Naming, readability, and maintainability flags\n\n### When to use\n- Before submitting or reviewing a PR\n- When reviewing code in an unfamiliar part of the codebase\n- To train junior developers on what to look for in reviews\n\n### Sample prompt\n```\nHere is a Git diff for a new checkout flow feature:\n[paste diff]\n\nGenerate a code review checklist organized by:\n1. Correctness risks\n2. Security concerns\n3. Performance flags\n4. Error handling gaps\n5. Readability / maintainability\nFor each item, reference the specific line or pattern in the diff.\n```\n\n### ISTQB alignment\nDirectly maps to CTFL §3 (Static Testing) — review techniques applied to code artifacts. Supports defect prevention by catching issues before dynamic testing."
+  },
+  {
+    "id": "frontend-accessibility-auditor",
+    "name": "Accessibility Audit Generator",
+    "section": "qa",
+    "category": "Frontend Testing",
+    "tier": "free",
+    "summary": "Analyze UI components or HTML markup for WCAG 2.1 violations and generate actionable fix recommendations with test scenarios for screen readers and keyboard navigation.",
+    "istqbTopics": ["Non-functional Testing", "Usability Testing", "Compliance Testing"],
+    "aiTools": ["Claude Code", "Claude Chat", "ChatGPT"],
+    "tags": ["accessibility", "a11y", "wcag", "frontend", "screen-reader", "keyboard"],
+    "detailMd": "### What it does\nReviews HTML/JSX markup or component descriptions and flags:\n- Missing or incorrect ARIA attributes\n- Keyboard navigation gaps (focus traps, missing tab order)\n- Color contrast violations (AA/AAA thresholds)\n- Missing alt text, form labels, heading hierarchy issues\n- Dynamic content not announced to screen readers (live regions)\n- Touch target size issues for mobile\n\nFor each issue, it provides the WCAG success criterion, severity, a concrete code fix, and a manual test scenario.\n\n### When to use\n- Before releasing any user-facing UI component\n- When retrofitting accessibility into an existing frontend\n- To generate a11y test cases for your test suite\n\n### Sample prompt\n```\nAudit this React component for WCAG 2.1 AA compliance:\n[paste component code]\n\nFor each violation found, provide:\n- WCAG criterion (e.g., 1.4.3 Contrast)\n- Severity: Critical / Major / Minor\n- The problematic code snippet\n- Recommended fix with corrected code\n- Manual test scenario (keyboard and screen reader steps)\n```\n\n### ISTQB alignment\nMaps to CTFL §2.3 (non-functional testing types) — accessibility as a quality characteristic. Supports compliance testing against an external standard (WCAG)."
+  },
+  {
+    "id": "unit-test-scaffolder",
+    "name": "Unit Test Scaffolder",
+    "section": "qa",
+    "category": "Test Automation",
+    "tier": "free",
+    "summary": "Generate well-structured unit tests from source code — covering happy paths, edge cases, and error branches with proper mocking and assertion patterns.",
+    "istqbTopics": ["Component Testing", "Test Design Techniques", "White-box Testing"],
+    "aiTools": ["Claude Code", "Claude Chat", "ChatGPT"],
+    "tags": ["unit-testing", "jest", "pytest", "mocha", "backend", "frontend", "tdd"],
+    "detailMd": "### What it does\nTakes a function, class, or module and generates a complete unit test file including:\n- Happy path tests for primary behavior\n- Edge case tests (empty inputs, boundary values, null/undefined)\n- Error branch tests (exceptions, invalid state)\n- Mocking strategy for external dependencies (DB, APIs, file system)\n- Parameterized/data-driven variants where applicable\n- Follows AAA pattern (Arrange-Act-Assert) consistently\n\nSupports Jest, Pytest, Mocha, Vitest, NUnit — specify your framework.\n\n### When to use\n- When writing tests for existing untested code (retrofit testing)\n- As a starting scaffold when doing TDD — generate expected tests, then implement\n- To ensure you haven't missed error branches in complex functions\n\n### Sample prompt\n```\nGenerate unit tests for this TypeScript service method using Jest:\n[paste code]\n\nRequirements:\n- Mock the database repository and HTTP client\n- Cover: valid input, empty input, null input, DB connection failure,\n  HTTP timeout, and response parsing error\n- Use AAA pattern, descriptive test names, one assertion per test\n- Include a describe block structure grouped by scenario type\n```\n\n### ISTQB alignment\nMaps to CTFL §2.2.1 (Component testing) and §4.3 (White-box techniques — statement and branch coverage). The generated tests target branch-level coverage of the input code."
+  },
+  {
+    "id": "database-test-designer",
+    "name": "Database Test Designer",
+    "section": "qa",
+    "category": "Backend Testing",
+    "tier": "premium",
+    "summary": "Design test scenarios for database operations — covering migrations, constraints, transactions, concurrency, and data integrity across CRUD lifecycles.",
+    "istqbTopics": ["Integration Testing", "Boundary Value Analysis", "State Transition Testing"],
+    "aiTools": ["Claude Code", "Claude Chat", "ChatGPT"],
+    "tags": ["database", "sql", "migrations", "transactions", "backend", "data-integrity"],
+    "detailMd": "### What it does\nAnalyzes a database schema, migration script, or ORM model definition and generates test scenarios covering:\n- Constraint enforcement (unique, foreign key, check, not null)\n- Migration rollback safety — does rolling back lose data?\n- Transaction isolation — concurrent update/delete race conditions\n- Cascading delete and orphaned record risks\n- Index effectiveness for common query patterns\n- Boundary values for field types (max varchar, integer overflow, timestamp ranges)\n- Seed data scripts for the generated test scenarios\n\n### When to use\n- Before deploying a new migration to staging/production\n- When adding new tables or relationships to the schema\n- During data layer refactoring to prevent silent data corruption\n\n### Sample prompt\n```\nHere is a Prisma schema for an e-commerce order system:\n[paste schema]\n\nDesign test scenarios covering:\n1. Constraint enforcement (try violating each constraint)\n2. Cascade behavior (what happens when a user is deleted?)\n3. Concurrent order creation for the same inventory item\n4. Migration rollback: would data be lost if we revert?\nFor each scenario, provide SQL test scripts and expected outcomes.\n```\n\n### ISTQB alignment\nCombines integration testing (§2.2.2) with BVA applied to data types and state transition testing for record lifecycles (created → updated → soft-deleted → purged)."
+  },
+  {
+    "id": "error-handling-analyzer",
+    "name": "Error Handling Analyzer",
+    "section": "qa",
+    "category": "Code Quality",
+    "tier": "premium",
+    "summary": "Audit a codebase or module for error handling gaps — uncaught exceptions, swallowed errors, missing retries, and unclear error messages — with fix recommendations.",
+    "istqbTopics": ["Static Testing", "Error Guessing", "Negative Testing"],
+    "aiTools": ["Claude Code", "Claude Chat", "ChatGPT"],
+    "tags": ["error-handling", "exceptions", "resilience", "backend", "frontend", "reliability"],
+    "detailMd": "### What it does\nReviews source code and identifies:\n- Unhandled promise rejections and missing try/catch blocks\n- Swallowed errors (empty catch blocks, catch-and-log-only without recovery)\n- Generic error messages that provide no debugging context\n- Missing retry/backoff logic for external service calls\n- Inconsistent error response formats across API endpoints\n- Missing error boundaries in frontend components (React)\n- Thrown errors with no upstream handler\n\nFor each issue, it recommends a concrete fix pattern and a negative test case to verify the fix.\n\n### When to use\n- During pre-release hardening to find reliability gaps\n- When debugging production incidents caused by unhelpful error logs\n- As a static analysis pass on unfamiliar inherited codebases\n\n### Sample prompt\n```\nAudit this Node.js Express controller for error handling gaps:\n[paste code]\n\nFor each gap found, provide:\n- Location and description of the problem\n- Risk: what goes wrong in production if this isn't fixed?\n- Recommended fix with code example\n- A negative test case that would expose the gap\n```\n\n### ISTQB alignment\nMaps to CTFL §3 (Static testing / review) combined with error guessing (§4.2.4). Generated negative test cases map to dynamic test design for robustness."
+  },
+  {
+    "id": "performance-test-planner",
+    "name": "Performance Test Planner",
+    "section": "qa",
+    "category": "Non-functional Testing",
+    "tier": "premium",
+    "summary": "Design load, stress, and soak test scenarios from system requirements — with workload models, acceptance thresholds, and tool-specific script outlines for k6 or JMeter.",
+    "istqbTopics": ["Non-functional Testing", "Performance Testing", "Test Planning"],
+    "aiTools": ["Claude Code", "Claude Chat", "ChatGPT"],
+    "tags": ["performance", "load-testing", "k6", "jmeter", "backend", "scalability"],
+    "detailMd": "### What it does\nTakes a system description, SLAs, or user traffic expectations and produces:\n- Workload model: user personas, think times, ramp-up curves\n- Scenario matrix: load test, stress test, spike test, soak test\n- Acceptance thresholds: p95 response time, error rate, throughput targets\n- Tool-specific script outlines (k6 JavaScript or JMeter XML structure)\n- Environment sizing recommendations for test execution\n- Monitoring checklist: what metrics to watch during execution\n\n### When to use\n- Before a major release expected to increase traffic\n- When SLAs exist but no performance test suite covers them\n- When migrating infrastructure (new cloud region, containerization) and need to verify performance parity\n\n### Sample prompt\n```\nOur e-commerce API handles 500 concurrent users at peak.\nSLAs: p95 response < 800ms, error rate < 0.5%, 99.9% uptime.\nEndpoints: product search, add to cart, checkout, payment.\n\nDesign a performance test plan covering:\n1. Workload model with realistic user journeys\n2. Load, stress, and soak test scenarios\n3. Pass/fail thresholds per scenario\n4. k6 script skeleton for the most critical journey\n```\n\n### ISTQB alignment\nDirectly maps to CTFL §2.3 (non-functional test types — performance testing). Workload modeling applies EP to user behavior segments."
+  },
+  {
+    "id": "ci-pipeline-test-advisor",
+    "name": "CI Pipeline Test Advisor",
+    "section": "qa",
+    "category": "Test Management",
+    "tier": "premium",
+    "summary": "Analyze a CI/CD pipeline configuration and recommend test stage placement, parallelization, failure gates, and flaky test quarantine strategies.",
+    "istqbTopics": ["Test Planning", "Test Process", "Continuous Testing"],
+    "aiTools": ["Claude Code", "Claude Chat", "ChatGPT"],
+    "tags": ["ci-cd", "devops", "pipeline", "github-actions", "gitlab-ci", "test-strategy"],
+    "detailMd": "### What it does\nReviews a CI/CD pipeline config (GitHub Actions, GitLab CI, Jenkins, etc.) and recommends:\n- Optimal test stage ordering (lint → unit → integration → e2e → performance)\n- Parallelization strategy to reduce total pipeline time\n- Failure gate rules: which test failures block deploy vs. warn\n- Flaky test detection and quarantine workflow\n- Test result artifact storage and trend reporting\n- Environment provisioning for integration and e2e stages\n- Cost/time trade-off analysis for different pipeline configurations\n\n### When to use\n- When setting up CI/CD for a new project\n- When pipeline execution time has grown beyond acceptable limits\n- When flaky tests are causing false-red builds and developer frustration\n\n### Sample prompt\n```\nHere is our GitHub Actions workflow:\n[paste YAML]\n\nCurrent pain points:\n- Pipeline takes 25 minutes, team wants it under 12\n- ~5% of runs fail due to flaky e2e tests\n- No performance tests in the pipeline\n\nRecommend pipeline restructuring with:\n1. Test stage ordering and parallelization plan\n2. Flaky test quarantine strategy\n3. Where to add performance test gates\n4. Estimated time savings per recommendation\n```\n\n### ISTQB alignment\nMaps to CTFL §5 (Test management) and §2.1 (Testing in the SDLC — continuous testing in CI/CD). Supports shift-left and test process improvement."
+  },
+  {
+    "id": "security-test-scenario-gen",
+    "name": "Security Test Scenario Generator",
+    "section": "qa",
+    "category": "Security Testing",
+    "tier": "premium",
+    "summary": "Generate OWASP-aligned security test scenarios for web applications — covering injection, auth bypass, XSS, CSRF, IDOR, and misconfiguration vectors.",
+    "istqbTopics": ["Non-functional Testing", "Security Testing", "Risk-based Testing"],
+    "aiTools": ["Claude Code", "Claude Chat", "ChatGPT"],
+    "tags": ["security", "owasp", "penetration-testing", "xss", "injection", "frontend", "backend"],
+    "detailMd": "### What it does\nTakes an application description, tech stack, or feature spec and generates structured security test scenarios covering:\n- OWASP Top 10 mapped to your specific stack\n- Injection vectors: SQL, NoSQL, command, LDAP, template\n- Authentication bypass: brute force, token manipulation, session fixation\n- Authorization flaws: IDOR, privilege escalation, missing function-level access control\n- XSS and CSRF scenarios with payload examples\n- Security headers and CORS misconfiguration checks\n- Sensitive data exposure: API responses, error messages, logs\n\n### When to use\n- During threat modeling for a new feature\n- Before a security audit to self-assess coverage gaps\n- When writing security-focused acceptance criteria for PBIs\n\n### Sample prompt\n```\nTech stack: React SPA + Node.js Express API + PostgreSQL\nFeature: User profile with avatar upload and public bio\nAuth: JWT stored in httpOnly cookie\n\nGenerate security test scenarios grouped by OWASP Top 10 category.\nFor each scenario provide:\n- Attack vector description\n- Concrete test steps with example payloads\n- Expected secure behavior\n- Risk rating (Critical/High/Medium/Low)\n```\n\n### ISTQB alignment\nMaps to CTFL §2.3 (non-functional testing — security) combined with risk-based testing (§5.2.3). Attack scenarios apply error guessing and boundary analysis to security domains."
+  },
+  {
+    "id": "e2e-test-architect",
+    "name": "E2E Test Architect",
+    "section": "qa",
+    "category": "Test Automation",
+    "tier": "premium",
+    "summary": "Design end-to-end test suites from user journeys — with page object structure, test data strategy, environment setup, and Playwright/Cypress script outlines.",
+    "istqbTopics": ["System Testing", "Test Design Techniques", "Test Automation"],
+    "aiTools": ["Claude Code", "Claude Chat", "ChatGPT"],
+    "tags": ["e2e", "playwright", "cypress", "selenium", "frontend", "automation", "page-objects"],
+    "detailMd": "### What it does\nTakes a set of user journeys or feature descriptions and produces:\n- E2E test scenario list with priority and risk ranking\n- Page Object Model structure (pages, components, selectors strategy)\n- Test data strategy: fixtures, factories, API seeding, cleanup\n- Environment and auth setup patterns (login once, share state)\n- Script outlines in Playwright or Cypress (specify your preference)\n- Resilient selector strategy (data-testid > role > CSS)\n- Parallel execution and CI integration recommendations\n\n### When to use\n- When starting E2E automation for a project from scratch\n- When an existing E2E suite is brittle and needs restructuring\n- Before a major feature release that requires critical path regression coverage\n\n### Sample prompt\n```\nApplication: SaaS project management tool\nCritical user journeys:\n1. Sign up → create project → invite team member\n2. Create task → assign → move through kanban statuses → complete\n3. Generate weekly report → export PDF\n\nDesign an E2E test suite using Playwright with:\n- Page Object structure with file tree\n- Test data strategy (how to seed and clean up)\n- Auth handling (login once, reuse session)\n- Script outline for journey #2 with resilient selectors\n- CI integration with parallel execution plan\n```\n\n### ISTQB alignment\nMaps to CTFL §2.2.3 (System testing) and §6 (Tool support — test automation). Page Object Model and selector strategy address test maintainability (§5.3)."
+  },
+  {
+    "id": "api-endpoint-builder",
+    "name": "API Endpoint Builder",
+    "section": "dev",
+    "category": "Backend Development",
+    "tier": "free",
+    "summary": "Generate production-ready REST or GraphQL endpoint code from a plain-English description — with validation, error handling, auth middleware, and DB queries.",
+    "istqbTopics": [],
+    "aiTools": ["Claude Code", "Claude Chat", "ChatGPT"],
+    "tags": ["api", "rest", "graphql", "express", "fastapi", "backend", "crud"],
+    "detailMd": "### What it does\nTakes a feature description and generates complete endpoint code including:\n- Route definition with proper HTTP methods\n- Input validation and sanitization (Zod, Pydantic, Joi)\n- Database query layer (raw SQL, Prisma, SQLAlchemy — specify your ORM)\n- Auth/authz middleware integration\n- Consistent error response format\n- Pagination, filtering, and sorting for list endpoints\n- TypeScript types or Python type hints throughout\n\n### When to use\n- Scaffolding new CRUD endpoints quickly\n- When building a new microservice and want consistent endpoint patterns\n- To generate boilerplate so you can focus on business logic\n\n### Sample prompt\n```\nStack: Node.js, Express, Prisma, PostgreSQL, TypeScript\nFeature: Team management — CRUD for teams with members\n\nGenerate endpoints for:\n- POST /teams (create team, creator becomes admin)\n- GET /teams/:id (include member list)\n- PATCH /teams/:id (admin only)\n- POST /teams/:id/members (invite by email, admin only)\n- DELETE /teams/:id/members/:userId (admin or self)\n\nInclude: Zod validation, Prisma queries, role-based middleware,\npaginated member list, consistent error format.\n```\n\n### Who benefits\nBackend developers building APIs faster. Especially useful for solo devs or small teams who want production patterns without setting up a full framework scaffolder."
+  },
+  {
+    "id": "react-component-generator",
+    "name": "React Component Generator",
+    "section": "dev",
+    "category": "Frontend Development",
+    "tier": "free",
+    "summary": "Generate complete React components from a UI description — with TypeScript props, state management, accessibility, responsive styling, and loading/error states.",
+    "istqbTopics": [],
+    "aiTools": ["Claude Code", "Claude Chat", "ChatGPT"],
+    "tags": ["react", "typescript", "frontend", "components", "tailwind", "ui"],
+    "detailMd": "### What it does\nTakes a UI description (or a screenshot/wireframe description) and generates:\n- Functional component with TypeScript props interface\n- State management (useState, useReducer, or Zustand hook — specify preference)\n- Loading, empty, and error state handling\n- Responsive layout (Tailwind CSS or CSS Modules)\n- Keyboard navigation and ARIA attributes\n- Compound component pattern for complex UIs\n- Storybook story file as a bonus\n\n### When to use\n- Scaffolding new UI features quickly\n- When translating a Figma design into code and want a solid starting structure\n- Building a component library and want consistent patterns\n\n### Sample prompt\n```\nGenerate a React component: DataTable with sortable columns.\n\nProps:\n- columns: array of { key, label, sortable? }\n- data: array of objects\n- onRowClick: callback\n- loading: boolean\n- emptyMessage: string\n\nRequirements:\n- TypeScript, Tailwind CSS\n- Sortable column headers with visual indicator\n- Loading skeleton state, empty state with illustration placeholder\n- Sticky header on scroll\n- Keyboard: arrow keys navigate rows, Enter triggers onRowClick\n- Mobile: horizontal scroll with pinned first column\n```\n\n### Who benefits\nFrontend developers who want well-structured components fast, with accessibility and edge states they'd normally forget on the first pass."
+  },
+  {
+    "id": "database-schema-designer",
+    "name": "Database Schema Designer",
+    "section": "dev",
+    "category": "Backend Development",
+    "tier": "free",
+    "summary": "Design normalized database schemas from business requirements — with table definitions, relationships, indexes, constraints, and migration scripts.",
+    "istqbTopics": [],
+    "aiTools": ["Claude Code", "Claude Chat", "ChatGPT"],
+    "tags": ["database", "sql", "prisma", "schema", "migrations", "backend", "data-modeling"],
+    "detailMd": "### What it does\nTakes a feature description or domain model and produces:\n- Table/collection definitions with appropriate data types\n- Relationships (1:1, 1:N, M:N with junction tables)\n- Index recommendations for common query patterns\n- Constraints (unique, check, foreign key, not null)\n- Soft delete vs hard delete strategy\n- Audit columns (createdAt, updatedAt, createdBy)\n- Migration script in your ORM format (Prisma, Alembic, Knex, raw SQL)\n- Seed data script for development\n\n### When to use\n- Starting a new feature that needs data modeling\n- Refactoring a messy schema that evolved without planning\n- When you know the business domain but aren't sure about the optimal relational structure\n\n### Sample prompt\n```\nDomain: Online course platform\nEntities: Users, Courses, Lessons, Enrollments, Progress, Reviews\n\nBusiness rules:\n- A user can be both instructor and student\n- Courses have ordered lessons grouped into modules\n- Progress tracks per-lesson completion with timestamps\n- Reviews are 1-5 stars with optional text, one per user per course\n\nGenerate: Prisma schema, explain index choices,\ninclude seed script with 3 courses and 10 users.\n```\n\n### Who benefits\nBackend developers and full-stack devs who want a solid data foundation before writing any application code."
+  },
+  {
+    "id": "refactoring-advisor",
+    "name": "Refactoring Advisor",
+    "section": "dev",
+    "category": "Code Quality",
+    "tier": "free",
+    "summary": "Analyze messy or legacy code and get a prioritized refactoring plan — with specific patterns to apply, before/after examples, and safe refactoring steps.",
+    "istqbTopics": [],
+    "aiTools": ["Claude Code", "Claude Chat", "ChatGPT"],
+    "tags": ["refactoring", "clean-code", "technical-debt", "design-patterns", "backend", "frontend"],
+    "detailMd": "### What it does\nTakes a code snippet, module, or architectural description and identifies:\n- Code smells: god functions, deep nesting, shotgun surgery, feature envy\n- Specific refactoring moves: extract function, replace conditional with polymorphism, introduce strategy pattern\n- Before/after code examples for each recommendation\n- Safe refactoring sequence (what to change first to avoid breaking things)\n- Risk assessment: which refactors are safe vs need test coverage first\n\n### When to use\n- When inheriting legacy code and need to make it maintainable\n- Before adding features to a tangled module — clean first, then extend\n- During tech debt sprints to prioritize what to fix\n\n### Sample prompt\n```\nThis Express controller has grown to 200 lines with nested\nif/else, inline DB queries, and email sending all in one function:\n[paste code]\n\nProvide a refactoring plan:\n1. List every code smell with line references\n2. Prioritize refactors by impact/effort\n3. Show before/after for the top 3 refactors\n4. Suggest the safe order to apply them\n```\n\n### Who benefits\nAny developer dealing with code they didn't write (or wrote 6 months ago). Turns \"this is a mess\" into a concrete action plan."
+  },
+  {
+    "id": "debugging-assistant",
+    "name": "Debugging Assistant",
+    "section": "dev",
+    "category": "Development",
+    "tier": "free",
+    "summary": "Diagnose bugs from error messages, stack traces, or behavioral descriptions — with root cause analysis, fix suggestions, and prevention strategies.",
+    "istqbTopics": [],
+    "aiTools": ["Claude Code", "Claude Chat", "ChatGPT"],
+    "tags": ["debugging", "errors", "stack-trace", "troubleshooting", "frontend", "backend"],
+    "detailMd": "### What it does\nTakes an error message, stack trace, or unexpected behavior description and provides:\n- Root cause analysis with explanation of WHY the error occurs\n- Step-by-step fix with code examples\n- Related issues that might share the same root cause\n- Prevention strategy: lint rule, type guard, or defensive code pattern\n- Search-optimized error summary (so you can Google it faster next time)\n\n### When to use\n- When staring at a cryptic error message for 20+ minutes\n- When a bug only reproduces in production or CI but not locally\n- When you understand the fix but not the root cause and want to learn\n\n### Sample prompt\n```\nI get this error intermittently in production but never locally:\n[paste stack trace]\n\nContext: Node.js 20, Express, Prisma, PostgreSQL\nStarted after deploying connection pooling via PgBouncer\n\nDiagnose: what's the most likely root cause?\nProvide fix + how to prevent this class of bug.\n```\n\n### Who benefits\nAny developer stuck on a bug. Especially valuable for production-only issues and environment-specific problems where local debugging doesn't help."
+  },
+  {
+    "id": "regex-and-data-transformer",
+    "name": "Regex & Data Transformer",
+    "section": "dev",
+    "category": "Development",
+    "tier": "free",
+    "summary": "Generate, explain, and debug complex regex patterns and data transformation scripts — from log parsing to CSV reshaping to input sanitization.",
+    "istqbTopics": [],
+    "aiTools": ["Claude Code", "Claude Chat", "ChatGPT"],
+    "tags": ["regex", "data-transformation", "parsing", "etl", "scripting", "backend", "frontend"],
+    "detailMd": "### What it does\nTakes a sample input + desired output and generates:\n- Regex pattern with named capture groups and step-by-step explanation\n- Edge cases the regex handles and ones it doesn't (with warnings)\n- Transformation script (Python, JS, or bash — specify preference)\n- Test cases covering happy path and tricky edges\n- Performance notes for large-scale data (when regex isn't the right tool)\n\n### When to use\n- Parsing log files, CSV weirdness, or unstructured text\n- Building input validation patterns (emails, phones, IDs, URLs)\n- One-off data cleanup or migration scripts\n\n### Sample prompt\n```\nI have Apache access log lines like this:\n[paste 5 sample lines with variations]\n\nExtract: IP, timestamp, HTTP method, path, status code,\nresponse size, user agent.\n\nGenerate:\n1. Regex with named groups (Python flavor)\n2. Explain each part of the pattern\n3. Python script that parses a log file into CSV\n4. 3 edge case lines that would break naive patterns\n```\n\n### Who benefits\nEvery developer who's ever spent 45 minutes on regex101. Especially useful for one-off data tasks where you need a correct pattern fast."
+  },
+  {
+    "id": "git-workflow-automator",
+    "name": "Git Workflow Automator",
+    "section": "dev",
+    "category": "DevOps",
+    "tier": "premium",
+    "summary": "Generate Git hooks, branching strategies, CI workflow files, and commit conventions tailored to your team size and release cadence.",
+    "istqbTopics": [],
+    "aiTools": ["Claude Code", "Claude Chat", "ChatGPT"],
+    "tags": ["git", "github-actions", "gitlab-ci", "devops", "ci-cd", "branching", "automation"],
+    "detailMd": "### What it does\nTakes your team context and generates:\n- Branching strategy document (GitFlow, trunk-based, or hybrid) with reasoning\n- GitHub Actions / GitLab CI workflow files for your stack\n- Pre-commit hooks (lint, format, type-check, commit message validation)\n- Conventional commits config + changelog generation setup\n- Branch protection rules recommendation\n- Release automation (semantic versioning, auto-tagging, release notes)\n- PR template with checklist\n\n### When to use\n- Setting up a new repo with proper Git hygiene from day one\n- Standardizing workflow across multiple repos in an org\n- When the team has outgrown ad-hoc git practices\n\n### Sample prompt\n```\nTeam: 6 devs, 2-week sprints, deploy to staging on merge,\nproduction release every 2 weeks.\nStack: TypeScript monorepo (Turborepo), pnpm, Next.js + NestJS\n\nGenerate:\n1. Branching strategy with diagram\n2. GitHub Actions: lint + typecheck + test on PR, deploy on merge\n3. Pre-commit hooks config (husky + lint-staged)\n4. Conventional commits setup with auto-changelog\n5. PR template\n```\n\n### Who benefits\nTech leads and senior devs setting up or improving team workflows. Saves hours of YAML trial-and-error."
+  },
+  {
+    "id": "architecture-decision-helper",
+    "name": "Architecture Decision Helper",
+    "section": "dev",
+    "category": "Architecture",
+    "tier": "premium",
+    "summary": "Evaluate architectural choices with structured trade-off analysis — monolith vs microservices, tech stack selection, caching strategy — with ADR document output.",
+    "istqbTopics": [],
+    "aiTools": ["Claude Code", "Claude Chat", "ChatGPT"],
+    "tags": ["architecture", "system-design", "adr", "trade-offs", "backend", "scalability"],
+    "detailMd": "### What it does\nTakes a technical decision context and produces:\n- Structured ADR (Architecture Decision Record) in standard format\n- Options analysis with pros/cons/risks for each alternative\n- Decision matrix scored on your stated priorities (cost, speed, scalability, team skill)\n- Migration path if choosing to change an existing architecture\n- Diagrams described in Mermaid syntax for the recommended approach\n- \"When to revisit\" triggers — conditions under which the decision should be reconsidered\n\n### When to use\n- Before starting a new project: choosing stack, hosting, data layer\n- At inflection points: monolith is creaking, need to decide what to extract\n- When two senior devs disagree and you need a structured comparison\n\n### Sample prompt\n```\nContext: Our Django monolith serves 50K DAU. The notification\nsystem is causing performance issues and blocking deploys.\n\nOptions:\nA) Extract into a separate microservice\nB) Background job queue (Celery) within the monolith\nC) Event-driven with RabbitMQ\n\nTeam: 4 backend devs, no Kafka experience.\nPrioritize: operational simplicity > scalability > dev speed.\n\nGenerate an ADR with trade-off analysis.\n```\n\n### Who benefits\nTech leads making high-impact decisions that are hard to reverse. Turns gut feelings into documented reasoning."
+  },
+  {
+    "id": "documentation-generator",
+    "name": "Documentation Generator",
+    "section": "dev",
+    "category": "Development",
+    "tier": "premium",
+    "summary": "Generate developer docs from code — README files, API docs, architecture overviews, onboarding guides, and inline JSDoc/docstring annotations.",
+    "istqbTopics": [],
+    "aiTools": ["Claude Code", "Claude Chat", "ChatGPT"],
+    "tags": ["documentation", "readme", "api-docs", "onboarding", "jsdoc", "docstrings"],
+    "detailMd": "### What it does\nTakes source code, a project structure, or a feature description and generates:\n- README.md with setup instructions, architecture overview, and usage examples\n- API documentation with request/response examples for every endpoint\n- Inline JSDoc/docstring annotations for functions and classes\n- Architecture overview document with component relationships\n- Onboarding guide: \"Your first PR\" walkthrough\n- CONTRIBUTING.md with code style, PR process, and testing expectations\n\n### When to use\n- When shipping a feature and the docs are \"we'll do it later\" (it's later)\n- When onboarding a new team member and nothing is documented\n- When open-sourcing an internal tool and need professional docs fast\n\n### Sample prompt\n```\nHere is the file tree and key source files for our auth service:\n[paste tree + 3-4 key files]\n\nGenerate:\n1. README.md: what it does, local setup, env vars, architecture\n2. API docs for all endpoints with curl examples\n3. JSDoc comments for the 3 most complex functions\n4. Onboarding section for new developers\nTone: concise, no fluff, mid-level developer audience.\n```\n\n### Who benefits\nDevelopers and tech leads who know docs matter but never have time. Turns a 4-hour chore into a 15-minute prompt-and-edit session."
+  },
+  {
+    "id": "migration-planner",
+    "name": "Migration Planner",
+    "section": "dev",
+    "category": "Architecture",
+    "tier": "premium",
+    "summary": "Plan technology migrations — framework upgrades, language switches, cloud moves — with phased rollout steps, coexistence strategies, and rollback plans.",
+    "istqbTopics": [],
+    "aiTools": ["Claude Code", "Claude Chat", "ChatGPT"],
+    "tags": ["migration", "upgrade", "refactoring", "architecture", "backend", "frontend", "legacy"],
+    "detailMd": "### What it does\nTakes a \"from → to\" migration context and produces:\n- Risk assessment: what can break, data loss vectors, downtime scenarios\n- Phased migration plan with incremental milestones (not big-bang)\n- Coexistence strategy: running old and new in parallel during transition\n- Code codemods or transformation scripts where applicable\n- Rollback plan for each phase\n- Estimated effort per phase for planning purposes\n\n### When to use\n- Upgrading major framework versions (Next.js pages→app router, Angular, etc.)\n- Switching languages or runtimes (JS→TS, CJS→ESM)\n- Moving between cloud providers or deployment models\n- Extracting services from a monolith\n\n### Sample prompt\n```\nMigration: Next.js Pages Router → App Router\nProject: ~60 pages, 20 API routes, NextAuth, Prisma, Vercel.\n\nConstraints:\n- Can't freeze feature development during migration\n- 3 developers, no dedicated migration team\n- Must maintain SEO (existing pages are indexed)\n\nGenerate a phased migration plan with:\n- Page migration priority and reasoning\n- Parallel pages/ and app/ coexistence approach\n- Auth session handling during transition\n- Rollback approach per phase\n```\n\n### Who benefits\nSenior devs facing the \"we need to migrate but can't stop shipping\" dilemma."
   }
 ]
 </script>
@@ -288,6 +534,59 @@ body {
   background: var(--premium-dim);
   border-color: var(--premium-color);
   color: var(--premium-color);
+}
+
+.filter-pill--section-qa.filter-pill--active {
+  background: var(--accent-dim);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.filter-pill--section-dev.filter-pill--active {
+  background: rgba(123, 140, 255, 0.15);
+  border-color: #7b8cff;
+  color: #7b8cff;
+}
+
+/* ==================== Section Headers ==================== */
+.section-header {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1rem;
+  margin-bottom: 0.25rem;
+}
+
+.section-header:first-child {
+  margin-top: 0;
+}
+
+.section-header__title {
+  font-family: var(--font-heading);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+}
+
+.section-header__line {
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.section-header__count {
+  font-family: var(--font-heading);
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.section-header--dev .section-header__title {
+  color: #7b8cff;
 }
 
 /* ==================== Skill Grid ==================== */
@@ -671,7 +970,7 @@ body {
   <p class="hero__description">
     Plug-and-play AI prompt templates for your QA workflow. Each skill is mapped to ISTQB syllabus topics and ready to use with your favorite AI tools.
   </p>
-  <span class="hero__badge" id="skill-count">6 skills and growing</span>
+  <span class="hero__badge" id="skill-count">26 skills and growing</span>
 </header>
 
 <!-- ==================== Filter Bar ==================== -->
@@ -688,18 +987,35 @@ body {
       >
     </div>
     <div class="filter-bar__row">
-      <button class="filter-pill filter-pill--active" data-category="all" aria-pressed="true">All</button>
-      <button class="filter-pill" data-category="Test Design" aria-pressed="false">Test Design</button>
-      <button class="filter-pill" data-category="Requirements" aria-pressed="false">Requirements</button>
-      <button class="filter-pill" data-category="Defect Management" aria-pressed="false">Defect Mgmt</button>
-      <button class="filter-pill" data-category="AI Testing" aria-pressed="false">AI Testing</button>
-      <button class="filter-pill" data-category="Test Management" aria-pressed="false">Test Mgmt</button>
+      <button class="filter-pill filter-pill--section filter-pill--active" data-section="all" aria-pressed="true">All</button>
+      <button class="filter-pill filter-pill--section filter-pill--section-qa" data-section="qa" aria-pressed="false">Quality Assurance</button>
+      <button class="filter-pill filter-pill--section filter-pill--section-dev" data-section="dev" aria-pressed="false">Development</button>
 
       <span class="filter-bar__divider" aria-hidden="true"></span>
 
       <button class="filter-pill filter-pill--active" data-tier="all" aria-pressed="true">All Tiers</button>
       <button class="filter-pill filter-pill--tier-free" data-tier="free" aria-pressed="false">Free</button>
       <button class="filter-pill filter-pill--tier-premium" data-tier="premium" aria-pressed="false">Premium</button>
+    </div>
+    <div class="filter-bar__row" id="category-row">
+      <button class="filter-pill filter-pill--active" data-category="all" aria-pressed="true">All Categories</button>
+      <button class="filter-pill" data-category="Test Design" aria-pressed="false">Test Design</button>
+      <button class="filter-pill" data-category="Requirements" aria-pressed="false">Requirements</button>
+      <button class="filter-pill" data-category="Defect Management" aria-pressed="false">Defect Mgmt</button>
+      <button class="filter-pill" data-category="AI Testing" aria-pressed="false">AI Testing</button>
+      <button class="filter-pill" data-category="Test Management" aria-pressed="false">Test Mgmt</button>
+      <button class="filter-pill" data-category="API Testing" aria-pressed="false">API Testing</button>
+      <button class="filter-pill" data-category="Code Quality" aria-pressed="false">Code Quality</button>
+      <button class="filter-pill" data-category="Frontend Testing" aria-pressed="false">Frontend Testing</button>
+      <button class="filter-pill" data-category="Test Automation" aria-pressed="false">Test Automation</button>
+      <button class="filter-pill" data-category="Backend Testing" aria-pressed="false">Backend Testing</button>
+      <button class="filter-pill" data-category="Non-functional Testing" aria-pressed="false">Non-functional</button>
+      <button class="filter-pill" data-category="Security Testing" aria-pressed="false">Security Testing</button>
+      <button class="filter-pill" data-category="Backend Development" aria-pressed="false">Backend Dev</button>
+      <button class="filter-pill" data-category="Frontend Development" aria-pressed="false">Frontend Dev</button>
+      <button class="filter-pill" data-category="Development" aria-pressed="false">Development</button>
+      <button class="filter-pill" data-category="DevOps" aria-pressed="false">DevOps</button>
+      <button class="filter-pill" data-category="Architecture" aria-pressed="false">Architecture</button>
     </div>
   </div>
 </nav>
@@ -730,6 +1046,7 @@ body {
   const skills = JSON.parse(document.getElementById('skill-data').textContent);
 
   // ==================== State ====================
+  let activeSection = 'all';
   let activeCategory = 'all';
   let activeTier = 'all';
   let searchQuery = '';
@@ -738,6 +1055,7 @@ body {
   // ==================== DOM Refs ====================
   const grid = document.getElementById('skills-grid');
   const searchInput = document.getElementById('search-input');
+  const sectionPills = document.querySelectorAll('[data-section]');
   const categoryPills = document.querySelectorAll('[data-category]');
   const tierPills = document.querySelectorAll('[data-tier]');
 
@@ -820,6 +1138,8 @@ body {
   // ==================== Render ====================
   function render() {
     const filtered = skills.filter(skill => {
+      // Section filter
+      if (activeSection !== 'all' && (skill.section || 'qa') !== activeSection) return false;
       // Category filter
       if (activeCategory !== 'all' && skill.category !== activeCategory) return false;
       // Tier filter
@@ -844,7 +1164,12 @@ body {
       return;
     }
 
-    grid.innerHTML = filtered.map(skill => {
+    const sections = [
+      { key: 'qa', label: 'Quality Assurance', cssClass: '' },
+      { key: 'dev', label: 'Development', cssClass: 'section-header--dev' }
+    ];
+
+    function renderCard(skill) {
       const isExpanded = expandedId === skill.id;
       const isPremium = skill.tier === 'premium';
       const lockIcon = isPremium ? '<span aria-hidden="true">&#x1f512;</span> ' : '';
@@ -887,7 +1212,22 @@ body {
           </div>
         </article>
       `;
-    }).join('');
+    }
+
+    let html = '';
+    for (const section of sections) {
+      const sectionSkills = filtered.filter(s => (s.section || 'qa') === section.key);
+      if (sectionSkills.length === 0) continue;
+      html += `
+        <div class="section-header ${section.cssClass}">
+          <span class="section-header__title">${section.label}</span>
+          <span class="section-header__line"></span>
+          <span class="section-header__count">${sectionSkills.length} skill${sectionSkills.length !== 1 ? 's' : ''}</span>
+        </div>
+      `;
+      html += sectionSkills.map(renderCard).join('');
+    }
+    grid.innerHTML = html;
   }
 
   // ==================== Events ====================
@@ -918,6 +1258,26 @@ body {
     searchQuery = this.value.trim();
     expandedId = null;
     render();
+  });
+
+  // Section pills
+  sectionPills.forEach(pill => {
+    pill.addEventListener('click', function() {
+      activeSection = this.dataset.section;
+      sectionPills.forEach(p => {
+        const isActive = p.dataset.section === activeSection;
+        p.classList.toggle('filter-pill--active', isActive);
+        p.setAttribute('aria-pressed', isActive);
+      });
+      // Reset category when switching section
+      activeCategory = 'all';
+      categoryPills.forEach(p => {
+        p.classList.toggle('filter-pill--active', p.dataset.category === 'all');
+        p.setAttribute('aria-pressed', p.dataset.category === 'all');
+      });
+      expandedId = null;
+      render();
+    });
   });
 
   // Category pills
