@@ -322,6 +322,126 @@
     "aiTools": ["Claude Code", "Claude Chat", "ChatGPT"],
     "tags": ["migration", "upgrade", "refactoring", "architecture", "backend", "frontend", "legacy"],
     "detailMd": "### What it does\nTakes a \"from → to\" migration context and produces:\n- Risk assessment: what can break, data loss vectors, downtime scenarios\n- Phased migration plan with incremental milestones (not big-bang)\n- Coexistence strategy: running old and new in parallel during transition\n- Code codemods or transformation scripts where applicable\n- Rollback plan for each phase\n- Estimated effort per phase for planning purposes\n\n### When to use\n- Upgrading major framework versions (Next.js pages→app router, Angular, etc.)\n- Switching languages or runtimes (JS→TS, CJS→ESM)\n- Moving between cloud providers or deployment models\n- Extracting services from a monolith\n\n### Sample prompt\n```\nMigration: Next.js Pages Router → App Router\nProject: ~60 pages, 20 API routes, NextAuth, Prisma, Vercel.\n\nConstraints:\n- Can't freeze feature development during migration\n- 3 developers, no dedicated migration team\n- Must maintain SEO (existing pages are indexed)\n\nGenerate a phased migration plan with:\n- Page migration priority and reasoning\n- Parallel pages/ and app/ coexistence approach\n- Auth session handling during transition\n- Rollback approach per phase\n```\n\n### Who benefits\nSenior devs facing the \"we need to migrate but can't stop shipping\" dilemma."
+  },
+  {
+    "id": "commit-message-writer",
+    "name": "Commit Message Writer",
+    "section": "agent",
+    "category": "Workflow Automation",
+    "tier": "free",
+    "summary": "Analyzes staged git changes and writes a Conventional Commits message with scope, breaking change flags, and a body that explains WHY, not just WHAT.",
+    "compatibleWith": ["Claude Code", "GitHub Copilot"],
+    "triggerContext": "Run after git add / before git commit. Agent reads the diff automatically.",
+    "tags": ["git", "commits", "workflow", "automation"],
+    "detailMd": "### What it does\nThe agent inspects your staged diff (`git diff --cached`) and generates:\n- A Conventional Commits header: `type(scope): description`\n- Correct type detection (feat, fix, refactor, docs, test, chore, perf, ci)\n- Scope inferred from changed file paths\n- Body paragraph explaining the reasoning behind the change\n- `BREAKING CHANGE:` footer when public APIs or schemas change\n- Co-author trailers if multiple contributors touched the files recently\n\n### How it works as an agent skill\n```\n# Claude Code — just type:\n> Write a commit message for my staged changes\n\n# The agent will:\n# 1. Run `git diff --cached --stat` to understand scope\n# 2. Run `git diff --cached` to read actual changes\n# 3. Check recent commit history for style consistency\n# 4. Generate the message and offer to run `git commit -m \"...\"`\n```\n\n### Why this beats a prompt template\nA prompt template requires you to copy-paste your diff. The agent reads it directly, understands your project's commit history style, and can execute the commit — zero context switching.\n\n### Configuration hints\nAdd to your `CLAUDE.md` or Copilot instructions:\n```\nWhen writing commit messages:\n- Use Conventional Commits format\n- Scope = top-level directory of changed files (e.g., api, ui, db)\n- Body must explain WHY the change was made, not repeat the diff\n- If >5 files changed across >2 directories, suggest splitting the commit\n- Max header length: 72 characters\n```"
+  },
+  {
+    "id": "pr-description-builder",
+    "name": "PR Description Builder",
+    "section": "agent",
+    "category": "Workflow Automation",
+    "tier": "free",
+    "summary": "Generates a structured pull request description from the branch diff — with summary, change list, testing notes, screenshots placeholder, and reviewer guidance.",
+    "compatibleWith": ["Claude Code", "GitHub Copilot"],
+    "triggerContext": "Run before opening a PR. Agent compares current branch against main/develop.",
+    "tags": ["git", "pull-request", "github", "workflow", "code-review"],
+    "detailMd": "### What it does\nThe agent compares your branch to the base branch and produces:\n- **Summary**: 2-3 sentence overview of what this PR accomplishes\n- **Changes**: Grouped list by area (API, UI, DB, config) — not a file list\n- **Why**: Business context or ticket reference\n- **How to test**: Step-by-step manual verification instructions\n- **Screenshots/recordings**: Placeholder section for UI changes\n- **Risks & rollback**: What could go wrong, how to revert\n- **Checklist**: Pre-merge checklist (tests pass, migrations reviewed, env vars added)\n\n### How it works as an agent skill\n```\n# Claude Code:\n> Write a PR description for this branch against main\n\n# The agent will:\n# 1. Run `git log main..HEAD --oneline` to see commits\n# 2. Run `git diff main --stat` for change scope\n# 3. Read changed files to understand the feature\n# 4. Generate markdown PR description\n# 5. Optionally copy to clipboard or open GitHub PR creation page\n```\n\n### Configuration hints\nAdd to `CLAUDE.md`:\n```\nWhen generating PR descriptions:\n- Follow this template: Summary, Changes, How to Test, Risks\n- Link to Jira/Linear ticket if branch name contains a ticket ID\n- Flag if migrations are included — these need extra review\n- If PR touches >15 files, suggest splitting\n- Mention affected environment variables\n```"
+  },
+  {
+    "id": "file-scaffolder",
+    "name": "File Scaffolder",
+    "section": "agent",
+    "category": "Code Generation",
+    "tier": "free",
+    "summary": "Creates new files following your project's existing patterns — detects conventions for naming, exports, imports, folder structure, and boilerplate from neighboring files.",
+    "compatibleWith": ["Claude Code", "GitHub Copilot"],
+    "triggerContext": "When creating a new component, service, route, model, or test file.",
+    "tags": ["scaffolding", "boilerplate", "conventions", "code-generation", "frontend", "backend"],
+    "detailMd": "### What it does\nWhen you ask the agent to create a new file, it:\n- Scans sibling files in the same directory to detect patterns\n- Matches naming convention (PascalCase, kebab-case, index barrel exports)\n- Replicates import style (relative vs alias, named vs default)\n- Copies structural patterns (export style, type definitions location, test co-location)\n- Includes standard boilerplate (license headers, ESLint disable comments if present)\n- Creates associated files (if your project co-locates `.test.ts`, `.stories.tsx`, `.module.css`)\n\n### How it works as an agent skill\n```\n# Claude Code:\n> Create a new service called NotificationService following\n> the pattern of UserService\n\n# The agent will:\n# 1. Read UserService to extract the structural pattern\n# 2. Read the directory to understand co-located files\n# 3. Generate NotificationService with matching structure\n# 4. Generate the matching test file and barrel export update\n# 5. Write all files to disk\n```\n\n### Configuration hints\nAdd to `CLAUDE.md`:\n```\nProject conventions for new files:\n- React components: PascalCase directory with index.tsx, styles.module.css, ComponentName.test.tsx\n- API services: src/services/[name].service.ts with matching test\n- Always update the nearest index.ts barrel export\n- Include JSDoc with @description and @example on exported functions\n```"
+  },
+  {
+    "id": "dependency-updater",
+    "name": "Dependency Updater",
+    "section": "agent",
+    "category": "Maintenance",
+    "tier": "free",
+    "summary": "Audits outdated dependencies, checks changelogs for breaking changes, and applies safe updates with targeted test runs — one package at a time, not a blind npm update.",
+    "compatibleWith": ["Claude Code", "GitHub Copilot"],
+    "triggerContext": "Periodic maintenance or when npm audit / Dependabot flags vulnerabilities.",
+    "tags": ["dependencies", "npm", "pip", "security", "maintenance", "backend", "frontend"],
+    "detailMd": "### What it does\nThe agent performs a controlled dependency update cycle:\n- Runs `npm outdated` / `pip list --outdated` to inventory stale packages\n- Categorizes updates: patch (safe), minor (usually safe), major (breaking risk)\n- For each major update, fetches the changelog/migration guide\n- Summarizes breaking changes that affect YOUR codebase (not all changes — only relevant ones)\n- Applies updates one at a time, runs tests after each\n- Rolls back if tests fail and reports which update broke what\n- Generates a summary of what was updated and what needs manual migration\n\n### How it works as an agent skill\n```\n# Claude Code:\n> Audit and update my outdated dependencies safely\n\n# The agent will:\n# 1. Run `npm outdated --json`\n# 2. Start with patch updates (safest) — apply all, run tests\n# 3. Move to minor updates — apply one by one, test between each\n# 4. For major updates — read changelog, report breaking changes,\n#    ask for confirmation before applying\n# 5. Generate a summary PR description\n```\n\n### Configuration hints\nAdd to `CLAUDE.md`:\n```\nDependency update rules:\n- Never auto-update: react, next, prisma (these need manual migration)\n- Always update without asking: eslint, prettier, type-definitions\n- Run `npm test && npm run build` as verification after each update\n- If a patch update breaks tests, skip it and flag for manual review\n```"
+  },
+  {
+    "id": "error-fixer",
+    "name": "Error Fixer",
+    "section": "agent",
+    "category": "Code Generation",
+    "tier": "free",
+    "summary": "Reads a runtime error or build failure from the terminal, traces it to the source, applies a fix, and re-runs the failing command to verify — in a loop until green.",
+    "compatibleWith": ["Claude Code", "GitHub Copilot"],
+    "triggerContext": "After a build failure, test failure, or runtime crash in the terminal.",
+    "tags": ["debugging", "errors", "build", "runtime", "fix", "automation"],
+    "detailMd": "### What it does\nThe agent operates in a fix loop:\n1. Reads the error output from the terminal\n2. Identifies the failing file and line number from the stack trace\n3. Opens the file, reads surrounding context\n4. Diagnoses the root cause (type error, missing import, null reference, etc.)\n5. Applies the minimal fix\n6. Re-runs the original command\n7. If still failing, reads the new error and loops (max 3 iterations)\n8. If fixed, summarizes what was wrong and what was changed\n\n### How it works as an agent skill\n```\n# Claude Code — after seeing a build error:\n> Fix this error\n\n# Or proactively:\n> Run `npm run build` and fix any errors\n\n# The agent will:\n# 1. Execute the command\n# 2. Parse stderr for error locations\n# 3. Read the relevant source files\n# 4. Apply fixes\n# 5. Re-run until clean or report what it couldn't solve\n```\n\n### Configuration hints\nAdd to `CLAUDE.md`:\n```\nWhen fixing errors:\n- Always read the FULL error output, not just the first line\n- Prefer minimal fixes — don't refactor while fixing\n- If a fix requires adding a dependency, ask before installing\n- After fixing, run the full test suite, not just the failing command\n- If the same error recurs after 2 fix attempts, stop and explain\n```"
+  },
+  {
+    "id": "changelog-release-drafter",
+    "name": "Changelog & Release Drafter",
+    "section": "agent",
+    "category": "Workflow Automation",
+    "tier": "free",
+    "summary": "Reads commit history since the last tag, categorizes changes, and drafts a changelog entry and GitHub release notes — ready to publish.",
+    "compatibleWith": ["Claude Code", "GitHub Copilot"],
+    "triggerContext": "Before cutting a release. Agent reads commits since the last git tag.",
+    "tags": ["changelog", "release", "semver", "git", "workflow", "automation"],
+    "detailMd": "### What it does\nThe agent prepares your release:\n- Reads all commits since the last git tag\n- Categorizes by Conventional Commits type (Features, Fixes, Performance, Breaking Changes, etc.)\n- Determines the correct semver bump (patch/minor/major) from commit types\n- Generates a human-readable CHANGELOG.md entry\n- Drafts GitHub release notes with contributor mentions\n- Lists any breaking changes with migration instructions extracted from commit bodies\n- Suggests the new version tag\n\n### How it works as an agent skill\n```\n# Claude Code:\n> Draft release notes for the next version\n\n# The agent will:\n# 1. Run `git describe --tags --abbrev=0` to find the last tag\n# 2. Run `git log v1.2.3..HEAD --oneline` to read commits\n# 3. Parse and categorize all commits\n# 4. Determine semver bump\n# 5. Generate CHANGELOG.md entry and release notes\n# 6. Offer to create the git tag and push\n```\n\n### Configuration hints\nAdd to `CLAUDE.md`:\n```\nRelease process:\n- Follow semver strictly: breaking = major, feature = minor, fix = patch\n- CHANGELOG.md format: ## [version] - YYYY-MM-DD with sections per type\n- Include PR numbers in changelog entries if available\n- Mention contributors by GitHub username\n- Breaking changes section must include migration steps\n- Don't include chore/ci commits in public-facing release notes\n```"
+  },
+  {
+    "id": "test-writer-on-change",
+    "name": "Test Writer on Change",
+    "section": "agent",
+    "category": "Code Generation",
+    "tier": "premium",
+    "summary": "Watches for code changes and automatically generates or updates unit tests for modified functions — maintaining coverage without manual test writing.",
+    "compatibleWith": ["Claude Code", "GitHub Copilot"],
+    "triggerContext": "After modifying a function or adding new code. Can be run as a pre-commit hook behavior.",
+    "tags": ["testing", "unit-tests", "automation", "tdd", "coverage"],
+    "detailMd": "### What it does\nAfter you modify or create source code, the agent:\n- Detects which functions/methods were changed (via git diff)\n- Checks if corresponding tests exist and whether they cover the new behavior\n- Generates new test cases for added code paths\n- Updates existing tests if function signatures or behavior changed\n- Follows your project's test patterns (AAA, describe/it nesting, fixture style)\n- Runs the new tests to verify they pass\n- Reports coverage delta: \"Added 3 tests, branch coverage +12% for this file\"\n\n### How it works as an agent skill\n```\n# Claude Code:\n> Write tests for the functions I changed in this branch\n\n# The agent will:\n# 1. Run `git diff main --name-only` to find changed files\n# 2. For each changed file, parse the diff to find modified functions\n# 3. Read existing test files for those functions\n# 4. Generate missing test cases matching project conventions\n# 5. Run the tests to verify they pass\n# 6. Report what was added\n```\n\n### Configuration hints\nAdd to `CLAUDE.md`:\n```\nTest generation rules:\n- Framework: Jest (frontend), Pytest (backend)\n- Pattern: AAA (Arrange-Act-Assert), one assertion per test\n- Naming: describe(\"FunctionName\") > it(\"should [behavior] when [condition]\")\n- Always mock external services (DB, HTTP, file system)\n- Generate edge cases: null input, empty array, boundary values\n- Co-locate tests: src/services/user.service.ts → src/services/user.service.test.ts\n```"
+  },
+  {
+    "id": "code-reviewer-agent",
+    "name": "Code Reviewer Agent",
+    "section": "agent",
+    "category": "Code Quality",
+    "tier": "premium",
+    "summary": "Reviews your staged changes like a senior developer — catching logic bugs, security issues, performance problems, and naming concerns before you push.",
+    "compatibleWith": ["Claude Code", "GitHub Copilot"],
+    "triggerContext": "Before pushing a branch or opening a PR. Agent reads the full diff against base branch.",
+    "tags": ["code-review", "quality", "security", "best-practices", "pre-push"],
+    "detailMd": "### What it does\nThe agent performs a multi-pass review of your changes:\n- **Pass 1 — Correctness**: Logic errors, off-by-one, race conditions, null safety\n- **Pass 2 — Security**: Injection risks, auth gaps, secrets in code, XSS vectors\n- **Pass 3 — Performance**: N+1 queries, unnecessary re-renders, missing memoization, unbounded loops\n- **Pass 4 — Maintainability**: Naming clarity, function length, coupling, missing types\n- **Pass 5 — Completeness**: Missing error handling, missing migration, missing env var documentation\n\nEach finding includes: severity (blocker / warning / nit), file:line reference, explanation, and suggested fix.\n\n### How it works as an agent skill\n```\n# Claude Code:\n> Review my changes before I push\n\n# The agent will:\n# 1. Run `git diff main` to read all changes\n# 2. Read full file context (not just the diff) for each changed file\n# 3. Perform the 5-pass review\n# 4. Output findings sorted by severity\n# 5. Optionally auto-fix nits (typos, formatting) if you approve\n```\n\n### Configuration hints\nAdd to `CLAUDE.md`:\n```\nCode review rules:\n- Focus on logic and security — don't nitpick formatting (Prettier handles that)\n- Flag any TODO/FIXME added without a ticket reference\n- Check that new API endpoints have auth middleware\n- Check that new DB queries have proper indexing\n- If a function exceeds 40 lines, suggest extraction\n- Severity levels: blocker (must fix), warning (should fix), nit (optional)\n```"
+  },
+  {
+    "id": "env-and-config-manager",
+    "name": "Environment & Config Manager",
+    "section": "agent",
+    "category": "Maintenance",
+    "tier": "premium",
+    "summary": "Keeps .env files, config schemas, and environment documentation in sync — detects missing variables, type mismatches, and undocumented secrets across environments.",
+    "compatibleWith": ["Claude Code", "GitHub Copilot"],
+    "triggerContext": "When adding new env vars, onboarding devs, or debugging 'works on my machine' issues.",
+    "tags": ["environment", "config", "env", "dotenv", "devops", "onboarding"],
+    "detailMd": "### What it does\nThe agent scans your codebase and environment files to:\n- Find all `process.env.X` / `os.environ[\"X\"]` references across the codebase\n- Compare against `.env.example` and flag missing variables\n- Detect variables used in code but missing from validation schema (Zod, envalid)\n- Generate/update `.env.example` with descriptions, types, and default values\n- Compare `.env.local` against `.env.production` to catch drift\n- Flag secrets that appear in non-secret config files or git history\n- Generate a README section documenting all required environment variables\n\n### How it works as an agent skill\n```\n# Claude Code:\n> Audit my environment variables and update .env.example\n\n# The agent will:\n# 1. Grep the codebase for all env var references\n# 2. Read .env.example, .env.local, .env.production\n# 3. Diff them to find gaps\n# 4. Update .env.example with missing vars and descriptions\n# 5. Update the env validation schema if one exists\n# 6. Generate a table for the README\n```\n\n### Configuration hints\nAdd to `CLAUDE.md`:\n```\nEnvironment variable management:\n- Validation: src/config/env.ts uses Zod — update this when adding vars\n- .env.example must have a comment for every variable\n- Secrets (API keys, DB passwords) should be marked as [SECRET] in .env.example\n- Required vs optional must be explicit in the validation schema\n- When adding a new env var: update .env.example, validation schema, and README\n```"
+  },
+  {
+    "id": "db-migration-generator",
+    "name": "DB Migration Generator",
+    "section": "agent",
+    "category": "Code Generation",
+    "tier": "premium",
+    "summary": "Generates safe, reversible database migration scripts from a schema change description — with up/down logic, data backfill steps, and zero-downtime deployment notes.",
+    "compatibleWith": ["Claude Code", "GitHub Copilot"],
+    "triggerContext": "When adding/modifying database tables, columns, indexes, or constraints.",
+    "tags": ["database", "migrations", "prisma", "sql", "backend", "schema"],
+    "detailMd": "### What it does\nThe agent takes a schema change request and produces:\n- Migration file in your ORM format (Prisma, Knex, Alembic, raw SQL)\n- Reversible down migration that safely rolls back\n- Data backfill script if the migration requires populating a new column\n- Zero-downtime deployment sequence (e.g., add column nullable → backfill → add constraint → deploy code)\n- Index impact analysis: will this migration lock the table? For how long?\n- Validation query to verify the migration succeeded in production\n\n### How it works as an agent skill\n```\n# Claude Code:\n> Add a `role` enum column to the users table with default 'member'\n\n# The agent will:\n# 1. Read the current schema (prisma/schema.prisma or migration history)\n# 2. Generate the migration file\n# 3. Generate the down migration\n# 4. If table has >100K rows, warn about lock time and suggest\n#    a phased approach\n# 5. Run `prisma migrate dev` (or equivalent) to apply locally\n# 6. Verify with a test query\n```\n\n### Configuration hints\nAdd to `CLAUDE.md`:\n```\nDatabase migration rules:\n- ORM: Prisma with PostgreSQL\n- Every migration must be reversible — include down logic\n- New non-nullable columns must be added in 2 steps:\n  1. Add as nullable with default\n  2. Backfill, then add NOT NULL constraint\n- Never drop columns in the same deploy as the code change that removes usage\n- Add an index for any column used in WHERE or JOIN clauses\n- Migration names: YYYYMMDD_description (e.g., 20260407_add_user_role)\n```"
   }
 ]
 </script>
@@ -489,6 +609,50 @@ body {
   line-height: 1.6;
 }
 
+.how-to__step-desc code {
+  font-family: var(--font-heading);
+  font-size: 0.8rem;
+  background: var(--bg-code);
+  color: var(--accent);
+  padding: 0.1rem 0.35rem;
+  border-radius: 4px;
+}
+
+.how-to__divider {
+  height: 1px;
+  background: var(--border);
+  margin: 1.75rem 0;
+}
+
+.how-to__title-badge {
+  font-size: 0.65rem;
+  padding: 0.2rem 0.55rem;
+  border-radius: 50px;
+  background: rgba(255, 140, 50, 0.15);
+  color: #ff8c32;
+  border: 1px solid rgba(255, 140, 50, 0.3);
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  vertical-align: middle;
+  margin-left: 0.5rem;
+}
+
+.how-to__intro {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  text-align: center;
+  max-width: 640px;
+  margin: 0 auto 1.5rem;
+}
+
+.how-to__step-num--agent {
+  background: rgba(255, 140, 50, 0.15);
+  color: #ff8c32;
+  border-color: rgba(255, 140, 50, 0.3);
+}
+
 @media (min-width: 640px) {
   .how-to__steps {
     grid-template-columns: repeat(2, 1fr);
@@ -626,6 +790,12 @@ body {
   color: #7b8cff;
 }
 
+.filter-pill--section-agent.filter-pill--active {
+  background: rgba(255, 140, 50, 0.15);
+  border-color: #ff8c32;
+  color: #ff8c32;
+}
+
 /* ==================== Section Headers ==================== */
 .section-header {
   grid-column: 1 / -1;
@@ -665,6 +835,10 @@ body {
 
 .section-header--dev .section-header__title {
   color: #7b8cff;
+}
+
+.section-header--agent .section-header__title {
+  color: #ff8c32;
 }
 
 /* ==================== Skill Grid ==================== */
@@ -809,6 +983,13 @@ body {
   color: var(--text-muted);
   border: 1px solid rgba(0, 212, 170, 0.12);
   font-family: var(--font-heading);
+}
+
+.chip--trigger {
+  background: rgba(255, 140, 50, 0.08);
+  color: #cc8040;
+  border-color: rgba(255, 140, 50, 0.15);
+  font-style: italic;
 }
 
 .card__tools {
@@ -1048,7 +1229,7 @@ body {
   <p class="hero__description">
     Plug-and-play AI prompt templates for your QA workflow. Each skill is mapped to ISTQB syllabus topics and ready to use with your favorite AI tools.
   </p>
-  <span class="hero__badge" id="skill-count">26 skills and growing</span>
+  <span class="hero__badge" id="skill-count">36 skills and growing</span>
 </header>
 
 <!-- ==================== How to Use ==================== -->
@@ -1077,6 +1258,31 @@ body {
         <p class="how-to__step-desc">AI output is your starting point, not the final answer. Review, refine, and adapt the results to fit your project's specific needs.</p>
       </div>
     </div>
+    <div class="how-to__divider"></div>
+    <h2 class="how-to__title">Using Agent Skills <span class="how-to__title-badge">Claude Code &amp; Copilot</span></h2>
+    <p class="how-to__intro">Agent skills work differently from prompt templates. Instead of copy-pasting, they run autonomously inside your IDE — reading your code, executing commands, and writing files directly.</p>
+    <div class="how-to__steps">
+      <div class="how-to__step">
+        <span class="how-to__step-num how-to__step-num--agent">1</span>
+        <h3 class="how-to__step-title">Add Config to Your Project</h3>
+        <p class="how-to__step-desc">Copy the "Configuration hints" from any agent skill into your project's <code>CLAUDE.md</code> (Claude Code) or <code>.github/copilot-instructions.md</code> (Copilot). This teaches the agent your project's conventions.</p>
+      </div>
+      <div class="how-to__step">
+        <span class="how-to__step-num how-to__step-num--agent">2</span>
+        <h3 class="how-to__step-title">Trigger Naturally</h3>
+        <p class="how-to__step-desc">Just describe what you need in plain English. The agent reads your diffs, runs commands, and applies the skill's logic automatically — no prompt engineering required.</p>
+      </div>
+      <div class="how-to__step">
+        <span class="how-to__step-num how-to__step-num--agent">3</span>
+        <h3 class="how-to__step-title">Review Changes</h3>
+        <p class="how-to__step-desc">The agent writes files and runs commands on your behalf. Always review the diff before committing. Use <code>git diff</code> to verify changes match your expectations.</p>
+      </div>
+      <div class="how-to__step">
+        <span class="how-to__step-num how-to__step-num--agent">4</span>
+        <h3 class="how-to__step-title">Iterate &amp; Customize</h3>
+        <p class="how-to__step-desc">Refine your <code>CLAUDE.md</code> rules over time. The more specific your project conventions, the better the agent performs. Treat it like onboarding a junior developer.</p>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -1097,6 +1303,7 @@ body {
       <button class="filter-pill filter-pill--section filter-pill--active" data-section="all" aria-pressed="true">All</button>
       <button class="filter-pill filter-pill--section filter-pill--section-qa" data-section="qa" aria-pressed="false">Quality Assurance</button>
       <button class="filter-pill filter-pill--section filter-pill--section-dev" data-section="dev" aria-pressed="false">Development</button>
+      <button class="filter-pill filter-pill--section filter-pill--section-agent" data-section="agent" aria-pressed="false">Agent Skills</button>
 
       <span class="filter-bar__divider" aria-hidden="true"></span>
 
@@ -1123,6 +1330,8 @@ body {
       <button class="filter-pill" data-category="Development" aria-pressed="false">Development</button>
       <button class="filter-pill" data-category="DevOps" aria-pressed="false">DevOps</button>
       <button class="filter-pill" data-category="Architecture" aria-pressed="false">Architecture</button>
+      <button class="filter-pill" data-category="Workflow Automation" aria-pressed="false">Workflow</button>
+      <button class="filter-pill" data-category="Maintenance" aria-pressed="false">Maintenance</button>
     </div>
   </div>
 </nav>
@@ -1259,7 +1468,9 @@ body {
           skill.summary,
           skill.category,
           ...skill.tags,
-          ...skill.istqbTopics
+          ...(skill.istqbTopics || []),
+          ...(skill.compatibleWith || []),
+          skill.triggerContext || ''
         ].join(' ').toLowerCase();
         if (!haystack.includes(q)) return false;
       }
@@ -1273,7 +1484,8 @@ body {
 
     const sections = [
       { key: 'qa', label: 'Quality Assurance', cssClass: '' },
-      { key: 'dev', label: 'Development', cssClass: 'section-header--dev' }
+      { key: 'dev', label: 'Development', cssClass: 'section-header--dev' },
+      { key: 'agent', label: 'Agent Skills', cssClass: 'section-header--agent' }
     ];
 
     function renderCard(skill) {
@@ -1300,10 +1512,11 @@ body {
             </div>
             <p class="card__summary">${escapeHtml(skill.summary)}</p>
             <div class="card__chips">
-              ${skill.istqbTopics.map(t => `<span class="chip">${escapeHtml(t)}</span>`).join('')}
+              ${(skill.istqbTopics || []).length ? skill.istqbTopics.map(t => `<span class="chip">${escapeHtml(t)}</span>`).join('') : ''}
+              ${skill.triggerContext ? `<span class="chip chip--trigger">${escapeHtml(skill.triggerContext)}</span>` : ''}
             </div>
             <div class="card__tools">
-              ${skill.aiTools.map(t => `<span class="tool-tag">${escapeHtml(t)}</span>`).join('')}
+              ${(skill.aiTools || skill.compatibleWith || []).map(t => `<span class="tool-tag">${escapeHtml(t)}</span>`).join('')}
             </div>
           </div>
           <div class="card__detail">
