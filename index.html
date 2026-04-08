@@ -442,6 +442,246 @@
     "triggerContext": "When adding/modifying database tables, columns, indexes, or constraints.",
     "tags": ["database", "migrations", "prisma", "sql", "backend", "schema"],
     "detailMd": "### What it does\nThe agent takes a schema change request and produces:\n- Migration file in your ORM format (Prisma, Knex, Alembic, raw SQL)\n- Reversible down migration that safely rolls back\n- Data backfill script if the migration requires populating a new column\n- Zero-downtime deployment sequence (e.g., add column nullable → backfill → add constraint → deploy code)\n- Index impact analysis: will this migration lock the table? For how long?\n- Validation query to verify the migration succeeded in production\n\n### How it works as an agent skill\n```\n# Claude Code:\n> Add a `role` enum column to the users table with default 'member'\n\n# The agent will:\n# 1. Read the current schema (prisma/schema.prisma or migration history)\n# 2. Generate the migration file\n# 3. Generate the down migration\n# 4. If table has >100K rows, warn about lock time and suggest\n#    a phased approach\n# 5. Run `prisma migrate dev` (or equivalent) to apply locally\n# 6. Verify with a test query\n```\n\n### Configuration hints\nAdd to `CLAUDE.md`:\n```\nDatabase migration rules:\n- ORM: Prisma with PostgreSQL\n- Every migration must be reversible — include down logic\n- New non-nullable columns must be added in 2 steps:\n  1. Add as nullable with default\n  2. Backfill, then add NOT NULL constraint\n- Never drop columns in the same deploy as the code change that removes usage\n- Add an index for any column used in WHERE or JOIN clauses\n- Migration names: YYYYMMDD_description (e.g., 20260407_add_user_role)\n```"
+  },
+  {
+    "id": "responsive-layout-converter",
+    "name": "Responsive Layout Converter",
+    "section": "dev",
+    "category": "Frontend Development",
+    "tier": "free",
+    "summary": "Takes a desktop-only component and generates responsive variants — adding breakpoints, mobile navigation patterns, touch targets, and container queries.",
+    "compatibleWith": ["Claude Code", "GitHub Copilot"],
+    "triggerContext": "When a component works on desktop but needs mobile/tablet support, or during responsive audits.",
+    "tags": ["responsive", "css", "tailwind", "mobile", "frontend", "layout"],
+    "detailMd": "### What it does\nThe agent reads your component and:\n- Identifies layout patterns that break on small screens\n- Adds responsive breakpoints with mobile-first approach\n- Converts navigation to mobile patterns (hamburger, bottom nav, drawer)\n- Fixes touch targets to meet 44px minimum\n- Adds container queries where appropriate\n\n### How it works as an agent skill\n```\n# Claude Code:\n> Make this dashboard component responsive\n> [point to file]\n\n# The agent will:\n# 1. Read the component and identify fixed/desktop-only patterns\n# 2. Add Tailwind responsive classes or CSS media queries\n# 3. Restructure layout for mobile\n# 4. Fix touch targets and font sizes\n```\n\n### Configuration hints\nAdd to `CLAUDE.md`:\n```\nResponsive design:\n- Approach: mobile-first (min-width breakpoints)\n- Breakpoints: sm=640, md=768, lg=1024, xl=1280\n- Min touch target: 44x44px\n- Tables: horizontal scroll on mobile\n```"
+  },
+  {
+    "id": "state-management-refactorer",
+    "name": "State Management Refactorer",
+    "section": "dev",
+    "category": "Frontend Development",
+    "tier": "premium",
+    "summary": "Refactors tangled React state — extracting custom hooks, normalizing shared state, eliminating prop drilling, and migrating between state libraries.",
+    "compatibleWith": ["Claude Code", "GitHub Copilot"],
+    "triggerContext": "When components have too many useState calls, prop drilling is deep, or state logic is duplicated.",
+    "tags": ["react", "state-management", "zustand", "hooks", "refactoring", "frontend"],
+    "detailMd": "### What it does\nThe agent audits your component tree and:\n- Identifies prop drilling chains (>2 levels) and suggests extraction\n- Finds duplicated state logic and extracts custom hooks\n- Detects derived state that should be computed, not stored\n- Migrates between patterns: useState → useReducer, drilling → Zustand\n- Splits bloated components into container + presentation\n- Verifies re-render boundaries are correct\n\n### How it works as an agent skill\n```\n# Claude Code:\n> Refactor state management in the checkout feature\n> [point to directory]\n\n# The agent will:\n# 1. Read all components in the feature\n# 2. Map state flow and prop chains\n# 3. Generate custom hooks and/or Zustand store\n# 4. Refactor components to use new patterns\n```\n\n### Configuration hints\nAdd to `CLAUDE.md`:\n```\nState management:\n- Zustand for shared state, useState for local-only\n- Extract hook when state logic used in >1 component\n- Extract store when state shared across >2 components\n- useMemo/useCallback only when profiler shows cost\n```"
+  },
+  {
+    "id": "api-client-generator",
+    "name": "API Client Generator",
+    "section": "dev",
+    "category": "Frontend Development",
+    "tier": "free",
+    "summary": "Generates a typed API client from backend routes or OpenAPI specs — with TypeScript types, error handling, React Query hooks, and MSW test handlers.",
+    "compatibleWith": ["Claude Code", "GitHub Copilot"],
+    "triggerContext": "When connecting frontend to APIs, when contracts change, or replacing raw fetch calls.",
+    "tags": ["api-client", "typescript", "react-query", "openapi", "fetch", "frontend"],
+    "detailMd": "### What it does\nThe agent reads your API surface and generates:\n- TypeScript request/response interfaces per endpoint\n- Typed fetch wrappers with consistent error handling\n- React Query hooks: useQuery for GET, useMutation for writes\n- Retry with exponential backoff for transient failures\n- Auth token interceptor with refresh logic\n- MSW handlers for testing\n\n### How it works as an agent skill\n```\n# Claude Code:\n> Generate API client from our OpenAPI spec\n> [point to openapi.json]\n\n# The agent will:\n# 1. Parse the spec\n# 2. Generate TypeScript types\n# 3. Generate fetch wrappers and React Query hooks\n# 4. Generate MSW handlers\n# 5. Write barrel export\n```\n\n### Configuration hints\nAdd to `CLAUDE.md`:\n```\nAPI client:\n- HTTP: native fetch, no axios\n- State: TanStack Query v5\n- Auth: Bearer token, auto-refresh on 401\n- Retry: 3 attempts exponential backoff for 5xx only\n- Location: src/api/[domain]/[resource].ts\n```"
+  },
+  {
+    "id": "auth-flow-implementer",
+    "name": "Auth Flow Implementer",
+    "section": "dev",
+    "category": "Backend Development",
+    "tier": "premium",
+    "summary": "Implements complete auth — JWT/session login, OAuth providers, role-based access, refresh tokens, password reset, and frontend auth context.",
+    "compatibleWith": ["Claude Code", "GitHub Copilot"],
+    "triggerContext": "When building auth from scratch, adding OAuth, or securing unprotected endpoints.",
+    "tags": ["auth", "jwt", "oauth", "rbac", "security", "backend", "frontend"],
+    "detailMd": "### What it does\nThe agent implements a full auth system:\n- Registration with email verification\n- Login with password hashing and JWT/session creation\n- Refresh token rotation\n- OAuth integration with account linking\n- Role-based access middleware\n- Password reset with time-limited tokens\n- Rate limiting on auth endpoints\n- Frontend auth context with protected route wrapper\n\n### How it works as an agent skill\n```\n# Claude Code:\n> Implement JWT auth with Google OAuth for Express + React\n\n# The agent will:\n# 1. Generate backend: routes, middleware, token logic, OAuth\n# 2. Generate frontend: auth context, login/register, protected route\n# 3. Generate DB migration for users + sessions\n# 4. Add env vars to .env.example\n# 5. Write auth tests\n```\n\n### Configuration hints\nAdd to `CLAUDE.md`:\n```\nAuth:\n- Strategy: JWT (access 15min + refresh 7d httpOnly cookie)\n- Hashing: argon2id\n- OAuth: Google primary, GitHub secondary\n- RBAC: admin, member, viewer\n- Rate limit: 5 login attempts per 15min per IP\n```"
+  },
+  {
+    "id": "caching-layer-builder",
+    "name": "Caching Layer Builder",
+    "section": "dev",
+    "category": "Backend Development",
+    "tier": "premium",
+    "summary": "Adds Redis caching — cache-aside pattern, TTL tuning, invalidation on writes, request deduplication, and cache hit/miss metrics.",
+    "compatibleWith": ["Claude Code", "GitHub Copilot"],
+    "triggerContext": "When APIs are slow, DB is under read pressure, or adding Redis to the stack.",
+    "tags": ["caching", "redis", "performance", "backend", "invalidation", "scalability"],
+    "detailMd": "### What it does\nThe agent adds intelligent caching:\n- Identifies cacheable endpoints (read-heavy, infrequently changing)\n- Implements cache-aside with typed Redis wrapper\n- Sets TTLs by data change frequency\n- Cache invalidation on writes\n- Request deduplication for concurrent identical requests\n- Cache hit/miss metrics logging\n\n### How it works as an agent skill\n```\n# Claude Code:\n> Add Redis caching to product catalog endpoints\n\n# The agent will:\n# 1. Read endpoint handlers\n# 2. Identify cacheable responses and TTLs\n# 3. Generate typed Redis wrapper\n# 4. Add cache-aside to GETs, busting to writes\n# 5. Update docker-compose with Redis\n```\n\n### Configuration hints\nAdd to `CLAUDE.md`:\n```\nCaching:\n- Provider: Redis via ioredis\n- Key format: [service]:[entity]:[id]\n- Default TTL: 5min lists, 15min single entity\n- Never cache: user-specific data, auth responses\n- Log hit/miss ratio per endpoint\n```"
+  },
+  {
+    "id": "websocket-implementer",
+    "name": "WebSocket Implementer",
+    "section": "dev",
+    "category": "Backend Development",
+    "tier": "premium",
+    "summary": "Implements real-time features — room-based messaging, presence tracking, event broadcasting, reconnection logic, and frontend React hook.",
+    "compatibleWith": ["Claude Code", "GitHub Copilot"],
+    "triggerContext": "When adding chat, notifications, live updates, collaborative editing, or live dashboards.",
+    "tags": ["websocket", "socket.io", "real-time", "backend", "frontend", "collaboration"],
+    "detailMd": "### What it does\nThe agent builds a real-time layer:\n- WebSocket server with auth handshake\n- Room/channel management\n- Typed event system shared between client and server\n- Presence tracking (online, typing)\n- Reconnection with backoff and missed-event recovery\n- React useSocket hook\n- Horizontal scaling notes (Redis adapter)\n\n### How it works as an agent skill\n```\n# Claude Code:\n> Add real-time notifications using Socket.IO\n\n# The agent will:\n# 1. Generate Socket.IO server with auth\n# 2. Define typed event schema\n# 3. Generate React useSocket hook\n# 4. Add reconnection and error handling\n```\n\n### Configuration hints\nAdd to `CLAUDE.md`:\n```\nWebSockets:\n- Library: Socket.IO\n- Auth: validate JWT on handshake\n- Event naming: kebab-case, domain-prefixed (notification:new)\n- Reconnection: exponential backoff, max 5 attempts\n```"
+  },
+  {
+    "id": "form-builder",
+    "name": "Form Builder",
+    "section": "dev",
+    "category": "Frontend Development",
+    "tier": "free",
+    "summary": "Generates complete forms from field descriptions — validation, error display, multi-step wizards, conditional fields, and submission handling with React Hook Form + Zod.",
+    "compatibleWith": ["Claude Code", "GitHub Copilot"],
+    "triggerContext": "When building any form: signup, checkout, settings, multi-step wizards, data entry.",
+    "tags": ["forms", "react-hook-form", "zod", "validation", "frontend", "ui"],
+    "detailMd": "### What it does\nThe agent builds production forms:\n- Zod validation schema matching backend constraints\n- React Hook Form with typed register/control\n- Inline error display with ARIA announcements\n- Multi-step wizard with progress indicator\n- Conditional fields\n- Submit handler with loading/error/success states\n\n### How it works as an agent skill\n```\n# Claude Code:\n> Build a project creation form with name, description,\n> visibility toggle, conditional URL slug, dynamic team list\n\n# The agent will:\n# 1. Generate Zod schema\n# 2. Generate React Hook Form component\n# 3. Add conditional fields and dynamic arrays\n# 4. Wire submission to API endpoint\n```\n\n### Configuration hints\nAdd to `CLAUDE.md`:\n```\nForms:\n- Library: React Hook Form + Zod\n- Errors: inline below field, aria-describedby\n- Submit button: disabled during submission + spinner\n- >6 fields: split into multi-step wizard\n```"
+  },
+  {
+    "id": "background-job-builder",
+    "name": "Background Job Builder",
+    "section": "dev",
+    "category": "Backend Development",
+    "tier": "free",
+    "summary": "Sets up background job processing — queue, workers, retry policies, dead letter handling, and monitoring for async tasks like emails, exports, and webhooks.",
+    "compatibleWith": ["Claude Code", "GitHub Copilot"],
+    "triggerContext": "When offloading slow ops: email, PDF generation, data exports, webhook delivery, image processing.",
+    "tags": ["queues", "bullmq", "celery", "background-jobs", "backend", "async"],
+    "detailMd": "### What it does\nThe agent sets up a job system:\n- Queue infrastructure (BullMQ or Celery)\n- Typed job definitions with payload validation\n- Worker with concurrency control and graceful shutdown\n- Retry: exponential backoff, dead letter queue\n- Job progress reporting\n- Admin health endpoint\n\n### How it works as an agent skill\n```\n# Claude Code:\n> Set up background jobs for email sending and PDF reports\n\n# The agent will:\n# 1. Set up BullMQ with Redis\n# 2. Generate typed job definitions\n# 3. Generate worker with retry/error handling\n# 4. Add enqueue helper for route handlers\n# 5. Update docker-compose\n```\n\n### Configuration hints\nAdd to `CLAUDE.md`:\n```\nBackground jobs:\n- Queue: BullMQ + Redis\n- Retry: 3 attempts, exponential (1m, 5m, 15m)\n- Dead letter: move after max retries, alert Slack\n- Concurrency: 5 per queue\n```"
+  },
+  {
+    "id": "feature-flag-integrator",
+    "name": "Feature Flag Integrator",
+    "section": "dev",
+    "category": "Development",
+    "tier": "premium",
+    "summary": "Wraps features in toggleable flags — gradual rollout, A/B variants, typed definitions, and stale flag cleanup reminders.",
+    "compatibleWith": ["Claude Code", "GitHub Copilot"],
+    "triggerContext": "When shipping behind flags, implementing gradual rollouts, or cleaning up stale flags.",
+    "tags": ["feature-flags", "launchdarkly", "unleash", "rollout", "frontend", "backend"],
+    "detailMd": "### What it does\nThe agent adds feature flag infrastructure:\n- Typed flag definitions with defaults and descriptions\n- Provider integration (Unleash, LaunchDarkly, or JSON config)\n- Backend middleware evaluating flags per request context\n- Frontend useFeatureFlag hook\n- Gradual rollout: 5% → 25% → 50% → 100%\n- Stale flag detection with cleanup PR suggestions\n\n### How it works as an agent skill\n```\n# Claude Code:\n> Wrap the new checkout behind a feature flag at 10% rollout\n\n# The agent will:\n# 1. Add flag to registry\n# 2. Wrap backend endpoint with flag check\n# 3. Wrap frontend component with useFeatureFlag\n# 4. Add fallback to old flow\n# 5. Configure 10% rollout\n```\n\n### Configuration hints\nAdd to `CLAUDE.md`:\n```\nFeature flags:\n- Provider: Unleash (or flags.json for MVP)\n- Naming: kebab-case, team-prefixed\n- Every flag needs: description, owner, cleanup date\n- Stale threshold: >30 days enabled → create cleanup ticket\n- Never nest flags (untestable combos)\n```"
+  },
+  {
+    "id": "error-monitoring-setup",
+    "name": "Error Monitoring Setup",
+    "section": "dev",
+    "category": "Development",
+    "tier": "free",
+    "summary": "Adds production error handling and monitoring — React error boundaries, backend error middleware, Sentry integration, structured logging, and alert rules.",
+    "compatibleWith": ["Claude Code", "GitHub Copilot"],
+    "triggerContext": "Setting up observability for a new project, after a production incident, or adding Sentry/Datadog.",
+    "tags": ["error-handling", "monitoring", "sentry", "logging", "observability", "frontend", "backend"],
+    "detailMd": "### What it does\nThe agent instruments your app:\n- **Frontend**: error boundaries per route, unhandled rejection catcher, Sentry browser SDK\n- **Backend**: error middleware with structured error classes, request ID propagation, Sentry server SDK\n- **Logging**: structured JSON (pino) with correlation IDs\n- **Alerts**: error spike → Slack, new error type → on-call\n- **Source maps**: upload config for readable production traces\n\n### How it works as an agent skill\n```\n# Claude Code:\n> Set up error monitoring with Sentry for Next.js + Express\n\n# The agent will:\n# 1. Install Sentry SDKs\n# 2. Generate error boundaries and middleware\n# 3. Configure source map uploads\n# 4. Add request ID propagation\n# 5. Generate alert rule suggestions\n```\n\n### Configuration hints\nAdd to `CLAUDE.md`:\n```\nError monitoring:\n- Provider: Sentry\n- Frontend: error boundary per route\n- Backend: custom error classes extending BaseAppError\n- Logging: pino JSON, log level from env\n- Alerts: new error → Slack, >10 same in 5min → PagerDuty\n- Never log passwords, tokens, PII\n```"
+  },
+  {
+    "id": "sql-query-optimizer",
+    "name": "SQL Query Optimizer",
+    "section": "dev",
+    "category": "Data Performance",
+    "tier": "free",
+    "summary": "Analyzes slow SQL queries, reads the EXPLAIN plan, and rewrites them for performance — adding indexes, eliminating N+1 patterns, and restructuring joins.",
+    "compatibleWith": ["Claude Code", "GitHub Copilot"],
+    "triggerContext": "When a query is slow, after reviewing EXPLAIN output, or when building complex analytical queries.",
+    "tags": ["sql", "performance", "indexes", "explain", "postgresql", "data-engineering"],
+    "detailMd": "### What it does\nThe agent takes a slow query and your database context:\n- Runs `EXPLAIN ANALYZE` and interprets the output in plain English\n- Identifies bottlenecks: sequential scans, hash joins on large tables, missing indexes\n- Rewrites the query with optimizations (CTE refactoring, subquery elimination, join reordering)\n- Suggests index creation statements with estimated impact\n- Compares before/after execution plans\n- Warns about lock contention if adding indexes to large production tables\n\n### How it works as an agent skill\n```\n# Claude Code:\n> This query takes 12s on production. Optimize it.\n\n# The agent will:\n# 1. Read the query and surrounding context\n# 2. Run EXPLAIN ANALYZE or analyze the plan you provide\n# 3. Identify top bottlenecks\n# 4. Rewrite the query\n# 5. Generate CREATE INDEX statements\n```\n\n### Configuration hints\n```\nSQL optimization rules:\n- Database: PostgreSQL 15\n- Prefer CTEs over nested subqueries for readability\n- For tables >10M rows, suggest CREATE INDEX CONCURRENTLY\n- Warn if a query does a full table scan on any table >1M rows\n```"
+  },
+  {
+    "id": "pipeline-dag-builder",
+    "name": "Pipeline DAG Builder",
+    "section": "dev",
+    "category": "Orchestration",
+    "tier": "free",
+    "summary": "Generates Airflow DAGs, Prefect flows, or dbt project scaffolds from a plain-English pipeline description — with dependency chains, retries, and alerting.",
+    "compatibleWith": ["Claude Code", "GitHub Copilot"],
+    "triggerContext": "When creating a new data pipeline, ETL job, or scheduled transformation workflow.",
+    "tags": ["airflow", "prefect", "dbt", "dag", "etl", "orchestration", "data-engineering"],
+    "detailMd": "### What it does\nTakes a pipeline description and generates:\n- DAG file with task dependencies, schedule, and timeout config\n- Retry logic with exponential backoff per task type\n- SLA/alerting configuration for late or failed runs\n- Idempotent task design (safe to re-run without duplicates)\n- Connection/variable references (no hardcoded credentials)\n- Sensor tasks for upstream data dependencies\n\n### How it works as an agent skill\n```\n# Claude Code:\n> Create an Airflow DAG: extract orders from Postgres daily,\n> transform in Spark, load to BigQuery, trigger dbt, Slack on failure\n\n# The agent will:\n# 1. Read existing DAGs for conventions\n# 2. Generate DAG matching your project patterns\n# 3. Create helper functions\n# 4. Add connection references to README\n```\n\n### Configuration hints\n```\nPipeline rules:\n- Orchestrator: Airflow 2.x with TaskFlow API\n- Default retries: 3 with 5-minute delay\n- All tasks must be idempotent — use date partitions\n- Connections: Airflow Variables, never hardcode\n- Include a data quality check after every load step\n```"
+  },
+  {
+    "id": "schema-evolution-manager",
+    "name": "Schema Evolution Manager",
+    "section": "dev",
+    "category": "Data Modeling",
+    "tier": "free",
+    "summary": "Manages schema changes across warehouses safely — generates ALTER scripts, backward-compatible Avro/Protobuf updates, and downstream impact analysis.",
+    "compatibleWith": ["Claude Code", "GitHub Copilot"],
+    "triggerContext": "When modifying warehouse tables, event schemas, or shared data contracts between teams.",
+    "tags": ["schema", "data-warehouse", "avro", "protobuf", "migrations", "backward-compatibility"],
+    "detailMd": "### What it does\nThe agent handles schema changes across the data stack:\n- Generates ALTER TABLE scripts for warehouse changes (BigQuery, Snowflake, Redshift)\n- Checks backward compatibility for event schemas (Avro, Protobuf, JSON Schema)\n- Maps downstream impact: which dashboards, models, and consumers break\n- Produces a migration runbook with rollback steps\n- Updates dbt schema.yml and tests to match\n\n### How it works as an agent skill\n```\n# Claude Code:\n> Add a loyalty_tier column to dim_customers and update downstream models\n\n# The agent will:\n# 1. Read current table definition\n# 2. Generate ALTER TABLE\n# 3. Grep dbt models referencing the table\n# 4. Update schema.yml and add tests\n# 5. List affected downstream consumers\n```\n\n### Configuration hints\n```\nSchema rules:\n- Warehouse: Snowflake\n- Never drop or rename columns — add new, deprecate old\n- New columns must be nullable or have a default\n- Update dbt schema.yml for every schema change\n- Generate a stakeholder changelog entry for every change\n```"
+  },
+  {
+    "id": "data-quality-test-writer",
+    "name": "Data Quality Test Writer",
+    "section": "qa",
+    "category": "Data Quality",
+    "tier": "free",
+    "summary": "Generates data quality checks for tables and pipelines — uniqueness, freshness, volume anomalies, referential integrity, and distribution drift using dbt tests or Great Expectations.",
+    "compatibleWith": ["Claude Code", "GitHub Copilot"],
+    "triggerContext": "After creating or modifying a data model, or when investigating data quality incidents.",
+    "tags": ["data-quality", "dbt-tests", "great-expectations", "validation", "freshness"],
+    "detailMd": "### What it does\nScans a table or dbt model and generates:\n- Schema tests: not_null, unique, accepted_values, relationships\n- Freshness checks with SLA thresholds\n- Volume tests: row count within expected range vs historical baseline\n- Distribution tests for statistical drift detection\n- Custom SQL tests for business rules (e.g., revenue = quantity × price)\n\n### How it works as an agent skill\n```\n# Claude Code:\n> Generate data quality tests for the orders fact table\n\n# The agent will:\n# 1. Read the table schema\n# 2. Check existing tests to avoid duplicates\n# 3. Generate dbt schema.yml tests per column\n# 4. Add custom SQL tests for business logic\n# 5. Run `dbt test` to verify they pass\n```\n\n### Configuration hints\n```\nData quality rules:\n- Framework: dbt tests\n- Every column: not_null if required, accepted_values for enums\n- Every table: unique key test, freshness check, row count anomaly test\n- Freshness SLA: dims = 24h, facts = 6h, real-time = 1h\n```"
+  },
+  {
+    "id": "dbt-model-generator",
+    "name": "dbt Model Generator",
+    "section": "dev",
+    "category": "Data Modeling",
+    "tier": "premium",
+    "summary": "Creates dbt models from business requirements — staging, intermediate, and mart layers with materialization strategy, incremental logic, and full documentation.",
+    "compatibleWith": ["Claude Code", "GitHub Copilot"],
+    "triggerContext": "When adding a new data source, building a mart, or refactoring transformation layers.",
+    "tags": ["dbt", "data-modeling", "dimensional", "star-schema", "sql", "analytics"],
+    "detailMd": "### What it does\nGenerates the full dbt model chain:\n- **Staging**: column renaming, type casting, filtering from raw source\n- **Intermediate**: joins, deduplication, business logic\n- **Mart**: final dimensional model (fact or dimension) for analytics\n- Materialization strategy per layer (view → ephemeral → incremental/table)\n- Incremental logic with merge keys and late-arriving data handling\n- schema.yml with descriptions, tests, and tags\n\n### How it works as an agent skill\n```\n# Claude Code:\n> Create dbt models for Stripe subscriptions.\n> Need: MRR, churn date, plan changes over time\n\n# The agent will:\n# 1. Read your dbt project structure and naming conventions\n# 2. Generate stg, int, and fct models\n# 3. Generate schema.yml with tests\n# 4. Update sources.yml\n```\n\n### Configuration hints\n```\ndbt conventions:\n- Naming: stg_[source]__[table], int_[concept], fct_/dim_[noun]\n- Staging: views, 1:1 with source, only rename + cast\n- Marts: incremental for facts >1M rows\n- Every model must have a primary key test and a description\n```"
+  },
+  {
+    "id": "spark-job-optimizer",
+    "name": "Spark Job Optimizer",
+    "section": "dev",
+    "category": "Data Performance",
+    "tier": "premium",
+    "summary": "Analyzes PySpark jobs for performance issues — fixing skew, optimizing partitioning, eliminating shuffles, and right-sizing cluster resources.",
+    "compatibleWith": ["Claude Code", "GitHub Copilot"],
+    "triggerContext": "When a Spark job is slow, OOMs, or costs too much on the cluster.",
+    "tags": ["spark", "pyspark", "performance", "partitioning", "skew", "big-data"],
+    "detailMd": "### What it does\nReviews Spark code and identifies:\n- Data skew in joins/group-bys (with salting fix)\n- Unnecessary shuffles from repartition or wide transformations\n- Missing broadcast hints for small tables\n- Suboptimal file format or compression\n- Cache/persist misuse\n- Cluster sizing recommendations\n\n### How it works as an agent skill\n```\n# Claude Code:\n> This PySpark job takes 3 hours. Optimize it.\n\n# The agent will:\n# 1. Read the full job code\n# 2. Flag skew, shuffles, missing optimizations\n# 3. Rewrite problematic sections\n# 4. Suggest cluster config changes\n```\n\n### Configuration hints\n```\nSpark rules:\n- Platform: Databricks\n- File format: Delta Lake\n- Broadcast threshold: tables <500MB\n- Target partition size: 128–256MB\n```"
+  },
+  {
+    "id": "data-contract-enforcer",
+    "name": "Data Contract Enforcer",
+    "section": "dev",
+    "category": "Data Governance",
+    "tier": "premium",
+    "summary": "Generates and validates data contracts between producers and consumers — schema specs, SLA definitions, and automated breaking-change checks on every PR.",
+    "compatibleWith": ["Claude Code", "GitHub Copilot"],
+    "triggerContext": "When defining team interfaces or enforcing schema governance in CI.",
+    "tags": ["data-contracts", "schema-registry", "governance", "ci-cd", "data-mesh"],
+    "detailMd": "### What it does\nManages the full data contract lifecycle:\n- Generates a YAML contract spec from a table definition\n- Validates schema changes against existing contracts\n- Generates CI check scripts that run on PRs touching data models\n- Produces consumer notification templates when contracts change\n- Creates a contract registry index for discovery\n\n### How it works as an agent skill\n```\n# Claude Code:\n> Create a data contract for dim_customers\n> Consumers: marketing-analytics, churn-prediction model\n\n# The agent will:\n# 1. Read schema and dbt docs\n# 2. Generate contract YAML\n# 3. Create CI validation script\n# 4. Add to registry\n```\n\n### Configuration hints\n```\nContract rules:\n- Format: YAML in contracts/ directory\n- Required: schema version, owner, SLA, columns with types\n- Breaking: removing columns, changing types\n- Non-breaking: adding columns, updating descriptions\n- CI: validate on every PR touching models/ or sources/\n```"
+  },
+  {
+    "id": "elt-source-connector",
+    "name": "ELT Source Connector Scaffolder",
+    "section": "dev",
+    "category": "Data Ingestion",
+    "tier": "premium",
+    "summary": "Scaffolds a new data source connector — API client, incremental extraction, raw table DDL, error handling, and backfill script for historical loads.",
+    "compatibleWith": ["Claude Code", "GitHub Copilot"],
+    "triggerContext": "When adding a new external data source (SaaS API, SFTP, webhook) to the platform.",
+    "tags": ["ingestion", "elt", "api", "connectors", "extraction", "backfill"],
+    "detailMd": "### What it does\nGenerates the full ingestion stack:\n- API client with auth, pagination, rate limiting\n- Incremental extraction (cursor, timestamp, or CDC)\n- Raw table DDL for landing zone\n- Error handling: retry, dead-letter, partial failure recovery\n- Backfill script with configurable date ranges\n- Monitoring: row counts, freshness, extraction metadata\n\n### How it works as an agent skill\n```\n# Claude Code:\n> Scaffold a Stripe API connector for charges, customers,\n> subscriptions. Incremental by updated_at, daily, land in raw.\n\n# The agent will:\n# 1. Generate API client with pagination and auth\n# 2. Per-endpoint extraction functions\n# 3. Raw table DDLs\n# 4. Airflow DAG\n# 5. Backfill script\n```\n\n### Configuration hints\n```\nIngestion rules:\n- Landing schema: raw_[source_name]\n- Always store: _extracted_at, _source_id, _batch_id\n- Prefer cursor/bookmark over full reload\n- Secrets from env vars or secret manager, never hardcode\n- Backfill must be idempotent\n```"
+  },
+  {
+    "id": "data-lineage-documenter",
+    "name": "Data Lineage Documenter",
+    "section": "dev",
+    "category": "Data Governance",
+    "tier": "free",
+    "summary": "Traces and documents data lineage from source to dashboard — mapping which raw tables feed which models, transformations applied, and downstream consumers.",
+    "compatibleWith": ["Claude Code", "GitHub Copilot"],
+    "triggerContext": "When answering 'where does this metric come from?', debugging discrepancies, or documenting for audits.",
+    "tags": ["lineage", "documentation", "governance", "dbt", "audit"],
+    "detailMd": "### What it does\nTraces data flow through your stack:\n- Parses dbt SQL to build a dependency graph\n- Column-level lineage (which source column feeds which mart column)\n- Maps transformations at each step\n- Generates Mermaid diagrams of the full lineage\n- Produces audit-ready Markdown documentation\n\n### How it works as an agent skill\n```\n# Claude Code:\n> Trace the lineage of monthly_revenue in fct_revenue\n\n# The agent will:\n# 1. Read fct_revenue.sql and follow ref() chains upstream\n# 2. Track the column through each transformation\n# 3. Trace to raw source\n# 4. Generate Mermaid diagram\n# 5. List downstream dependents\n```\n\n### Configuration hints\n```\nLineage rules:\n- Output: Markdown in docs/lineage/\n- Include Mermaid diagram for every mart table\n- Document column-level lineage for all KPI columns\n- Tag models with business domain\n```"
+  },
+  {
+    "id": "warehouse-cost-analyzer",
+    "name": "Warehouse Cost Analyzer",
+    "section": "dev",
+    "category": "Data Performance",
+    "tier": "premium",
+    "summary": "Audits warehouse usage for cost waste — expensive queries, over-provisioned clusters, unnecessary materializations, and stale tables consuming storage.",
+    "compatibleWith": ["Claude Code", "GitHub Copilot"],
+    "triggerContext": "During monthly cost reviews, after a billing spike, or when optimizing warehouse spend.",
+    "tags": ["cost", "snowflake", "bigquery", "optimization", "finops"],
+    "detailMd": "### What it does\nAudits your warehouse for savings:\n- Queries information_schema for most expensive queries by compute\n- Identifies tables not queried in 30/60/90 days\n- Flags models materialized as tables that could be views\n- Detects over-clustered or over-partitioned tables\n- Recommends warehouse sizing based on actual usage\n- Generates a prioritized savings report with dollar estimates\n\n### How it works as an agent skill\n```\n# Claude Code:\n> Audit our Snowflake warehouse for cost savings\n\n# The agent will:\n# 1. Query ACCOUNT_USAGE for expensive queries\n# 2. Find unused tables via TABLE_STORAGE_METRICS\n# 3. Cross-reference with dbt docs\n# 4. Analyze warehouse utilization\n# 5. Generate prioritized savings report with SQL scripts\n```\n\n### Configuration hints\n```\nCost rules:\n- Warehouse: Snowflake Enterprise\n- Flag tables not queried >60 days\n- Recommend view if queried <3x/day and <10s query time\n- Auto-suspend: 1min dev, 5min production\n- Never suggest dropping tables — flag for human review only\n```"
   }
 ]
 </script>
@@ -876,6 +1116,7 @@ body {
   overflow: hidden;
   transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
   cursor: pointer;
+  min-width: 0;
 }
 
 .card:hover {
@@ -1085,6 +1326,9 @@ body {
   padding: 1rem;
   overflow-x: auto;
   margin: 0.75rem 0;
+  max-width: 100%;
+  word-break: break-word;
+  white-space: pre-wrap;
 }
 
 .card__detail-inner pre code {
@@ -1169,6 +1413,90 @@ body {
 }
 
 /* ==================== Responsive ==================== */
+
+/* --- Mobile-first fixes --- */
+@media (max-width: 639px) {
+  .hero__title {
+    font-size: 1.75rem;
+  }
+
+  .hero__subtitle {
+    font-size: 0.88rem;
+  }
+
+  .hero__description {
+    font-size: 0.92rem;
+  }
+
+  .filter-bar {
+    padding: 0.75rem 1rem;
+  }
+
+  .filter-bar__row {
+    gap: 0.35rem;
+  }
+
+  #category-row {
+    max-height: 5.5rem;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 0.25rem;
+  }
+
+  .filter-pill {
+    font-size: 0.65rem;
+    padding: 0.25rem 0.55rem;
+  }
+
+  .card__header {
+    padding: 1rem;
+  }
+
+  .card__top-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.4rem;
+  }
+
+  .card__name {
+    font-size: 0.9rem;
+    flex-shrink: 1;
+    word-break: break-word;
+  }
+
+  .card__badges {
+    margin-left: 0;
+  }
+
+  .card__detail-inner {
+    padding: 0 1rem 1rem;
+    padding-top: 1rem;
+  }
+
+  .card__detail-inner pre {
+    font-size: 0.72rem;
+    padding: 0.75rem;
+  }
+
+  .skills {
+    padding: 1rem;
+  }
+
+  .how-to__inner {
+    padding: 1.25rem;
+  }
+
+  .footer {
+    padding: 1.5rem 1rem;
+  }
+
+  .footer__links {
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: center;
+  }
+}
+
 @media (min-width: 640px) {
   .skills__grid {
     grid-template-columns: repeat(2, 1fr);
@@ -1332,6 +1660,12 @@ body {
       <button class="filter-pill" data-category="Architecture" aria-pressed="false">Architecture</button>
       <button class="filter-pill" data-category="Workflow Automation" aria-pressed="false">Workflow</button>
       <button class="filter-pill" data-category="Maintenance" aria-pressed="false">Maintenance</button>
+      <button class="filter-pill" data-category="Data Performance" aria-pressed="false">Data Perf</button>
+      <button class="filter-pill" data-category="Orchestration" aria-pressed="false">Orchestration</button>
+      <button class="filter-pill" data-category="Data Modeling" aria-pressed="false">Data Modeling</button>
+      <button class="filter-pill" data-category="Data Quality" aria-pressed="false">Data Quality</button>
+      <button class="filter-pill" data-category="Data Governance" aria-pressed="false">Data Gov</button>
+      <button class="filter-pill" data-category="Data Ingestion" aria-pressed="false">Data Ingestion</button>
     </div>
   </div>
 </nav>
@@ -1349,7 +1683,7 @@ body {
   <p class="footer__cert">ISTQB CTFL &middot; AI Testing &middot; GenAI Testing</p>
   <div class="footer__links">
     <a href="https://github.com/" class="footer__link" target="_blank" rel="noopener noreferrer">GitHub</a>
-    <a href="https://linkedin.com/" class="footer__link" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+    <a href="https://www.linkedin.com/in/pavel-ts-pavlov/" class="footer__link" target="_blank" rel="noopener noreferrer">LinkedIn</a>
     <a href="mailto:ai-skill-hub@example.com?subject=Skill%20Suggestion" class="footer__link">Suggest a Skill</a>
   </div>
 </footer>
