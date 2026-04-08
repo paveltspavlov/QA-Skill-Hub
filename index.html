@@ -1785,6 +1785,35 @@ body {
   transform: none;
 }
 
+.card__close-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  background: rgba(255,255,255,0.07);
+  border: 1px solid var(--border-light);
+  border-radius: 50%;
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: background var(--transition), color var(--transition), border-color var(--transition);
+  flex-shrink: 0;
+  line-height: 1;
+  padding: 0;
+}
+
+.card__close-btn:hover {
+  background: rgba(255,80,80,0.15);
+  border-color: rgba(255,80,80,0.4);
+  color: #ff5555;
+}
+
+.card__close-btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
 .card__header {
   padding: 1.25rem;
 }
@@ -1844,15 +1873,9 @@ body {
   font-size: 0.88rem;
   color: var(--text-secondary);
   line-height: 1.6;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
   margin-bottom: 0.75rem;
-}
-
-.card--expanded .card__summary {
-  -webkit-line-clamp: unset;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 .card__chips {
@@ -2488,6 +2511,7 @@ body {
               <div class="card__badges">
                 <span class="badge badge--category">${escapeHtml(skill.category)}</span>
                 <span class="badge badge--${skill.tier}">${skill.tier === 'free' ? 'Free' : 'Premium'}</span>
+                ${isExpanded ? `<button class="card__close-btn" data-close="true" aria-label="Close skill details">&#x2715;</button>` : ''}
               </div>
             </div>
             <p class="card__summary">${escapeHtml(skill.summary)}</p>
@@ -2535,9 +2559,20 @@ body {
   grid.addEventListener('click', function(e) {
     const card = e.target.closest('.card');
     if (!card) return;
-    // Don't toggle if clicking a link
     if (e.target.tagName === 'A') return;
     const id = card.dataset.id;
+
+    // Close button — always close
+    if (e.target.closest('[data-close]')) {
+      expandedId = null;
+      render();
+      return;
+    }
+
+    // Clicking inside the expanded detail section should NOT close the card
+    if (e.target.closest('.card__detail') && expandedId === id) return;
+
+    // Toggle open/close via header click
     expandedId = expandedId === id ? null : id;
     render();
   });
@@ -2548,7 +2583,11 @@ body {
       if (!card) return;
       e.preventDefault();
       const id = card.dataset.id;
-      expandedId = expandedId === id ? null : id;
+      if (e.target.closest('[data-close]')) {
+        expandedId = null;
+      } else {
+        expandedId = expandedId === id ? null : id;
+      }
       render();
     }
   });
