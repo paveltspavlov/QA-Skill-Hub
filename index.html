@@ -2028,7 +2028,7 @@
   --transition: 0.2s ease;
   --font-heading: 'JetBrains Mono', monospace;
   --font-body: 'DM Sans', sans-serif;
-  --max-width: 960px;
+  --max-width: 1400px;
 }
 
 html {
@@ -2978,6 +2978,16 @@ img, svg, video, canvas {
 
   .hero__title {
     font-size: 3.25rem;
+  }
+
+  .skills__grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 1440px) {
+  .skills__grid {
+    grid-template-columns: repeat(4, 1fr);
   }
 }
 
