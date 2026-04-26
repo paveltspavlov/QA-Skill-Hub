@@ -2041,6 +2041,13 @@ body {
   color: var(--text-primary);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+img, svg, video, canvas {
+  max-width: 100%;
+  height: auto;
+  display: block;
 }
 
 /* ==================== Hero ==================== */
@@ -2797,8 +2804,13 @@ body {
 
 /* --- Mobile-first fixes --- */
 @media (max-width: 639px) {
+  .hero {
+    padding: 2.5rem 1rem 2rem;
+  }
+
   .hero__title {
     font-size: 1.75rem;
+    word-break: break-word;
   }
 
   .hero__subtitle {
@@ -2807,6 +2819,23 @@ body {
 
   .hero__description {
     font-size: 0.92rem;
+  }
+
+  .hero__badge {
+    font-size: 0.72rem;
+    padding: 0.3rem 0.8rem;
+  }
+
+  .how-to {
+    padding: 0 1rem 1.5rem;
+  }
+
+  .how-to__title {
+    font-size: 1rem;
+  }
+
+  .how-to__intro {
+    font-size: 0.85rem;
   }
 
   .filter-bar {
@@ -2875,6 +2904,56 @@ body {
     flex-direction: column;
     gap: 0.5rem;
     align-items: center;
+  }
+}
+
+/* --- Extra-small phones --- */
+@media (max-width: 380px) {
+  .hero {
+    padding: 2rem 0.75rem 1.5rem;
+  }
+
+  .hero__title {
+    font-size: 1.5rem;
+  }
+
+  .hero__description {
+    font-size: 0.85rem;
+  }
+
+  .skills {
+    padding: 0.75rem;
+  }
+
+  .card__header {
+    padding: 0.85rem;
+  }
+
+  .card__name {
+    font-size: 0.85rem;
+  }
+
+  .filter-bar {
+    padding: 0.6rem 0.75rem;
+  }
+
+  .how-to {
+    padding: 0 0.75rem 1rem;
+  }
+
+  .how-to__inner {
+    padding: 1rem;
+  }
+}
+
+/* --- Tablet refinements --- */
+@media (min-width: 640px) and (max-width: 1023px) {
+  .hero {
+    padding: 3rem 1.5rem 2.5rem;
+  }
+
+  .skills {
+    padding: 1.25rem;
   }
 }
 
