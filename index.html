@@ -3348,7 +3348,7 @@ img, svg, video, canvas {
           </div>
           <div class="card__detail">
             <div class="card__detail-inner">
-              ${parseMd(skill.detailMd)}
+              <pre class="card__detail-raw"><code>${escapeHtml(skill.detailMd)}</code></pre>
             </div>
           </div>
         </article>
