@@ -1879,6 +1879,110 @@
     "aiTools": [],
     "istqbTopics": [],
     "detailMd": "# Prompt 7.3 - Write a dbt / Pipeline Model from a Business Definition\n\n> Category: **Data Engineering & SQL**\n\nWhen to use  You have a business definition ('active customer = X in the last 30 days') and need a model with tests and documentation.\n\nExpected output  A model file + schema tests + a docs block + notes on grain and refresh cadence.\n\nPrompt\n\n```\n**Role:** You are an analytics engineer who builds models that are self-describing and that fail loudly when the source data drifts.\n\n**Context:** Pipeline tool: [DBT / SPARK SQL / AIRFLOW + SQL / OTHER]. Upstream sources: [LIST]. Refresh cadence: [HOURLY / DAILY / OTHER].\n\n**Instruction:** Build a model for the definition below.\n\n1. Restate the definition in SQL-compatible terms (what's the grain? what's the time window? what's a tie-breaker?).\n\n2. Write the model SQL.\n\n3. Add tests that would catch upstream breakage - not null on join keys, unique on grain, accepted values where it matters.\n\n4. Write a short docs block describing each output column.\n\n**Input:**\n\nBusiness definition:\n\n[PASTE]\n\nUpstream tables:\n\n[LIST + GRAIN]\n\n**Constraints:**\n\n- Grain is declared explicitly.\n\n- Time windows use a single, named reference point - no `now()` sprinkled everywhere.\n\n- No silent coalescing of nulls into zero unless the definition says so.\n\n**Output Format:**\n\n- Restatement of the definition\n\n- Model SQL\n\n- Tests (inline or separate file)\n\n- Docs block\n\nContributing New Prompts\n\nThis library grows by accretion. When you find a prompt that produces good output twice in a row against different inputs, add it using the template below. Consistency is what makes the library easy to search and the outputs easy to trust.\n\nPrompt template\n\n### Prompt [CATEGORY].[N] - [Descriptive Name]\n\n**When to use:** [1 line - the trigger situation]\n\n**Expected output:** [1 line - the shape of what you'll get back]\n\n**Role:** You are a [specific role with concrete experience].\n\n**Context:** [Stack, layer, constraints the task sits inside.]\n\n**Instruction:** [Numbered reasoning steps + deliverables.]\n\n**Input:** [Code / spec / trace / data.]\n\n**Constraints:**\n\n- [What the output must NOT do]\n\n- [Guardrails - e.g. 'flag unknowns, do not invent']\n\n**Output Format:** [Exact structure - file tree, diff, ADR, etc.]\n\nQuality checklist before you commit a new prompt\n\nRan the prompt twice against different inputs - the output stayed on-format.\n\nPlaceholders are obvious ([SQUARE_BRACKETS]) so a teammate spots them before running.\n\nThe Role is specific enough to exclude generic, mid-level answers.\n\nConstraints include at least one 'do not' - this is usually where quality lives.\n\nOutput Format would tell a reviewer what 'done' looks like without asking.\n```\n"
+  },
+  {
+    "id": "mcp-server-developer",
+    "name": "MCP Server Developer",
+    "section": "mcp",
+    "summary": "Scaffold a production-ready Model Context Protocol server — tools, resources, prompts, transports, auth — using the official Python or TypeScript SDK.",
+    "istqbTopics": [
+      "MCP",
+      "JSON-RPC",
+      "FastMCP",
+      "stdio Transport",
+      "Streamable HTTP"
+    ],
+    "aiTools": [
+      "Claude Code",
+      "Claude Desktop",
+      "Cursor"
+    ],
+    "tags": [
+      "mcp",
+      "server",
+      "sdk",
+      "tools",
+      "resources"
+    ],
+    "detailMd": "# MCP Server Developer\n\n## Role\n\nYou are a senior backend engineer specialising in the Model Context Protocol. You ship MCP servers with well-typed tool schemas, safe side-effects, the right transport for the deployment target, and clean lifecycle/error handling. You know the official Python (`mcp`, `FastMCP`) and TypeScript (`@modelcontextprotocol/sdk`) SDKs end-to-end.\n\n## When to trigger this skill\n\nTrigger when the user asks to build, scaffold, or extend an MCP server. Phrases include: \"create an MCP server for X\", \"expose our internal API to Claude\", \"add a tool to my MCP server\", \"convert this script into an MCP tool\", \"set up an MCP server with auth\", \"port my plugin to MCP\".\n\n## What it does\n\nProduces a working MCP server: project layout, dependencies, tool/resource/prompt definitions with JSON-Schema inputs, transport wiring (stdio / Streamable HTTP / SSE), structured error responses, optional auth (bearer / OAuth) for remote servers, and a `claude_desktop_config.json` (or equivalent) registration snippet.\n\n## How it works (agent process)\n\n1. **Clarify intent.** What system are we exposing? Read-only or read+write? Local (stdio) or remote (HTTP)? Multi-user? Ask 1–3 questions if scope is unclear.\n2. **Design the surface.** Pick tool names that read like verbs (`create_issue`, not `IssueController`). Decide which actions are tools vs resources (data the LLM reads on demand) vs prompts (user-selectable templates).\n3. **Define schemas.** Every tool input gets a JSON-Schema with required fields, types, enums, descriptions. The description is what the LLM reads — write it for the model, not the human.\n4. **Implement.** Use FastMCP / the TS SDK. Wrap business logic; don't reimplement it inside tool handlers.\n5. **Errors & safety.** Validate inputs, return `isError: true` with a human-readable reason on failure, never throw raw exceptions across the protocol boundary, log to stderr.\n6. **Test with Inspector.** Run `npx @modelcontextprotocol/inspector` against the server, exercise every tool, confirm schemas render correctly.\n7. **Wire to a host.** Provide the exact config block for Claude Desktop / Claude Code / Cursor.\n\n## Ready-to-use prompt\n\n```\n**Role:** You are a senior MCP server engineer using the official Python SDK (`mcp`, `FastMCP`) — or TypeScript `@modelcontextprotocol/sdk` if the user prefers Node.\n\n**Context:** I want to expose [SYSTEM / API / FILESYSTEM AREA] to an MCP-compatible host (Claude Desktop / Claude Code / Cursor). Deployment target: [LOCAL stdio | REMOTE Streamable HTTP].\n\n**Instruction:** Build an MCP server that does the following:\n1. Restate the goal and list the tools/resources/prompts you plan to expose, with one-line descriptions.\n2. Generate the project layout (files + dependencies).\n3. Implement each tool with: name, JSON-Schema input, docstring/description aimed at the LLM, handler body that calls the underlying system, structured error returns.\n4. Wire the chosen transport, including auth if remote.\n5. Output the host-side config snippet (e.g. `claude_desktop_config.json`).\n6. Provide a 5-step Inspector test plan.\n\n**Input:**\n[PASTE: API docs / function signatures / DB schema / file paths]\n\n**Constraints:**\n- Never log to stdout when using stdio transport — that channel is the protocol.\n- Every write/mutation tool must have a verb-prefixed name and a description that says it mutates state.\n- Validate inputs before calling the underlying system. Return `isError: true` on validation failure, do not raise.\n- Pin the SDK version and the protocol version your code was tested against.\n- Do not invent endpoints or fields. If something is missing, list it as an assumption.\n\n**Output Format:**\n- Plan (numbered list of capabilities)\n- File tree\n- Full source for each file (Python or TS)\n- Host config block\n- Inspector test checklist\n```\n\n## Deliverable shape\n\n```\n.\n├── pyproject.toml | package.json\n├── README.md            ← install + register instructions\n├── src/server.py        ← FastMCP wiring + tool handlers\n│   ├── @mcp.tool()      ← one per exposed action\n│   ├── @mcp.resource()  ← read-only data\n│   └── @mcp.prompt()    ← user-pickable templates\n└── tests/test_tools.py  ← contract tests (see MCP Server Tester skill)\n```\n\n## Quality checklist\n\n- [ ] Every tool has a JSON-Schema and an LLM-facing description that explains *when* to call it.\n- [ ] Mutating tools are clearly named and described as such.\n- [ ] Server logs to stderr only (stdio transport) or a separate logger (HTTP).\n- [ ] Errors are returned structurally (`isError: true`), never raised across the boundary.\n- [ ] Protocol version and SDK version are pinned.\n- [ ] Inspector run shows every tool, resource, and prompt.\n- [ ] A copy-paste host config block is provided.\n\n## Companion repo configuration\n\nAdd to `.github/copilot-instructions.md`:\n\n```\nMCP Server — Conventions:\n- SDK: mcp >= 1.x (Python) or @modelcontextprotocol/sdk >= 1.x (TS)\n- Default transport: stdio for local; Streamable HTTP for hosted\n- Tool naming: snake_case verbs (create_*, list_*, get_*, delete_*)\n- Schema source of truth: pydantic / zod, exported to JSON-Schema\n- Logging: stderr only for stdio; structured JSON for HTTP\n```"
+  },
+  {
+    "id": "mcp-tool-designer",
+    "name": "MCP Tool Designer",
+    "section": "mcp",
+    "summary": "Design MCP tool schemas, names, and descriptions that LLMs invoke correctly the first time — with safe defaults, clear errors, and honest side-effect labels.",
+    "istqbTopics": [
+      "MCP",
+      "Tool Schema",
+      "JSON Schema",
+      "LLM-Discoverability",
+      "Idempotency"
+    ],
+    "aiTools": [
+      "Claude Code",
+      "Claude Desktop",
+      "Cursor"
+    ],
+    "tags": [
+      "mcp",
+      "tools",
+      "schema",
+      "design",
+      "idempotency"
+    ],
+    "detailMd": "# MCP Tool Designer\n\n## Role\n\nYou are an API designer who specialises in tools meant to be called by LLMs. You understand that the *description* and *schema* are the model's only documentation — and that a poorly-named or under-described tool causes the LLM to call the wrong one, hallucinate inputs, or skip the tool entirely. You apply the principles of REST/RPC API design plus LLM-specific concerns (discoverability, ambiguity, idempotency).\n\n## When to trigger this skill\n\nTrigger when the user asks: \"design a tool for X\", \"my MCP tool isn't being called\", \"the LLM keeps passing the wrong arguments\", \"how should I name this tool\", \"review my tool schema\", \"split / merge these MCP tools\", \"make this tool safe for write operations\".\n\n## What it does\n\nProduces tool definitions optimized for LLM invocation: verb-prefixed names, schemas that constrain inputs to valid combinations, descriptions written in the imperative for the model, explicit side-effect labels, idempotency keys for retry safety, and structured error contracts. Also reviews existing tools and flags discoverability or correctness problems.\n\n## How it works (agent process)\n\n1. **Inventory the use case.** What does the user want to accomplish through the LLM? Map that to one or more discrete actions.\n2. **One tool per intent.** Don't bundle five operations behind one `manage_*` tool — the model can't disambiguate. Don't shatter a single intent into ten tools either.\n3. **Name it for the model.** Verb_object snake_case: `create_issue`, `search_orders`, `delete_branch`. Avoid framework names (`UserController.create`).\n4. **Write the description for the LLM.** Lead with *when to use it*, then *what it does*, then *constraints*. Include negative examples (\"not for X — use Y instead\").\n5. **Constrain the schema.** Use enums over free strings, `format: \"date-time\"` over plain strings, `oneOf` for mutually exclusive params, `required` aggressively. Every field gets a description.\n6. **Label side effects.** Read-only? Idempotent write? Destructive? Say so in the description and (for destructive ops) accept a confirmation flag.\n7. **Specify errors.** Define the shape of `isError: true` responses: `{ code, message, retryable }`. The model uses this to decide whether to retry or surface the failure.\n8. **Pre-flight test.** Generate 3 plausible user prompts; check that the LLM would pick *this* tool and produce a valid call.\n\n## Ready-to-use prompt\n\n```\n**Role:** You are an MCP tool designer. Your audience is an LLM that will read your tool's name, description, and JSON Schema and decide whether and how to call it.\n\n**Context:** I'm building an MCP server for [SYSTEM]. I need to design tool(s) for the following use case: [USE CASE].\n\n**Instruction:**\n1. Decide whether this is one tool or several. Justify the split.\n2. For each tool, produce: `name`, one-paragraph LLM-facing `description` (when to use, what it does, what NOT to use it for), full JSON Schema with field descriptions, side-effect label (read / idempotent-write / destructive), error contract.\n3. Write 3 example user prompts and the exact tool call the LLM should produce for each.\n4. Flag any ambiguities the LLM is likely to hit and how the schema/description prevents them.\n\n**Input:**\n[PASTE: underlying API endpoints, DB tables, function signatures, or natural-language description]\n\n**Constraints:**\n- Names are verb_object snake_case.\n- Every schema field has a description, even strings.\n- Use enums whenever the value space is small and fixed.\n- Destructive tools have an explicit `confirm: true` parameter.\n- Do not invent fields the underlying system doesn't have.\n\n**Output Format:**\n- Tool inventory (1 row per tool: name, side-effect label, summary)\n- Per tool: name, description, JSON Schema, error contract, 3 worked examples\n- Discoverability risks + mitigations\n```\n\n## Deliverable shape\n\n```yaml\nname: create_issue\nsideEffect: idempotent-write   # read | idempotent-write | destructive\ndescription: |\n  Create a new GitHub issue in a repository the caller owns. Use this when the\n  user asks to \"file\", \"open\", or \"create\" an issue. Do NOT use to comment on\n  an existing issue — use add_issue_comment instead.\ninputSchema:\n  type: object\n  required: [repo, title]\n  properties:\n    repo: { type: string, pattern: \"^[\\w.-]+/[\\w.-]+$\", description: \"owner/repo, e.g. anthropics/claude-code\" }\n    title: { type: string, minLength: 1, maxLength: 256 }\n    body:  { type: string, description: \"GitHub-flavoured markdown body. Optional.\" }\n    labels: { type: array, items: { type: string }, uniqueItems: true }\nerror:\n  code: string         # \"NOT_FOUND\" | \"FORBIDDEN\" | \"VALIDATION\" | \"RATE_LIMITED\"\n  message: string\n  retryable: boolean\n```\n\n## Quality checklist\n\n- [ ] Tool name is a verb_object the model will actually emit.\n- [ ] Description tells the model *when to call* and *when not to*.\n- [ ] Every field has a description; enums used where applicable.\n- [ ] Side-effect label matches reality.\n- [ ] Destructive tools require explicit confirmation.\n- [ ] Error contract is stable and machine-readable.\n- [ ] Three worked examples confirm the LLM would pick this tool over alternatives.\n\n## Companion repo configuration\n\n```\nMCP Tool Design — Rules:\n- Names: verb_object snake_case, ≤ 40 chars\n- Descriptions: lead with WHEN TO USE\n- Side-effect taxonomy: read | idempotent-write | destructive\n- Destructive ops: require `confirm: true`\n- Errors: { code, message, retryable } — codes from a fixed enum\n```"
+  },
+  {
+    "id": "mcp-server-tester",
+    "name": "MCP Server Tester",
+    "section": "mcp",
+    "summary": "Test MCP servers end-to-end: protocol conformance, tool contracts, transport behaviour, Inspector flows, fuzz inputs, and integration with Claude Desktop / Claude Code.",
+    "istqbTopics": [
+      "Protocol Conformance",
+      "Contract Testing",
+      "Fuzz Testing",
+      "Integration Testing",
+      "MCP Inspector"
+    ],
+    "aiTools": [
+      "Claude Code",
+      "Claude Desktop",
+      "Cursor"
+    ],
+    "tags": [
+      "mcp",
+      "testing",
+      "qa",
+      "inspector",
+      "contract"
+    ],
+    "detailMd": "# MCP Server Tester\n\n## Role\n\nYou are a senior ISTQB-certified QA engineer specialising in protocol-level testing of MCP servers. You verify that a server speaks JSON-RPC 2.0 correctly, advertises only what it implements, returns well-formed errors, survives malformed input, and behaves consistently when driven by a real LLM through Claude Desktop or Claude Code.\n\n## When to trigger this skill\n\nTrigger when the user says: \"test my MCP server\", \"how do I QA an MCP server\", \"my server crashes when Claude calls X\", \"validate my tool schemas\", \"write contract tests for these MCP tools\", \"run the Inspector against this\", \"the model keeps timing out — debug it\".\n\n## What it does\n\nProduces a layered test plan and the actual test code: (1) protocol conformance — initialize handshake, capability advertisement, method coverage; (2) per-tool contract tests — schema-driven happy path + boundary + invalid input; (3) transport tests — stdio framing, HTTP streaming, reconnect; (4) fuzz / robustness — malformed JSON, oversized payloads, unicode edge cases, cancellation; (5) end-to-end via the Inspector and via a real host.\n\n## How it works (agent process)\n\n1. **Read the server.** Identify declared tools, resources, prompts, and transports. Build a coverage matrix.\n2. **Layer 1 — Protocol conformance.** Call `initialize` with a known protocol version; assert the server returns the same or a compatible version, the right capabilities, and no surprise methods.\n3. **Layer 2 — Schema-driven contract tests.** For each tool: derive equivalence partitions from the JSON Schema (valid / invalid / boundary). Generate calls with `hypothesis` (Py) or `fast-check` (TS). Assert response shape and `isError` flag.\n4. **Layer 3 — Transport.** stdio: framing, large payloads, partial writes. HTTP: streaming, reconnect with `Last-Event-ID`, auth failures, idle timeout.\n5. **Layer 4 — Fuzz.** Send malformed JSON-RPC envelopes, missing `id`, wrong `jsonrpc` version, oversized strings, deeply-nested objects. Server must respond with a JSON-RPC error, never crash.\n6. **Layer 5 — Inspector + real host.** Drive the server through `@modelcontextprotocol/inspector`; record raw JSON-RPC. Then run it inside Claude Desktop with a scripted prompt suite that should and should not trigger each tool.\n7. **Report.** Coverage matrix, defects with repro JSON-RPC payloads, severity, suggested fix.\n\n## Ready-to-use prompt\n\n```\n**Role:** You are a senior QA engineer testing an MCP server. You run protocol-level, contract, transport, fuzz, and integration tests.\n\n**Context:** Server: [PATH or REPO]. SDK: [Python `mcp` / TS `@modelcontextprotocol/sdk` / other]. Transport(s) under test: [stdio | Streamable HTTP | SSE]. Hosts to validate against: [Claude Desktop / Claude Code / Cursor / Inspector only].\n\n**Instruction:**\n1. Build a coverage matrix: tools × test layers (conformance, contract, transport, fuzz, e2e).\n2. For each tool, produce contract test cases using EP/BVA on its JSON Schema. Include happy path, boundary, invalid type, missing required, extra fields, unicode/empty/large.\n3. Generate runnable pytest + `mcp` client (or vitest + TS SDK) test code for each layer.\n4. Provide a fuzz harness sending malformed envelopes; assert server returns JSON-RPC errors and stays alive.\n5. Provide an Inspector script (sequence of tool calls) and a real-host prompt suite (3 prompts that should call each tool, 1 that should NOT).\n6. Output a defect report template.\n\n**Input:**\n[PASTE: server source / tool list / schema dump]\n\n**Constraints:**\n- Tests must run from a clean checkout: `pip install -e . && pytest` or `npm test`.\n- Do not test the underlying business logic — that's a different skill. Focus on the protocol surface.\n- Every failing test produces the exact JSON-RPC payload that triggered it.\n- Use schema-derived data, not hand-picked examples.\n\n**Output Format:**\n- Coverage matrix (table)\n- Test files (full source)\n- Fuzz harness\n- Inspector + host scripts\n- Defect report template\n```\n\n## Deliverable shape — coverage matrix\n\n| Tool | Conformance | Contract (happy) | Contract (invalid) | Boundary | Fuzz | E2E in host |\n|------|:-:|:-:|:-:|:-:|:-:|:-:|\n| `create_issue` | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |\n| `search_orders` | ✅ | ✅ | ✅ | ✅ | ✅ | ⚠ flaky in Cursor |\n\n## Quality checklist\n\n- [ ] `initialize` handshake asserts protocol version + capabilities.\n- [ ] Every advertised tool/resource/prompt has at least one contract test.\n- [ ] EP/BVA coverage derived from JSON Schema, not hand-picked.\n- [ ] Malformed JSON-RPC payloads do not crash the server.\n- [ ] Long-running calls can be cancelled cleanly.\n- [ ] stdio test sends payloads larger than typical pipe buffer (>64 KB).\n- [ ] HTTP test exercises reconnect with `Last-Event-ID`.\n- [ ] At least one prompt suite confirms the LLM picks the right tool — and avoids the wrong one.\n- [ ] Defects include the exact triggering payload.\n\n## Companion repo configuration\n\n```\nMCP Server — Test Stack:\n- Runner: pytest (Python) / vitest (TS)\n- Property-based: hypothesis / fast-check\n- Inspector: npx @modelcontextprotocol/inspector\n- CI: run conformance + contract + fuzz on every PR; e2e nightly\n- Defect format: { layer, tool, payload, expected, actual, severity }\n```"
+  },
+  {
+    "id": "mcp-client-integrator",
+    "name": "MCP Client Integrator",
+    "section": "mcp",
+    "summary": "Connect an existing MCP server to a host (Claude Desktop, Claude Code, Cursor, Zed) — config, transport selection, auth, debugging, and observability.",
+    "istqbTopics": [
+      "MCP",
+      "Host Integration",
+      "Configuration",
+      "Debugging",
+      "Observability"
+    ],
+    "aiTools": [
+      "Claude Code",
+      "Claude Desktop",
+      "Cursor"
+    ],
+    "tags": [
+      "mcp",
+      "client",
+      "integration",
+      "config",
+      "debugging"
+    ],
+    "detailMd": "# MCP Client Integrator\n\n## Role\n\nYou are a developer-experience engineer who installs MCP servers into AI hosts and makes them work reliably. You know where each host's config file lives, how it spawns servers, how it surfaces errors, and how to capture protocol traces when something is wrong.\n\n## When to trigger this skill\n\nTrigger when the user says: \"connect this MCP server to Claude Desktop\", \"my server doesn't show up in Claude Code\", \"add an MCP server to Cursor\", \"the tool is registered but the model doesn't call it\", \"how do I debug an MCP integration\", \"capture an MCP protocol trace\", \"the server starts but disconnects immediately\".\n\n## What it does\n\nProduces the host-specific config, validates the connection, diagnoses the common failure modes (path errors, missing env vars, transport mismatch, schema rejection, version skew), and adds observability — log capture, JSON-RPC tracing, and a smoke-test prompt suite that proves each tool is reachable from the LLM.\n\n## How it works (agent process)\n\n1. **Identify the host.** Claude Desktop (`claude_desktop_config.json`), Claude Code (`~/.claude.json` or project-level `.mcp.json`), Cursor (`~/.cursor/mcp.json`), Zed (`settings.json` `context_servers`). Locations differ by OS.\n2. **Pick the transport.** Local server → stdio. Hosted → Streamable HTTP (with bearer/OAuth as required by the host).\n3. **Write the config.** Absolute paths, explicit interpreter, env vars for secrets — never inline secrets.\n4. **Restart the host.** All hosts cache config; restart is mandatory after edits.\n5. **Verify the handshake.** Tail the host log; confirm `initialize` succeeds and tools/resources are listed.\n6. **Smoke-test from the LLM.** Run 1 prompt per tool that should trigger it; 1 that shouldn't. Check the model picks correctly.\n7. **Diagnose.** If anything fails, walk a fixed checklist: process spawn → handshake → capability list → tool call → response. Capture the JSON-RPC trace via Inspector or host log to pinpoint the layer.\n8. **Add observability.** Wrap the server command in a script that tees stderr to a log file; for HTTP servers, enable structured logs and a request-ID header.\n\n## Ready-to-use prompt\n\n```\n**Role:** You are an MCP integration engineer. You install MCP servers into AI hosts and debug the integration.\n\n**Context:** Host: [Claude Desktop / Claude Code / Cursor / Zed]. OS: [macOS / Windows / Linux]. Server: [PATH or URL]. Transport: [stdio / HTTP]. Auth: [none / bearer / OAuth].\n\n**Instruction:**\n1. Output the exact config block for this host + OS, with absolute paths and env-var references for secrets.\n2. List the post-edit steps (restart, where to view logs, how to confirm the server is connected).\n3. Provide a smoke-test prompt suite — one prompt per tool that should call it, one that should NOT.\n4. Provide a diagnostic checklist for the top 8 failure modes (path, interpreter, env, transport, auth, schema, version skew, sandbox).\n5. Provide an observability snippet: a wrapper script (stdio) or a logging middleware (HTTP) that captures every JSON-RPC frame.\n\n**Input:**\n[PASTE: server start command / repo path / URL / current config attempt + error]\n\n**Constraints:**\n- Use absolute paths in config; relative paths break under host process spawning.\n- Never inline secrets — use env vars or the host's secret store.\n- Diagnostic steps must be reproducible without re-editing the server source.\n- For each failure mode, provide both the symptom and the one-line confirmation that fixes it.\n\n**Output Format:**\n- Config block (verbatim, host-specific)\n- Restart + verify steps\n- Smoke-test prompt suite\n- Failure-mode diagnostic table\n- Observability wrapper / middleware\n```\n\n## Deliverable shape — diagnostic table\n\n| Symptom | Likely cause | Confirm | Fix |\n|---|---|---|---|\n| Server not in tool list | Path or interpreter wrong | Run command from terminal | Use absolute path, full interpreter |\n| Connects then drops | stdout pollution on stdio | `tail` server stderr log | Route logs to stderr only |\n| Tools listed, never called | Description too vague | Read tool description as the LLM | Add \"when to use\" + examples |\n| 401 on remote server | Bearer token not propagated | Check host's auth config | Add token to env or OAuth flow |\n| Hangs on initialize | Protocol version mismatch | Inspector handshake trace | Pin SDK + protocol version |\n\n## Quality checklist\n\n- [ ] Config uses absolute paths and env vars for secrets.\n- [ ] Host log location is documented for the user's OS.\n- [ ] Smoke test confirms every tool is reachable from the LLM.\n- [ ] Negative prompt confirms tools are NOT called when irrelevant.\n- [ ] Failure-mode table covers spawn, handshake, capabilities, call, response.\n- [ ] Observability wrapper captures full JSON-RPC traffic for incident replay.\n\n## Companion repo configuration\n\n```\nMCP Client — Host Matrix:\n- Claude Desktop: ~/Library/Application Support/Claude/claude_desktop_config.json (macOS); %APPDATA%\\Claude\\... (Windows)\n- Claude Code: project `.mcp.json` (preferred) or `~/.claude.json`\n- Cursor: ~/.cursor/mcp.json\n- Zed: `context_servers` in settings.json\n- Always: absolute paths, env vars for secrets, restart after edits, capture stderr to log\n```"
   }
 ]
 </script>
@@ -2258,6 +2362,100 @@ img, svg, video, canvas {
   background: rgba(255, 140, 50, 0.15);
   border-color: #ff8c32;
   color: #ff8c32;
+}
+
+.filter-pill--section-mcp.filter-pill--active {
+  background: rgba(192, 132, 252, 0.15);
+  border-color: #c084fc;
+  color: #c084fc;
+}
+
+.section-header--mcp .section-header__title {
+  color: #c084fc;
+}
+
+/* ==================== MCP Explainer ==================== */
+.mcp-explainer {
+  border-top: 1px solid var(--border);
+}
+.mcp-explainer__block {
+  margin-top: 2rem;
+}
+.mcp-explainer__block:first-of-type {
+  margin-top: 0.5rem;
+}
+.mcp-explainer h3.mcp-explainer__heading {
+  font-family: var(--font-heading);
+  font-size: 1.15rem;
+  color: #c084fc;
+  margin: 0 0 0.6rem 0;
+  letter-spacing: 0.02em;
+}
+.mcp-explainer p {
+  color: var(--text-primary);
+  line-height: 1.55;
+  margin: 0 0 0.75rem 0;
+}
+.mcp-explainer pre {
+  background: #0a0e27;
+  border: 1px solid var(--border);
+  padding: 12px 14px;
+  border-radius: 6px;
+  overflow-x: auto;
+  font-size: 0.82rem;
+  line-height: 1.45;
+  color: #d6dcec;
+  margin: 0.5rem 0 1rem 0;
+}
+.mcp-explainer code {
+  font-family: var(--font-mono, ui-monospace, monospace);
+}
+.mcp-explainer table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+}
+.mcp-explainer th, .mcp-explainer td {
+  border: 1px solid var(--border);
+  padding: 8px 10px;
+  text-align: left;
+  vertical-align: top;
+}
+.mcp-explainer th {
+  background: rgba(192, 132, 252, 0.08);
+  color: #c084fc;
+  font-weight: 600;
+}
+.mcp-explainer__diagram {
+  background: #0a0e27;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 14px;
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 0.78rem;
+  line-height: 1.4;
+  color: #c7d0ea;
+  white-space: pre;
+  overflow-x: auto;
+  margin: 0.5rem 0 1rem 0;
+}
+.mcp-explainer ol, .mcp-explainer ul {
+  color: var(--text-primary);
+  line-height: 1.55;
+  padding-left: 1.4rem;
+}
+.mcp-explainer li {
+  margin-bottom: 0.35rem;
+}
+.mcp-explainer__protocol {
+  margin-top: 1.2rem;
+}
+.mcp-explainer__protocol h4 {
+  font-family: var(--font-heading);
+  font-size: 0.95rem;
+  color: var(--accent);
+  margin: 0 0 0.4rem 0;
 }
 
 /* ==================== Section Headers ==================== */
@@ -2948,7 +3146,7 @@ img, svg, video, canvas {
   <p class="hero__description">
     Plug-and-play AI prompt templates and agent skills for your workflow. Each skill is ready to use with your favorite AI tools — QA skills are grounded in ISTQB standards.
   </p>
-  <span class="hero__badge" id="skill-count">56 skills + 51 prompts</span>
+  <span class="hero__badge" id="skill-count">60 skills + 51 prompts</span>
 </header>
 
 <!-- ==================== What Are Skills ==================== -->
@@ -3032,9 +3230,273 @@ img, svg, video, canvas {
       <button class="filter-pill filter-pill--section filter-pill--section-dev" data-section="dev" aria-pressed="false">Dev</button>
       <button class="filter-pill filter-pill--section filter-pill--section-qa-prompts" data-section="qa-prompts" aria-pressed="false">QA Prompts</button>
       <button class="filter-pill filter-pill--section filter-pill--section-dev-prompts" data-section="dev-prompts" aria-pressed="false">Dev Prompts</button>
+      <button class="filter-pill filter-pill--section filter-pill--section-mcp" data-section="mcp" aria-pressed="false">MCP</button>
     </div>
   </div>
 </nav>
+
+<!-- ==================== MCP Explainer (visible only when MCP filter is active) ==================== -->
+<section id="mcp-explainer" class="how-to mcp-explainer" aria-label="Model Context Protocol explainer" hidden>
+  <div class="how-to__inner">
+    <h2 class="how-to__title">Model Context Protocol (MCP)</h2>
+    <p class="how-to__intro">
+      MCP is an open standard for connecting LLMs to tools, data, and other systems. Think of it as <em>USB-C for AI</em> &mdash; one wire, many devices. The four sections below explain what MCP is, how it works, how it compares to other LLM&ndash;tool APIs, and how to build your own MCP server.
+    </p>
+
+    <!-- 1. What is MCP -->
+    <div class="mcp-explainer__block">
+      <h3 class="mcp-explainer__heading">1. What is MCP?</h3>
+      <p>
+        The <strong>Model Context Protocol</strong> is an open, JSON-RPC&ndash;based protocol introduced by Anthropic in late 2024. It standardises how AI applications (<em>hosts</em> like Claude Desktop, Claude Code, Cursor, Zed) discover and call <em>tools</em>, read <em>resources</em>, and use prompt templates exposed by external <em>servers</em> &mdash; without each integration being one-off glue code.
+      </p>
+      <div class="how-to__steps">
+        <div class="how-to__step">
+          <span class="how-to__step-num">★</span>
+          <h3 class="how-to__step-title">Open Standard</h3>
+          <p class="how-to__step-desc">Vendor-neutral spec with SDKs for Python, TypeScript, Go, Rust, Java, C#. Anyone can build a server; any compliant host can use it.</p>
+        </div>
+        <div class="how-to__step">
+          <span class="how-to__step-num">⚙</span>
+          <h3 class="how-to__step-title">Three Primitives</h3>
+          <p class="how-to__step-desc"><strong>Tools</strong> (LLM-invoked actions), <strong>Resources</strong> (read-only data the model can pull in), <strong>Prompts</strong> (reusable templates the user can pick).</p>
+        </div>
+        <div class="how-to__step">
+          <span class="how-to__step-num">⇄</span>
+          <h3 class="how-to__step-title">JSON-RPC 2.0</h3>
+          <p class="how-to__step-desc">Bidirectional messages over <code>stdio</code>, Server-Sent Events, or Streamable HTTP. Includes capability negotiation, lifecycle, and progress events.</p>
+        </div>
+        <div class="how-to__step">
+          <span class="how-to__step-num">⌂</span>
+          <h3 class="how-to__step-title">Host ⇄ Client ⇄ Server</h3>
+          <p class="how-to__step-desc">Host runs the LLM. Client (one per server) speaks MCP. Server exposes capabilities. Boundaries keep permissions and trust scoped per integration.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. How MCP works -->
+    <div class="mcp-explainer__block">
+      <h3 class="mcp-explainer__heading">2. How MCP Works</h3>
+      <p>The host (e.g. Claude Desktop) spawns an MCP <em>client</em> for each configured server. Client and server perform a JSON-RPC handshake, then the host can list and call capabilities on demand:</p>
+      <div class="mcp-explainer__diagram">┌──────────────┐        ┌──────────────┐        ┌──────────────┐
+│     HOST     │        │    CLIENT    │        │    SERVER    │
+│ (Claude app) │ ◄────► │  (per-server │ ◄────► │ (your code:  │
+│   + LLM      │        │  MCP shim)   │        │  filesystem, │
+│              │        │              │        │  GitHub, DB) │
+└──────────────┘        └──────────────┘        └──────────────┘
+        ▲                                              ▲
+        │                                              │
+        └─── user prompt ──────► tools/call ──────► business logic
+                                  ◄── result ◄──</div>
+      <p><strong>Lifecycle:</strong></p>
+      <ol>
+        <li><code>initialize</code> &mdash; client and server exchange protocol version + capabilities (tools, resources, prompts, sampling, roots).</li>
+        <li><code>tools/list</code>, <code>resources/list</code>, <code>prompts/list</code> &mdash; host fetches catalog. Tool descriptions are sent to the LLM as part of its system prompt.</li>
+        <li><code>tools/call</code> &mdash; when the LLM emits a tool call, the host forwards it to the server, which executes and returns content.</li>
+        <li><code>notifications/*</code> &mdash; server can push <code>tools/list_changed</code>, progress, log events; client can cancel.</li>
+        <li><code>shutdown</code> &mdash; clean teardown.</li>
+      </ol>
+      <p><strong>Transports:</strong></p>
+      <ul>
+        <li><strong>stdio</strong> &mdash; server is a child process, messages over stdin/stdout. Best for local tools.</li>
+        <li><strong>Streamable HTTP</strong> &mdash; single endpoint, supports resumable streams. Best for remote/multi-tenant servers.</li>
+        <li><strong>SSE</strong> (legacy) &mdash; older HTTP+Server-Sent-Events transport, being phased out in favour of Streamable HTTP.</li>
+      </ul>
+    </div>
+
+    <!-- 3. Other APIs -->
+    <div class="mcp-explainer__block">
+      <h3 class="mcp-explainer__heading">3. Other APIs for Connecting LLMs to Tools</h3>
+      <p>MCP is one of several approaches. Each makes different trade-offs about <em>scope</em> (single LLM call vs. long-running agent), <em>discovery</em> (static vs. dynamic), and <em>transport</em>.</p>
+
+      <div class="mcp-explainer__protocol">
+        <h4>Anthropic native tool use (Messages API)</h4>
+        <p>Tools are declared inline in each API call. The model returns a <code>tool_use</code> block; your code executes and replies with <code>tool_result</code>. No separate server &mdash; tools live in your application.</p>
+        <pre><code>response = client.messages.create(
+    model="claude-opus-4-7",
+    tools=[{
+        "name": "get_weather",
+        "description": "Get current weather for a city.",
+        "input_schema": {
+            "type": "object",
+            "properties": {"city": {"type": "string"}},
+            "required": ["city"]
+        }
+    }],
+    messages=[{"role": "user", "content": "Weather in Sofia?"}]
+)</code></pre>
+      </div>
+
+      <div class="mcp-explainer__protocol">
+        <h4>OpenAI function calling / tools</h4>
+        <p>Conceptually identical to Anthropic native tools: JSON-Schema function declarations passed per request. Mature ecosystem, single vendor.</p>
+        <pre><code>resp = openai.chat.completions.create(
+  model="gpt-4o",
+  tools=[{
+    "type": "function",
+    "function": {
+      "name": "get_weather",
+      "parameters": {"type": "object", "properties": {"city": {"type":"string"}}}
+    }
+  }],
+  messages=[{"role":"user","content":"Weather in Sofia?"}]
+)</code></pre>
+      </div>
+
+      <div class="mcp-explainer__protocol">
+        <h4>Google Agent-to-Agent (A2A)</h4>
+        <p>Open protocol announced by Google (2025) for <strong>agent-to-agent</strong> collaboration, not LLM-to-tool. Each agent publishes an <code>AgentCard</code> at <code>/.well-known/agent.json</code> describing its skills; other agents delegate <em>Tasks</em> to it via JSON-RPC over HTTPS, with streaming updates and artifacts.</p>
+        <pre><code>// Agent Card (served at /.well-known/agent.json)
+{
+  "name": "TravelPlannerAgent",
+  "description": "Books flights and hotels.",
+  "url": "https://travel.example.com/a2a",
+  "skills": [
+    { "id": "book-flight",
+      "description": "Book a flight given origin, destination, dates" }
+  ],
+  "capabilities": { "streaming": true, "pushNotifications": true }
+}
+
+// Caller delegates a task
+POST /a2a  { "method": "tasks/send",
+             "params": { "id": "t-123",
+                         "message": { "role": "user",
+                                      "parts": [{"text": "Book SOF→LHR May 12"}] } } }</code></pre>
+        <p><strong>MCP vs A2A:</strong> MCP exposes <em>tools/data</em> to a single LLM in a single host; A2A coordinates <em>autonomous agents</em> across organizations. They are complementary, not competing &mdash; an A2A agent often uses MCP internally to reach its own tools.</p>
+      </div>
+
+      <div class="mcp-explainer__protocol">
+        <h4>LangChain / LlamaIndex tools</h4>
+        <p>Library-level abstraction. Tools are Python/TS objects bound to an agent loop run by your code. Great for prototyping; tightly coupled to the framework.</p>
+        <pre><code>from langchain_core.tools import tool
+
+@tool
+def get_weather(city: str) -> str:
+    """Get current weather for a city."""
+    return weather_api.lookup(city)
+
+agent = create_react_agent(llm, tools=[get_weather])</code></pre>
+      </div>
+
+      <div class="mcp-explainer__protocol">
+        <h4>OpenAPI-as-tools (ReAct / Toolformer style)</h4>
+        <p>Feed an OpenAPI/Swagger spec to the LLM; it picks endpoints to call. Zero protocol overhead but no permission model and no streaming &mdash; the LLM is essentially curling raw HTTP.</p>
+        <pre><code># Spec is summarised into the prompt
+POST /pets   body: { name, species }   → 201 Pet
+GET  /pets/{id}                         → 200 Pet
+
+# Model output (parsed by your runtime)
+{ "action": "GET", "path": "/pets/42" }</code></pre>
+      </div>
+
+      <div class="mcp-explainer__protocol">
+        <h4>MCP vs REST</h4>
+        <p>REST is a general-purpose request/response style for client–server data access. MCP is a <em>protocol on top of JSON-RPC</em> built specifically for an LLM to discover and invoke capabilities at runtime. They solve different problems and often live side-by-side: an MCP server frequently <em>wraps</em> a REST API and re-exposes it in a form the model can use safely.</p>
+        <table>
+          <thead>
+            <tr><th>Aspect</th><th>REST</th><th>MCP</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Primary consumer</td><td>Human-written client code</td><td>An LLM driving a host application</td></tr>
+            <tr><td>Message style</td><td>HTTP verbs + URIs (resource-oriented)</td><td>JSON-RPC 2.0 methods (action-oriented)</td></tr>
+            <tr><td>Discovery</td><td>OpenAPI / docs read at design time</td><td><code>tools/list</code>, <code>resources/list</code> at runtime — the model reads the catalog every session</td></tr>
+            <tr><td>Schema purpose</td><td>Validate inputs, generate clients</td><td>Tell the LLM <em>when</em> and <em>how</em> to call — descriptions are part of the contract</td></tr>
+            <tr><td>Statefulness</td><td>Stateless by convention</td><td>Stateful session: capability negotiation, progress, cancellation, notifications</td></tr>
+            <tr><td>Transport</td><td>HTTP/HTTPS only</td><td>stdio, Streamable HTTP, SSE</td></tr>
+            <tr><td>Auth</td><td>OAuth, bearer, mTLS — between services</td><td>Per-host trust boundary; remote MCP adds OAuth on top</td></tr>
+            <tr><td>Streaming</td><td>Optional (SSE / WebSocket bolt-on)</td><td>First-class: progress events, partial results, cancellation</td></tr>
+            <tr><td>Errors</td><td>HTTP status + body shape varies</td><td>Structured <code>{ isError: true, content }</code> the model can reason about</td></tr>
+            <tr><td>Versioning</td><td>URL or header-based, manual</td><td>Protocol-version handshake on <code>initialize</code></td></tr>
+            <tr><td>Side effects</td><td>Implied by HTTP verb (GET safe, POST/DELETE not)</td><td>Implied by tool name + description; convention, not enforced</td></tr>
+            <tr><td>Typical deployment</td><td>One service, many clients</td><td>One server, one host process per user session</td></tr>
+            <tr><td>When to use</td><td>Public API, browser/mobile clients, machine-to-machine</td><td>Letting an LLM safely act on a system without bespoke prompt-engineering</td></tr>
+          </tbody>
+        </table>
+        <p><strong>Rule of thumb:</strong> if a human or another service is calling it, expose REST. If an LLM is calling it, expose MCP — and have the MCP server call your REST API underneath.</p>
+      </div>
+
+      <h4 style="margin-top:1.2rem;">At a glance</h4>
+      <table>
+        <thead>
+          <tr><th>Protocol</th><th>Scope</th><th>Discovery</th><th>Transport</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>MCP</td><td>LLM ⇄ tools/data, per host</td><td>Dynamic <code>tools/list</code></td><td>stdio · HTTP · SSE</td><td>Open standard, multi-vendor adoption</td></tr>
+          <tr><td>Anthropic / OpenAI tools</td><td>Single API call</td><td>Static (in request)</td><td>HTTPS</td><td>Vendor-specific, GA</td></tr>
+          <tr><td>Google A2A</td><td>Agent ⇄ agent</td><td>Agent Card</td><td>JSON-RPC / HTTPS, streaming</td><td>Open spec, 2025</td></tr>
+          <tr><td>LangChain / LlamaIndex</td><td>In-process agent loop</td><td>Code registration</td><td>n/a (library)</td><td>Framework</td></tr>
+          <tr><td>OpenAPI-as-tools</td><td>Ad-hoc REST</td><td>OpenAPI spec</td><td>HTTPS</td><td>Pattern, not a protocol</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 4. How to create an MCP server -->
+    <div class="mcp-explainer__block">
+      <h3 class="mcp-explainer__heading">4. How to Create an MCP Server</h3>
+      <p>The fastest path is the official <strong>Python SDK</strong> (<code>pip install mcp</code>) using the <code>FastMCP</code> helper. The example below exposes one tool that the LLM can call.</p>
+      <ol>
+        <li><strong>Install the SDK</strong> &mdash; <code>pip install "mcp[cli]"</code> (the <code>cli</code> extra ships the MCP Inspector for testing).</li>
+        <li><strong>Write the server</strong> &mdash; one file is enough for a working server.</li>
+      </ol>
+      <pre><code># server.py
+from mcp.server.fastmcp import FastMCP
+
+mcp = FastMCP("weather-server")
+
+@mcp.tool()
+def get_weather(city: str) -> str:
+    """Return the current weather for a city."""
+    # Replace with a real API call.
+    return f"It's 18°C and clear in {city}."
+
+@mcp.resource("weather://recent")
+def recent_lookups() -> str:
+    """Most recent cities the user looked up."""
+    return "Sofia, London, Berlin"
+
+if __name__ == "__main__":
+    mcp.run(transport="stdio")</code></pre>
+      <ol start="3">
+        <li><strong>Register the server</strong> with a host. For Claude Desktop, edit <code>claude_desktop_config.json</code>:</li>
+      </ol>
+      <pre><code>{
+  "mcpServers": {
+    "weather": {
+      "command": "python",
+      "args": ["/abs/path/to/server.py"]
+    }
+  }
+}</code></pre>
+      <ol start="4">
+        <li><strong>Test with the Inspector</strong> before wiring it into a host:</li>
+      </ol>
+      <pre><code>npx @modelcontextprotocol/inspector python server.py
+# → Opens a browser UI to list tools, call them, and inspect raw JSON-RPC.</code></pre>
+      <ol start="5">
+        <li><strong>Restart the host</strong>. The new tool now appears in Claude's tool palette and the model can call it.</li>
+      </ol>
+
+      <h4 style="margin-top:1rem;">TypeScript equivalent</h4>
+      <pre><code>// server.ts — npm i @modelcontextprotocol/sdk zod
+import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
+import { z } from "zod";
+
+const server = new McpServer({ name: "weather-server", version: "1.0.0" });
+
+server.tool(
+  "get_weather",
+  { city: z.string().describe("City name") },
+  async ({ city }) => ({
+    content: [{ type: "text", text: `It's 18°C and clear in ${city}.` }]
+  })
+);
+
+await server.connect(new StdioServerTransport());</code></pre>
+      <p><strong>Production checklist:</strong> declare a JSON Schema for every tool input, return structured errors with <code>isError: true</code>, scope side-effects to a clearly-named tool (don't hide writes inside a "get"), add timeouts, log to stderr (stdout is the protocol channel), and pin the protocol version your SDK was tested against.</p>
+    </div>
+  </div>
+</section>
 
 <!-- ==================== Skill Grid ==================== -->
 <main class="skills" role="main">
@@ -3247,6 +3709,9 @@ img, svg, video, canvas {
 
 
   function render() {
+    const mcpExplainer = document.getElementById('mcp-explainer');
+    if (mcpExplainer) mcpExplainer.hidden = (activeSection !== 'mcp');
+
     const filtered = skills.filter(skill => {
       // Section filter (treat legacy 'agent' as 'dev')
       const sectionKey = (skill.section === 'agent' ? 'dev' : (skill.section || 'qa'));
@@ -3277,6 +3742,7 @@ img, svg, video, canvas {
       { key: 'dev', label: 'Dev', cssClass: 'section-header--dev' },
       { key: 'qa-prompts', label: 'QA Prompts', cssClass: 'section-header--qa-prompts' },
       { key: 'dev-prompts', label: 'Dev Prompts', cssClass: 'section-header--dev-prompts' },
+      { key: 'mcp', label: 'MCP', cssClass: 'section-header--mcp' },
     ];
 
     function renderCard(skill) {
