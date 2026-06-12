@@ -1,8 +1,10 @@
 ---
 id: ai-test-architect
 name: "AI Test Architect"
-folder: skills
-section: qa
+folder: agents
+section: agent
+roles:
+  - "qa"
 summary: "Designs end-to-end test strategies for AI/ML systems covering model performance, fairness, hallucination detection, data drift, and EU AI Act compliance."
 istqbTopics:
   - "AI Testing"

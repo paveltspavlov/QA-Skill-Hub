@@ -1,8 +1,10 @@
 ---
 id: performance-test-planner
 name: "Performance Test Planner"
-folder: skills
-section: qa
+folder: agents
+section: agent
+roles:
+  - "qa"
 summary: "Design load, stress, and soak test scenarios from system requirements — with workload models, acceptance thresholds, and tool-specific script outlines for k6 or JMeter."
 istqbTopics:
   - "Non-functional Testing"

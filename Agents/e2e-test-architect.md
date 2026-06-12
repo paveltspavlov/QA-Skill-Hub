@@ -1,8 +1,10 @@
 ---
 id: e2e-test-architect
 name: "E2E Test Architect"
-folder: skills
-section: qa
+folder: agents
+section: agent
+roles:
+  - "qa"
 summary: "Design end-to-end test suites from user journeys — with page object structure, test data strategy, environment setup, and Playwright/Cypress script outlines."
 istqbTopics:
   - "System Testing"

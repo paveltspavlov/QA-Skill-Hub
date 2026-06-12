@@ -16,7 +16,11 @@
         "test-writer-on-change.md",
         "code-reviewer-agent.md",
         "env-and-config-manager.md",
-        "db-migration-generator.md"
+        "db-migration-generator.md",
+        "ai-test-architect.md",
+        "e2e-test-architect.md",
+        "error-handling-analyzer.md",
+        "performance-test-planner.md"
       ]
     },
     {
@@ -28,7 +32,6 @@
         "test-case-generator.md",
         "requirements-analyst.md",
         "bug-pattern-analyzer.md",
-        "ai-test-architect.md",
         "regression-optimizer.md",
         "test-oracle-creator.md",
         "api-contract-tester.md",
@@ -36,11 +39,8 @@
         "frontend-accessibility-auditor.md",
         "unit-test-scaffolder.md",
         "database-test-designer.md",
-        "error-handling-analyzer.md",
-        "performance-test-planner.md",
         "ci-pipeline-test-advisor.md",
         "security-test-scenario-gen.md",
-        "e2e-test-architect.md",
         "api-endpoint-builder.md",
         "react-component-generator.md",
         "database-schema-designer.md",

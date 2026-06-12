@@ -1,8 +1,10 @@
 ---
 id: error-handling-analyzer
 name: "Error Handling Analyzer"
-folder: skills
-section: qa
+folder: agents
+section: agent
+roles:
+  - "qa"
 summary: "Audit a codebase or module for error handling gaps — uncaught exceptions, swallowed errors, missing retries, and unclear error messages — with fix recommendations."
 istqbTopics:
   - "Static Testing"
