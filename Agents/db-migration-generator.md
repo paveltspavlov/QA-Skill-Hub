@@ -3,6 +3,8 @@ id: db-migration-generator
 name: "DB Migration Generator"
 folder: agents
 section: agent
+roles:
+  - "dev"
 summary: "Generates safe, reversible database migration scripts from a schema change description — with up/down logic, data backfill steps, and zero-downtime deployment notes."
 tags:
   - "database"

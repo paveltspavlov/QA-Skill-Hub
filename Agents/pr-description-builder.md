@@ -3,6 +3,8 @@ id: pr-description-builder
 name: "PR Description Builder"
 folder: agents
 section: agent
+roles:
+  - "dev"
 summary: "Generates a structured pull request description from the branch diff — with summary, change list, testing notes, screenshots placeholder, and reviewer guidance."
 tags:
   - "git"

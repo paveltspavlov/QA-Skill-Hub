@@ -3,6 +3,8 @@ id: code-reviewer-agent
 name: "Code Reviewer Agent"
 folder: agents
 section: agent
+roles:
+  - "qa"
 summary: "Reviews your staged changes like a senior developer — catching logic bugs, security issues, performance problems, and naming concerns before you push."
 tags:
   - "code-review"

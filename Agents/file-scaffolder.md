@@ -3,6 +3,8 @@ id: file-scaffolder
 name: "File Scaffolder"
 folder: agents
 section: agent
+roles:
+  - "dev"
 summary: "Creates new files following your project's existing patterns — detects conventions for naming, exports, imports, folder structure, and boilerplate from neighboring files."
 tags:
   - "scaffolding"

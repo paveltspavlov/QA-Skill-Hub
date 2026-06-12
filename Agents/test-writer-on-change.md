@@ -3,6 +3,8 @@ id: test-writer-on-change
 name: "Test Writer on Change"
 folder: agents
 section: agent
+roles:
+  - "qa"
 summary: "Watches for code changes and automatically generates or updates unit tests for modified functions — maintaining coverage without manual test writing."
 tags:
   - "testing"

@@ -224,6 +224,42 @@ img, svg, video, canvas {
   border-color: rgba(255, 140, 50, 0.3);
 }
 
+.how-to__tabs {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+.how-to__tab {
+  font-family: var(--font-heading);
+  font-size: 0.8rem;
+  font-weight: 500;
+  padding: 0.4rem 1rem;
+  border-radius: 50px;
+  background: transparent;
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: color var(--transition), border-color var(--transition), background var(--transition);
+}
+
+.how-to__tab:hover {
+  border-color: var(--border-light);
+  color: var(--text-primary);
+}
+
+.how-to__tab--active {
+  background: var(--accent-dim);
+  color: var(--accent);
+  border-color: rgba(0, 212, 170, 0.3);
+}
+
+.how-to__steps[hidden] {
+  display: none;
+}
+
 @media (min-width: 640px) {
   .how-to__steps {
     grid-template-columns: repeat(2, 1fr);
@@ -297,6 +333,15 @@ img, svg, video, canvas {
   gap: 0.5rem;
   flex-wrap: wrap;
   align-items: center;
+}
+
+.filter-bar__row-label {
+  font-family: var(--font-heading);
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  min-width: 2.6rem;
 }
 
 .filter-bar__divider {
@@ -845,6 +890,73 @@ img, svg, video, canvas {
   line-height: 1.6;
 }
 
+/* Rendered-markdown view (elements parseMd emits beyond the base card styles) */
+.card__detail-view h1 {
+  font-family: var(--font-heading);
+  font-size: 1.05rem;
+  color: var(--text-primary);
+  margin: 0 0 0.75rem;
+}
+
+.card__detail-view h2 {
+  font-family: var(--font-heading);
+  font-size: 0.95rem;
+  color: var(--accent);
+  margin: 1.25rem 0 0.5rem;
+}
+
+.card__detail-view ol {
+  margin: 0 0 0.5rem 1.2rem;
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+/* Numbered items keep their numbers — no "> " bullet on top */
+.card__detail-view ol li {
+  padding-left: 0;
+}
+
+.card__detail-view ol li::before {
+  content: none;
+}
+
+.card__detail-view table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0.75rem 0;
+  font-size: 0.82rem;
+}
+
+.card__detail-view th,
+.card__detail-view td {
+  border: 1px solid var(--border);
+  padding: 6px 8px;
+  text-align: left;
+  color: var(--text-secondary);
+  vertical-align: top;
+}
+
+.card__detail-view th {
+  color: var(--accent);
+  background: var(--accent-dim);
+  font-weight: 600;
+}
+
+.card__detail-view blockquote {
+  border-left: 3px solid var(--accent);
+  padding-left: 0.75rem;
+  margin: 0.5rem 0;
+  color: var(--text-secondary);
+  font-size: 0.88rem;
+}
+
+.card__detail-view hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 1rem 0;
+}
+
 .card__premium-cta {
   display: flex;
   align-items: center;
@@ -1174,70 +1286,147 @@ img, svg, video, canvas {
 <!-- ==================== Hero ==================== -->
 <header class="hero" role="banner">
   <h1 class="hero__title">AI <span class="hero__title-accent">Skill Hub</span></h1>
-  <p class="hero__subtitle">AI-powered skills for QA & development. Built by a certified QA engineer.</p>
+  <p class="hero__subtitle">AI agents, skills &amp; prompt templates for QA & development. Built by a certified QA engineer.</p>
   <p class="hero__description">
-    Plug-and-play AI prompt templates and agent skills for your workflow. Each skill is ready to use with your favorite AI tools — QA skills are grounded in ISTQB standards.
+    A catalogue of ready-to-use <strong>Agents</strong> (autonomous, multi-step workers), <strong>Skills</strong> (install-once specialists), and <strong>Prompt templates</strong> (copy-paste one-offs) — all plain Markdown, loaded straight from this repository. QA content is grounded in ISTQB standards.
   </p>
-  <span class="hero__badge" id="skill-count">60 skills + 51 prompts</span>
+  <span class="hero__badge" id="skill-count">Agents · Skills · Prompt templates</span>
 </header>
 
-<!-- ==================== What Are Skills ==================== -->
-<section class="how-to" aria-label="What are skills">
+<!-- ==================== What's in the Hub ==================== -->
+<section class="how-to" aria-label="Agents, skills and prompt templates explained">
   <div class="how-to__inner">
-    <h2 class="how-to__title">What Are Skills?</h2>
+    <h2 class="how-to__title">Agents, Skills &amp; Prompt Templates</h2>
     <p class="how-to__intro">
-      A <strong>skill</strong> is a packaged, reusable instruction set that turns an AI assistant into a focused specialist for a specific job — writing test cases, reviewing code, generating sample data, drafting a test plan, and more. Instead of re-writing the same prompt every time, you save the skill once and invoke it on demand.
+      This hub catalogues three kinds of ready-to-use AI building blocks for QA and development work. All of them are plain Markdown files that live in this repository — browse them here and copy what you need, or take the files straight from the <code>Agents/</code>, <code>Skills/</code> and <code>Prompts/</code> folders.
     </p>
     <div class="how-to__steps">
       <div class="how-to__step">
-        <span class="how-to__step-num">★</span>
-        <h3 class="how-to__step-title">Save Time</h3>
-        <p class="how-to__step-desc">Skip the blank-page problem. Each skill ships with a tuned prompt, role definition, and output shape — so you go from request to deliverable in seconds, not hours.</p>
+        <span class="how-to__step-num how-to__step-num--agent">⚙</span>
+        <h3 class="how-to__step-title">Agents</h3>
+        <p class="how-to__step-desc">Autonomous, multi-step workers for an agentic tool (Claude Code, Copilot agent mode, Cursor). An agent reads your repo, runs commands, and proposes changes — e.g. the Commit Message Writer inspects your staged diff and writes a Conventional Commit.</p>
       </div>
       <div class="how-to__step">
-        <span class="how-to__step-num">✓</span>
-        <h3 class="how-to__step-title">Get Consistent Quality</h3>
-        <p class="how-to__step-desc">QA skills are grounded in ISTQB standards and built-in quality checklists. The AI follows the same rigorous structure every run, so output is review-ready rather than random.</p>
+        <span class="how-to__step-num">★</span>
+        <h3 class="how-to__step-title">Skills</h3>
+        <p class="how-to__step-desc">Focused specialists you install <strong>once</strong> in a project and invoke on demand. Each skill packages a role, a tuned prompt, a deliverable shape, and a quality checklist for one job — e.g. generating ISTQB-aligned test cases from a user story.</p>
       </div>
       <div class="how-to__step">
         <span class="how-to__step-num">⚡</span>
-        <h3 class="how-to__step-title">Stay In Your Workflow</h3>
-        <p class="how-to__step-desc">Drop a skill into your repo and invoke it from Copilot, Claude Code, or any AI tool that reads your project. No new app to learn — your assistant just gets smarter for the task at hand.</p>
+        <h3 class="how-to__step-title">Prompt Templates</h3>
+        <p class="how-to__step-desc">Zero-install, copy-paste prompts for one-off tasks. Fill in the <code>[PLACEHOLDERS]</code> and paste into any chat AI — Claude, ChatGPT, Copilot Chat, Gemini. Nothing is saved in your project.</p>
       </div>
       <div class="how-to__step">
-        <span class="how-to__step-num">⚙</span>
-        <h3 class="how-to__step-title">Customize Freely</h3>
-        <p class="how-to__step-desc">Skills are plain Markdown. Tweak the prompt, swap in your team's terminology, or chain skills together. They're starting points designed to fit your context.</p>
+        <span class="how-to__step-num">▤</span>
+        <h3 class="how-to__step-title">All Plain Markdown</h3>
+        <p class="how-to__step-desc">Every item is one <code>.md</code> file: YAML frontmatter (id, name, summary, tags) plus a Markdown body — exactly what the card's <strong>YAML</strong> / <strong>Markdown</strong> toggles show. What you copy here is identical to the file in the repo.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ==================== How to Use ==================== -->
+<!-- ==================== How to Use (per-type tabs) ==================== -->
 <section class="how-to" aria-label="How to use">
   <div class="how-to__inner">
-    <h2 class="how-to__title">How to Use These Skills</h2>
-    <p class="how-to__intro">Each card below is a complete, ready-to-use skill. To install one in your project, copy the entire card content and save it as a Markdown file inside your repo's <code>.copilot/skills/</code> folder.</p>
-    <div class="how-to__steps">
+    <h2 class="how-to__title">How to Use Them</h2>
+    <p class="how-to__intro">Pick the type you're interested in. Every expanded card has a <strong>Copy</strong> button — or grab the identical file from the repository folder. Whatever the tool, always review AI output before committing it.</p>
+
+    <div class="how-to__tabs" role="tablist" aria-label="Usage guide by content type">
+      <button class="how-to__tab how-to__tab--active" role="tab" data-usage="skills" aria-selected="true">Use a Skill</button>
+      <button class="how-to__tab" role="tab" data-usage="agents" aria-selected="false">Use an Agent</button>
+      <button class="how-to__tab" role="tab" data-usage="prompts" aria-selected="false">Use a Prompt</button>
+      <button class="how-to__tab" role="tab" data-usage="repo" aria-selected="false">From the Repo</button>
+    </div>
+
+    <div class="how-to__steps" role="tabpanel" data-usage-panel="skills">
       <div class="how-to__step">
         <span class="how-to__step-num">1</span>
-        <h3 class="how-to__step-title">Pick a Skill</h3>
-        <p class="how-to__step-desc">Browse the Agents, Skills, and Prompts sections below. Click any card to expand it and reveal the full body — Role, prompt, deliverable shape, and quality checklist.</p>
+        <h3 class="how-to__step-title">Pick &amp; Copy for Copilot</h3>
+        <p class="how-to__step-desc">Browse the <strong>Skills</strong> section below, expand a card and switch the toggle to <strong>Copilot</strong> — it shows a ready-to-save <code>.prompt.md</code> file (frontmatter + body). Hit <strong>Copy</strong>.</p>
       </div>
       <div class="how-to__step">
         <span class="how-to__step-num">2</span>
-        <h3 class="how-to__step-title">Copy the Entire Card</h3>
-        <p class="how-to__step-desc">Select <strong>all</strong> the content shown when the card is expanded — from the title down to the last line. Don't copy just the prompt block; the agent needs the full structure to behave correctly.</p>
+        <h3 class="how-to__step-title">Save as a Prompt File</h3>
+        <p class="how-to__step-desc">In your repo, save it as <code>.github/prompts/&lt;skill-id&gt;.prompt.md</code>. VS Code picks it up automatically — no extension settings needed (Copilot prompt files are on by default).</p>
       </div>
       <div class="how-to__step">
         <span class="how-to__step-num">3</span>
-        <h3 class="how-to__step-title">Save to <code>.copilot/skills/</code></h3>
-        <p class="how-to__step-desc">In your project root, create the folder <code>.copilot/skills/</code> if it doesn't exist. Paste the copied content into a new file named <code>&lt;skill-id&gt;.md</code> (e.g. <code>test-case-generator.md</code>).</p>
+        <h3 class="how-to__step-title">Run It in Copilot Chat</h3>
+        <p class="how-to__step-desc">Type <code>/&lt;skill-id&gt;</code> in Copilot Chat (e.g. <code>/test-case-generator</code>), add your story or code, and send. For an always-on skill, put it in <code>.github/copilot-instructions.md</code> instead.</p>
       </div>
       <div class="how-to__step">
         <span class="how-to__step-num">4</span>
-        <h3 class="how-to__step-title">Invoke from Your AI Tool</h3>
-        <p class="how-to__step-desc">Open Copilot Chat, Claude Code, or any AI assistant that reads your repo. Reference the skill by name or paste the prompt block. Always review the output before committing — AI output is a starting point, not a final answer.</p>
+        <h3 class="how-to__step-title">Any Other Tool</h3>
+        <p class="how-to__step-desc">No prompt-file support? Every skill includes a <strong>Ready-to-use prompt</strong> block — copy just that into the chat, replace the <code>[PLACEHOLDERS]</code>, and you get the same structured output.</p>
+      </div>
+    </div>
+
+    <div class="how-to__steps" role="tabpanel" data-usage-panel="agents" hidden>
+      <div class="how-to__step">
+        <span class="how-to__step-num how-to__step-num--agent">1</span>
+        <h3 class="how-to__step-title">What You Need</h3>
+        <p class="how-to__step-desc">Agents do multi-step work — reading files, running <code>git</code>, editing code — so they need <strong>Copilot agent mode</strong> (the mode picker in VS Code's Copilot Chat). Cursor and Claude Code work too. In a chat-only tool, fall back to the agent's prompt block.</p>
+      </div>
+      <div class="how-to__step">
+        <span class="how-to__step-num how-to__step-num--agent">2</span>
+        <h3 class="how-to__step-title">Copy for Copilot</h3>
+        <p class="how-to__step-desc">Expand an agent card, switch the toggle to <strong>Copilot</strong> and hit <strong>Copy</strong> — for agents the generated <code>.prompt.md</code> sets <code>mode: agent</code>, so Copilot runs it with file and terminal access. Save it as <code>.github/prompts/&lt;agent-id&gt;.prompt.md</code>.</p>
+      </div>
+      <div class="how-to__step">
+        <span class="how-to__step-num how-to__step-num--agent">3</span>
+        <h3 class="how-to__step-title">Make It Always Available</h3>
+        <p class="how-to__step-desc">Want the behaviour without typing <code>/&lt;agent-id&gt;</code>? Add the card's body to <code>.github/copilot-instructions.md</code> or your repo's <code>AGENTS.md</code> so Copilot agent mode (and the Copilot coding agent on github.com) always knows the workflow.</p>
+      </div>
+      <div class="how-to__step">
+        <span class="how-to__step-num how-to__step-num--agent">4</span>
+        <h3 class="how-to__step-title">Invoke &amp; Review</h3>
+        <p class="how-to__step-desc">Run <code>/&lt;agent-id&gt;</code> in agent mode, or use the trigger phrases each card lists ("write a commit message for these changes"). The agent inspects your repo and proposes changes — always review the diff before committing or pushing anything.</p>
+      </div>
+    </div>
+
+    <div class="how-to__steps" role="tabpanel" data-usage-panel="prompts" hidden>
+      <div class="how-to__step">
+        <span class="how-to__step-num">1</span>
+        <h3 class="how-to__step-title">No Install Needed</h3>
+        <p class="how-to__step-desc">Expand a card in the <strong>Prompts</strong> section and hit <strong>Copy</strong>. Each card tells you <em>when to use</em> the prompt and what output to expect.</p>
+      </div>
+      <div class="how-to__step">
+        <span class="how-to__step-num">2</span>
+        <h3 class="how-to__step-title">Fill the Placeholders</h3>
+        <p class="how-to__step-desc">Replace every <code>[PLACEHOLDER]</code> — system description, user story, code, logs — before sending. The more concrete the input, the better the output.</p>
+      </div>
+      <div class="how-to__step">
+        <span class="how-to__step-num">3</span>
+        <h3 class="how-to__step-title">Paste Anywhere</h3>
+        <p class="how-to__step-desc">Prompts are plain text and tool-agnostic: Claude, ChatGPT, Copilot Chat, Gemini — anything with a chat box works.</p>
+      </div>
+      <div class="how-to__step">
+        <span class="how-to__step-num">4</span>
+        <h3 class="how-to__step-title">Promote to a Skill</h3>
+        <p class="how-to__step-desc">Reusing the same prompt every sprint? Save it as a skill file in your project (see the <em>Use a Skill</em> tab) so your assistant can trigger it automatically instead of you pasting it each time.</p>
+      </div>
+    </div>
+
+    <div class="how-to__steps" role="tabpanel" data-usage-panel="repo" hidden>
+      <div class="how-to__step">
+        <span class="how-to__step-num">1</span>
+        <h3 class="how-to__step-title">Clone the Repository</h3>
+        <p class="how-to__step-desc">Everything on this page is loaded at runtime from three folders: <code>Agents/</code>, <code>Skills/</code> and <code>Prompts/</code> — one Markdown file per item, named after its id.</p>
+      </div>
+      <div class="how-to__step">
+        <span class="how-to__step-num">2</span>
+        <h3 class="how-to__step-title">File Anatomy</h3>
+        <p class="how-to__step-desc">Each file is YAML frontmatter (what the <strong>YAML</strong> toggle shows — the header for a Copilot/Claude skill file) followed by the full Markdown body (the <strong>Markdown</strong> toggle).</p>
+      </div>
+      <div class="how-to__step">
+        <span class="how-to__step-num">3</span>
+        <h3 class="how-to__step-title">Copy Files Directly</h3>
+        <p class="how-to__step-desc">Skip the browser entirely: copy <code>Skills/test-case-generator.md</code> or <code>Agents/error-fixer.md</code> into your project's <code>.github/prompts/</code> folder as <code>&lt;id&gt;.prompt.md</code> (the card's <strong>Copilot</strong> toggle adds the prompt-file header for you).</p>
+      </div>
+      <div class="how-to__step">
+        <span class="how-to__step-num">4</span>
+        <h3 class="how-to__step-title">Run &amp; Extend Locally</h3>
+        <p class="how-to__step-desc">Serve the catalogue with <code>python -m http.server 8000</code> from the repo root. Drop your own <code>.md</code> file into a folder and refresh — it appears automatically. Run <code>python generate_content.py --scan</code> only to persist ordering in <code>manifest.json</code> (needed for hosts without folder listings, e.g. GitHub Pages).</p>
       </div>
     </div>
   </div>
@@ -1257,10 +1446,18 @@ img, svg, video, canvas {
       >
     </div>
     <div class="filter-bar__row">
+      <span class="filter-bar__row-label">Type</span>
       <button class="filter-pill filter-pill--section filter-pill--active" data-section="all" aria-pressed="true">All</button>
       <button class="filter-pill filter-pill--section filter-pill--section-dev" data-section="agents" aria-pressed="false">Agents</button>
       <button class="filter-pill filter-pill--section filter-pill--section-qa" data-section="skills" aria-pressed="false">Skills</button>
       <button class="filter-pill filter-pill--section filter-pill--section-qa-prompts" data-section="prompts" aria-pressed="false">Prompts</button>
+      <button class="filter-pill filter-pill--section filter-pill--section-mcp" data-section="mcp" aria-pressed="false">MCP</button>
+    </div>
+    <div class="filter-bar__row" role="group" aria-label="Filter by role">
+      <span class="filter-bar__row-label">Role</span>
+      <button class="filter-pill filter-pill--role filter-pill--active" data-role="all" aria-pressed="true">All</button>
+      <button class="filter-pill filter-pill--role filter-pill--section-qa" data-role="qa" aria-pressed="false">QA</button>
+      <button class="filter-pill filter-pill--role filter-pill--section-dev" data-role="dev" aria-pressed="false">DEV</button>
     </div>
   </div>
 </nav>
@@ -1614,6 +1811,7 @@ await server.connect(new StdioServerTransport());</code></pre>
       istqbTopics: meta.istqbTopics || [],
       aiTools: meta.aiTools || [],
       tags: meta.tags || [],
+      roles: meta.roles || [],
       detailMd: body.trim(),
       frontmatter: rawFrontmatter.trim(),
     };
@@ -1631,6 +1829,30 @@ await server.connect(new StdioServerTransport());</code></pre>
     }
 
     folders = manifest.folders || [];
+
+    // Auto-discover .md files that aren't in the manifest yet by reading the
+    // server's directory listing (python -m http.server, nginx autoindex, etc.
+    // render one). Drop a new file into Agents/, Skills/ or Prompts/ and it
+    // appears on refresh — no --scan needed. On hosts without folder listings
+    // (e.g. GitHub Pages) this fetch 404s and we silently fall back to the
+    // manifest alone.
+    await Promise.all(folders.map(async (folder) => {
+      try {
+        const res = await fetch(folder.path + '/', { cache: 'no-store' });
+        if (!res.ok) return;
+        const type = res.headers.get('content-type') || '';
+        if (!type.includes('text/html')) return;
+        const html = await res.text();
+        const re = /href="([^"]+\.md)"/gi;
+        folder.files = folder.files || [];
+        let m;
+        while ((m = re.exec(html)) !== null) {
+          const name = decodeURIComponent(m[1]).split('/').pop();
+          if (name && !folder.files.includes(name)) folder.files.push(name);
+        }
+      } catch (_) { /* no directory listing available — manifest only */ }
+    }));
+
     const loaded = [];
     await Promise.all(folders.flatMap(folder =>
       (folder.files || []).map(async (file) => {
@@ -1654,7 +1876,18 @@ await server.connect(new StdioServerTransport());</code></pre>
       (folderRank[a.folderKey] - folderRank[b.folderKey]) || (a.order - b.order));
     skills = loaded.map(x => x.skill);
 
-    render();
+    // Hero badge reflects whatever is actually in the folders.
+    const badge = document.getElementById('skill-count');
+    if (badge) {
+      const counts = {};
+      skills.forEach(s => { counts[s.folder] = (counts[s.folder] || 0) + 1; });
+      badge.textContent =
+        (counts.agents || 0) + ' agents · ' +
+        (counts.skills || 0) + ' skills · ' +
+        (counts.prompts || 0) + ' prompt templates';
+    }
+
+    applyHash(); // applies any #section/<id> deep link, then renders
   }
 
   function showLoadError(err) {
@@ -1673,9 +1906,23 @@ await server.connect(new StdioServerTransport());</code></pre>
 
   // ==================== State ====================
   let activeSection = 'all';
+  let activeRole = 'all';
   let searchQuery = '';
   let expandedId = null;
   let folders = [];
+
+  // QA / DEV classification: explicit `roles` frontmatter wins, otherwise it
+  // is derived from `section` (qa / qa-prompts → qa, dev / dev-prompts / mcp
+  // → dev). Unclassifiable items show under both roles.
+  function skillRoles(skill) {
+    if (skill.roles && skill.roles.length) {
+      return skill.roles.map(r => String(r).toLowerCase());
+    }
+    const sec = (skill.section || '').toLowerCase();
+    if (sec.includes('qa')) return ['qa'];
+    if (sec.includes('dev') || sec === 'mcp') return ['dev'];
+    return ['qa', 'dev'];
+  }
 
   // ==================== DOM Refs ====================
   const grid = document.getElementById('skills-grid');
@@ -1848,12 +2095,38 @@ await server.connect(new StdioServerTransport());</code></pre>
     return lines.join('\n');
   }
 
+  // A ready-to-save GitHub Copilot prompt file (.github/prompts/<id>.prompt.md).
+  // Agents run with full agent-mode capabilities; skills and prompts run as
+  // regular chat requests.
+  function skillToCopilot(skill) {
+    const mode = skill.folder === 'agents' ? 'agent' : 'ask';
+    const desc = String(skill.summary || skill.name).replace(/'/g, "''");
+    return [
+      '---',
+      "description: '" + desc + "'",
+      'mode: ' + mode,
+      '---',
+      '',
+      skill.detailMd,
+    ].join('\n');
+  }
+
 
   function render() {
+    const isMcp = (skill) =>
+      (skill.tags || []).includes('mcp') || skill.id.startsWith('mcp-');
+
     const filtered = skills.filter(skill => {
-      // Section filter — now grouped by folder (agents / skills / prompts)
-      if (activeSection !== 'all' && skill.folder !== activeSection) return false;
-      // Search filter
+      // Section filter — grouped by folder (agents / skills / prompts),
+      // plus the virtual "mcp" section (MCP-tagged skills + explainer).
+      if (activeSection === 'mcp') {
+        if (!isMcp(skill)) return false;
+      } else if (activeSection !== 'all' && skill.folder !== activeSection) {
+        return false;
+      }
+      // Role filter (QA / DEV)
+      if (activeRole !== 'all' && !skillRoles(skill).includes(activeRole)) return false;
+      // Search filter — metadata and full markdown body
       if (searchQuery) {
         const q = searchQuery.toLowerCase();
         const haystack = [
@@ -1861,13 +2134,17 @@ await server.connect(new StdioServerTransport());</code></pre>
           skill.summary,
           ...skill.tags,
           ...(skill.istqbTopics || []),
-          ...(skill.compatibleWith || []),
-          skill.triggerContext || ''
+          ...(skill.aiTools || []),
+          skill.detailMd
         ].join(' ').toLowerCase();
         if (!haystack.includes(q)) return false;
       }
       return true;
     });
+
+    // The MCP explainer is only relevant while the MCP pill is active.
+    const mcpExplainer = document.getElementById('mcp-explainer');
+    if (mcpExplainer) mcpExplainer.hidden = activeSection !== 'mcp';
 
     if (filtered.length === 0) {
       grid.innerHTML = '<div class="skills__empty"><div class="skills__empty-icon">&#x2609;</div>No skills match your filters.<br>Try adjusting your search.</div>';
@@ -1880,11 +2157,13 @@ await server.connect(new StdioServerTransport());</code></pre>
       skills: 'section-header--dev',
       prompts: 'section-header--qa-prompts',
     };
-    const sections = (folders.length ? folders : [
-      { key: 'agents', label: 'Agents' },
-      { key: 'skills', label: 'Skills' },
-      { key: 'prompts', label: 'Prompts' },
-    ]).map(f => ({ key: f.key, label: f.label, blurb: f.blurb, cssClass: cssByKey[f.key] || '' }));
+    const sections = activeSection === 'mcp'
+      ? [{ key: 'skills', label: 'MCP', blurb: 'Skills for designing, building, testing and integrating Model Context Protocol servers.', cssClass: 'section-header--mcp' }]
+      : (folders.length ? folders : [
+          { key: 'agents', label: 'Agents' },
+          { key: 'skills', label: 'Skills' },
+          { key: 'prompts', label: 'Prompts' },
+        ]).map(f => ({ key: f.key, label: f.label, blurb: f.blurb, cssClass: cssByKey[f.key] || '' }));
 
     function renderCard(skill) {
       const isExpanded = expandedId === skill.id;
@@ -1904,8 +2183,10 @@ await server.connect(new StdioServerTransport());</code></pre>
               <div class="card__badges">
                 ${isExpanded ? `
                   <div class="card__format-controls">
-                    <button class="card__format-btn card__format-btn--active" data-format="markdown" data-skill-id="${skill.id}" aria-label="Show markdown format">Markdown</button>
-                    <button class="card__format-btn" data-format="yaml" data-skill-id="${skill.id}" aria-label="Show YAML format">YAML</button>
+                    <button class="card__format-btn" data-format="rendered" data-skill-id="${skill.id}" aria-label="Show rendered preview">Rendered</button>
+                    <button class="card__format-btn card__format-btn--active" data-format="markdown" data-skill-id="${skill.id}" aria-label="Show raw markdown">Markdown</button>
+                    <button class="card__format-btn" data-format="yaml" data-skill-id="${skill.id}" aria-label="Show YAML frontmatter">YAML</button>
+                    <button class="card__format-btn" data-format="copilot" data-skill-id="${skill.id}" aria-label="Show GitHub Copilot prompt file" title="Ready-to-save .github/prompts/${escapeHtml(skill.id)}.prompt.md">Copilot</button>
                   </div>
                   <button class="card__copy-btn" data-copy="${escapeHtml(skill.id)}" aria-label="Copy to clipboard">Copy</button>
                   <button class="card__close-btn" data-close="true" aria-label="Close skill details">✕</button>
@@ -1916,8 +2197,10 @@ await server.connect(new StdioServerTransport());</code></pre>
           </div>
           <div class="card__detail">
             <div class="card__detail-inner">
-              <pre class="card__detail-raw markdown-format"><code>${escapeHtml(skill.detailMd)}</code></pre>
-              <pre class="card__detail-raw yaml-format" style="display: none;"><code>${escapeHtml(skillToYaml(skill))}</code></pre>
+              <div class="card__detail-view" data-view="rendered" style="display: none;">${parseMd(skill.detailMd)}</div>
+              <pre class="card__detail-raw" data-view="markdown"><code>${escapeHtml(skill.detailMd)}</code></pre>
+              <pre class="card__detail-raw" data-view="yaml" style="display: none;"><code>${escapeHtml(skillToYaml(skill))}</code></pre>
+              <pre class="card__detail-raw" data-view="copilot" style="display: none;"><code>${escapeHtml(skillToCopilot(skill))}</code></pre>
             </div>
           </div>
         </article>
@@ -1941,6 +2224,7 @@ await server.connect(new StdioServerTransport());</code></pre>
       html += sectionSkills.map(renderCard).join('');
     }
     grid.innerHTML = html;
+    updateHash();
   }
 
   // ==================== Events ====================
@@ -1970,16 +2254,9 @@ await server.connect(new StdioServerTransport());</code></pre>
       card.querySelectorAll('[data-format]').forEach(btn => {
         btn.classList.toggle('card__format-btn--active', btn.dataset.format === format);
       });
-
-      const markdownPre = card.querySelector('.markdown-format');
-      const yamlPre = card.querySelector('.yaml-format');
-      if (format === 'markdown') {
-        markdownPre.style.display = 'block';
-        yamlPre.style.display = 'none';
-      } else {
-        markdownPre.style.display = 'none';
-        yamlPre.style.display = 'block';
-      }
+      card.querySelectorAll('[data-view]').forEach(view => {
+        view.style.display = view.dataset.view === format ? 'block' : 'none';
+      });
       return;
     }
 
@@ -1992,7 +2269,10 @@ await server.connect(new StdioServerTransport());</code></pre>
       const card = e.target.closest('.card');
       const activeFormat = card.querySelector('[data-format].card__format-btn--active');
       const format = activeFormat ? activeFormat.dataset.format : 'markdown';
-      const contentToCopy = format === 'yaml' ? skillToYaml(skill) : skill.detailMd;
+      const contentToCopy =
+        format === 'yaml' ? skillToYaml(skill) :
+        format === 'copilot' ? skillToCopilot(skill) :
+        skill.detailMd; // rendered + markdown both copy the source markdown
       navigator.clipboard.writeText(contentToCopy).then(() => {
         const original = copyBtn.textContent;
         copyBtn.textContent = 'Copied!';
@@ -2033,17 +2313,90 @@ await server.connect(new StdioServerTransport());</code></pre>
   });
 
   // Section pills
+  function setActiveSection(key) {
+    activeSection = key;
+    sectionPills.forEach(p => {
+      const isActive = p.dataset.section === key;
+      p.classList.toggle('filter-pill--active', isActive);
+      p.setAttribute('aria-pressed', isActive);
+    });
+    activateUsageTab(key); // keep the usage guide in step with the filter
+  }
+
   sectionPills.forEach(pill => {
     pill.addEventListener('click', function() {
-      activeSection = this.dataset.section;
-      sectionPills.forEach(p => {
-        const isActive = p.dataset.section === activeSection;
+      setActiveSection(this.dataset.section);
+      expandedId = null;
+      render();
+    });
+  });
+
+  // Role pills (QA / DEV)
+  const rolePills = document.querySelectorAll('[data-role]');
+  rolePills.forEach(pill => {
+    pill.addEventListener('click', function() {
+      activeRole = this.dataset.role;
+      rolePills.forEach(p => {
+        const isActive = p.dataset.role === activeRole;
         p.classList.toggle('filter-pill--active', isActive);
         p.setAttribute('aria-pressed', isActive);
       });
       expandedId = null;
       render();
     });
+  });
+
+  // ==================== Deep links ====================
+  // #agents | #skills | #prompts | #mcp select a filter; #<section>/<id>
+  // additionally expands that card, e.g. #skills/test-case-generator.
+  const SECTION_KEYS = ['all', 'agents', 'skills', 'prompts', 'mcp'];
+  let hashReady = false; // suppress hash writes until the initial hash is applied
+
+  function updateHash() {
+    if (!hashReady) return;
+    const target = expandedId
+      ? '#' + activeSection + '/' + encodeURIComponent(expandedId)
+      : (activeSection === 'all' ? '' : '#' + activeSection);
+    if (location.hash === target || (!target && !location.hash)) return;
+    history.replaceState(null, '', target || location.pathname + location.search);
+  }
+
+  function applyHash() {
+    hashReady = false;
+    const raw = decodeURIComponent(location.hash.replace(/^#/, ''));
+    if (raw) {
+      const slash = raw.indexOf('/');
+      const sec = slash === -1 ? raw : raw.slice(0, slash);
+      const id = slash === -1 ? '' : raw.slice(slash + 1);
+      if (SECTION_KEYS.includes(sec)) setActiveSection(sec);
+      if (id && skills.some(s => s.id === id)) expandedId = id;
+    }
+    hashReady = true;
+    render();
+    if (expandedId) {
+      const el = grid.querySelector('.card--expanded');
+      if (el) el.scrollIntoView({ block: 'start', behavior: 'smooth' });
+    }
+  }
+
+  window.addEventListener('hashchange', applyHash);
+
+  // ==================== Usage-guide tabs ====================
+  const usageTabs = document.querySelectorAll('[data-usage]');
+  const usagePanels = document.querySelectorAll('[data-usage-panel]');
+
+  function activateUsageTab(key) {
+    if (![...usagePanels].some(p => p.dataset.usagePanel === key)) return;
+    usageTabs.forEach(t => {
+      const on = t.dataset.usage === key;
+      t.classList.toggle('how-to__tab--active', on);
+      t.setAttribute('aria-selected', on);
+    });
+    usagePanels.forEach(p => { p.hidden = p.dataset.usagePanel !== key; });
+  }
+
+  usageTabs.forEach(tab => {
+    tab.addEventListener('click', () => activateUsageTab(tab.dataset.usage));
   });
 
   // ==================== Initial Render ====================

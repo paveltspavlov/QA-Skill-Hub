@@ -72,19 +72,49 @@ plain static files with no build step.
 ## Using the app
 
 - **Browse** the three sections: **Agents**, **Skills**, **Prompts**.
-- **Filter** with the pills (All / Agents / Skills / Prompts) or **search** by name,
-  summary, or tag.
-- **Click a card** to expand it and read the full body.
-- Inside an expanded card, toggle between:
-  - **Markdown** — the full reference body.
-  - **YAML** — the frontmatter you paste into a Copilot/Claude skill file.
-- **Copy** copies whichever format is currently selected.
+- **Filter** with the **Type** pills (All / Agents / Skills / Prompts / MCP)
+  and the **Role** pills (All / QA / DEV), or **search** by name, summary, tag,
+  or any text in the body. The **MCP** pill shows the Model Context Protocol
+  explainer plus the MCP-tagged skills. The role comes from each file's
+  `roles` frontmatter list when present, otherwise from its `section`
+  (`qa*` → QA, `dev*` / `mcp` → DEV).
+- **Click a card** to expand it. Inside an expanded card, toggle between:
+  - **Rendered** — the body formatted for reading.
+  - **Markdown** — the raw reference body.
+  - **YAML** — the file's frontmatter.
+  - **Copilot** — a ready-to-save GitHub Copilot prompt file
+    (`description` + `mode` frontmatter followed by the body; agents get
+    `mode: agent`, everything else `mode: ask`).
+- **Copy** copies whichever format is currently selected (Rendered copies the
+  raw Markdown).
+- **Deep links** — the URL hash tracks what you're looking at:
+  `#skills` selects a filter, `#skills/test-case-generator` also expands that
+  card. Share the link and the recipient lands on the same view.
+
+The landing page has a tabbed **How to Use Them** guide with the same
+information per content type; selecting a filter pill switches the guide to the
+matching tab.
 
 ### Where the copied content goes
 
-To install an item in your own project, copy it and save it as a Markdown file
-inside your repo's `.copilot/skills/` folder (or wherever your AI tool reads
-skills from), e.g. `.copilot/skills/commit-message-writer.md`.
+The three content types are used differently:
+
+- **Agents** — need an agentic tool, primarily **GitHub Copilot agent mode**
+  (also Cursor, Claude Code). Use the card's **Copilot** toggle and save the
+  result as `.github/prompts/<agent-id>.prompt.md` — it carries `mode: agent`,
+  so running `/<agent-id>` in Copilot Chat gives it file and terminal access.
+  For an always-on workflow, add the body to `.github/copilot-instructions.md`
+  or `AGENTS.md`.
+- **Skills** — install once per project. Use the **Copilot** toggle and save as
+  `.github/prompts/<skill-id>.prompt.md`, then run `/<skill-id>` in Copilot
+  Chat. Tools without prompt-file support can use the skill's
+  *Ready-to-use prompt* block directly.
+- **Prompts** — nothing to install. Copy the prompt block, replace the
+  `[PLACEHOLDERS]`, and paste into any chat AI.
+
+You can also skip the app entirely and copy the `.md` files straight from the
+`Agents/`, `Skills/`, and `Prompts/` folders — the Markdown body is identical
+to what the Copy button produces.
 
 ---
 
@@ -99,7 +129,11 @@ There are two ways to add an item.
 2. Give it frontmatter and a body (see the format above). Minimum fields:
    `id`, `name`, `folder` (`agents` | `skills` | `prompts`), and `summary`.
    `tags`, `aiTools`, and `istqbTopics` are optional lists.
-3. Register it in the manifest by rescanning the folders:
+3. Refresh the browser — the new card appears in its section automatically.
+   On servers that render folder indexes (`python -m http.server`, nginx
+   `autoindex`, `npx serve`, …) the app reads the directory listing and picks
+   up any `.md` file that isn't in the manifest yet.
+4. Optionally, persist it in the manifest:
 
    ```bash
    python generate_content.py --scan
@@ -108,11 +142,12 @@ There are two ways to add an item.
    This rebuilds `manifest.json` from whatever `.md` files are present. Existing
    ordering is preserved, brand-new files are appended, and deleted files are
    dropped.
-4. Refresh the browser — the new card appears in its section.
 
-> **Why the `--scan` step?** The app is fully static, so the browser can't list a
-> folder's contents on its own. `manifest.json` is the index it reads instead, and
-> `--scan` keeps that index in sync with the files on disk.
+> **When is `--scan` still needed?** Some static hosts (GitHub Pages, S3
+> without index listings) don't expose folder contents, so the app falls back
+> to `manifest.json` alone there. Run `--scan` before deploying to such a host,
+> or whenever you want to control the card order (the manifest's `files` arrays
+> define it).
 
 ### Option B — regenerate everything
 

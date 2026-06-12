@@ -3,6 +3,8 @@ id: env-and-config-manager
 name: "Environment & Config Manager"
 folder: agents
 section: agent
+roles:
+  - "dev"
 summary: "Keeps .env files, config schemas, and environment documentation in sync — detects missing variables, type mismatches, and undocumented secrets across environments."
 tags:
   - "environment"

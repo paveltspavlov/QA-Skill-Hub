@@ -3,6 +3,8 @@ id: dependency-updater
 name: "Dependency Updater"
 folder: agents
 section: agent
+roles:
+  - "dev"
 summary: "Audits outdated dependencies, checks changelogs for breaking changes, and applies safe updates with targeted test runs — one package at a time, not a blind npm update."
 tags:
   - "dependencies"

@@ -3,6 +3,8 @@ id: error-fixer
 name: "Error Fixer"
 folder: agents
 section: agent
+roles:
+  - "dev"
 summary: "Reads a runtime error or build failure from the terminal, traces it to the source, applies a fix, and re-runs the failing command to verify — in a loop until green."
 tags:
   - "debugging"

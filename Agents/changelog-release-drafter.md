@@ -3,6 +3,8 @@ id: changelog-release-drafter
 name: "Changelog & Release Drafter"
 folder: agents
 section: agent
+roles:
+  - "dev"
 summary: "Reads commit history since the last tag, categorizes changes, and drafts a changelog entry and GitHub release notes — ready to publish."
 tags:
   - "changelog"

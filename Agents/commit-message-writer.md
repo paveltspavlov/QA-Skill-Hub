@@ -3,6 +3,8 @@ id: commit-message-writer
 name: "Commit Message Writer"
 folder: agents
 section: agent
+roles:
+  - "dev"
 summary: "Analyzes staged git changes and writes a Conventional Commits message with scope, breaking change flags, and a body that explains WHY, not just WHAT."
 tags:
   - "git"
