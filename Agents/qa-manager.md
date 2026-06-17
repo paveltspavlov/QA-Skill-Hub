@@ -44,6 +44,9 @@ when invoked again on the same task, detect where you stopped (phase 0) and resu
 3. Read `.vscode/current_task/plan.md` if it exists and scan `.vscode/current_task/` for
    step output files (`NN-<agent-name>.md`). Completed steps are those with an output
    file. Resume at the first incomplete step. If there is no plan yet, continue to Phase 1.
+4. Read `.vscode/qa_memory.md` if it exists — use its entries to skip re-discovering known
+   facts (app URL, auth method, tech stack, discovered pages/endpoints, known issues). If the
+   file does not exist yet, create it in Phase 3 after the final report is written.
 
 ### Phase 1 — Plan
 
@@ -103,6 +106,10 @@ When every step has an output file:
      the user can trace back any hallucination or reasoning error.
    - **Gaps & next actions** — prioritized recommendations.
 2. Summarize the outcome to the user and point them at the artifacts.
+3. Update `.vscode/qa_memory.md` — append key facts learned in this workflow (app URL,
+   confirmed auth method, newly discovered endpoints, critical bugs, ratified decisions) as
+   concise one-line bullets under the relevant section. Create the file if missing, with
+   sections: `## Project`, `## Discovered`, `## Known Issues`, `## Key Decisions`.
 
 ## Agent Roster
 
