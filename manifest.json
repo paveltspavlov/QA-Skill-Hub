@@ -30,6 +30,7 @@
         "flake-triage.md",
         "inventory-builder.md",
         "performance-profiler.md",
+        "playwright-architect.md",
         "playwright-copilot.md",
         "playwright-executor.md",
         "playwright-recorder.md",
