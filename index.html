@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI Skill Hub — AI-Powered Skills for QA & Development, Grounded in ISTQB Standards</title>
-<meta name="description" content="Plug-and-play AI skills for QA & development workflows — designed by a certified QA engineer, grounded in ISTQB standards.">
+<title>QA Skill Hub v2.0 — Reusable Agents, Skills and M365 Profiles</title>
+<meta name="description" content="Four cross-platform QA and development agent roles, reusable Agent Skills, version comparison, and Microsoft 365 Copilot agent profiles.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
@@ -118,6 +118,41 @@ img, svg, video, canvas {
   border-radius: 50px;
   letter-spacing: 0.02em;
 }
+
+.hero__meta { display: flex; justify-content: center; align-items: center; gap: 1rem; flex-wrap: wrap; }
+.version-control { display: inline-flex; align-items: center; gap: 0.55rem; padding: 0.35rem 0.65rem; border: 1px solid var(--border-light); border-radius: 999px; background: rgba(29, 29, 64, 0.82); }
+.version-control__label { font: 700 0.85rem var(--font-heading); color: var(--text-muted); }
+.version-control__label[aria-current="page"] { color: var(--text-primary); }
+.version-switch { position: relative; width: 72px; height: 40px; border: 2px solid var(--accent); border-radius: 999px; background: var(--accent-dim); cursor: pointer; transition: background var(--transition), box-shadow var(--transition); }
+.version-switch:hover { box-shadow: 0 0 0 4px var(--accent-dim); }
+.version-switch:focus-visible { outline: 3px solid var(--text-primary); outline-offset: 3px; }
+.version-switch__thumb { position: absolute; top: 4px; left: 4px; width: 28px; height: 28px; border-radius: 50%; background: var(--accent); transition: transform var(--transition); }
+.version-switch[aria-checked="true"] .version-switch__thumb { transform: translateX(32px); }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+
+.page-nav { display: flex; justify-content: center; gap: 0.65rem; flex-wrap: wrap; margin: 0 auto 1.5rem; padding: 0 1rem; }
+.page-nav__button { font: 600 0.8rem var(--font-heading); color: var(--text-secondary); background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 999px; padding: 0.55rem 1rem; cursor: pointer; }
+.page-nav__button:hover, .page-nav__button[aria-current="page"] { color: var(--accent); border-color: var(--accent); background: var(--accent-dim); }
+.page-nav__button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.m365-page { max-width: var(--max-width); margin: 0 auto; padding: 0 1.5rem 2rem; }
+.m365-page__heading { text-align: center; font: 700 1.6rem var(--font-heading); color: var(--text-primary); margin: 1rem 0 0.4rem; }
+.m365-page__intro { max-width: 820px; margin: 0 auto 1.25rem; text-align: center; color: var(--text-secondary); }
+.m365-page__note { max-width: 900px; margin: 0 auto 1.5rem; padding: 0.9rem 1rem; border: 1px solid var(--border); border-radius: var(--radius-sm); color: var(--text-secondary); background: var(--bg-secondary); font-size: 0.82rem; }
+.m365-grid { display: grid; grid-template-columns: 1fr; gap: 1rem; }
+.m365-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.15rem; min-width: 0; }
+.m365-card h3 { color: var(--accent); font: 700 1rem var(--font-heading); margin-bottom: 0.35rem; }
+.m365-card__description { color: var(--text-secondary); margin-bottom: 1rem; }
+.m365-field { margin-top: 1rem; }
+.m365-field__heading { display: flex; justify-content: space-between; align-items: baseline; gap: 0.6rem; margin-bottom: 0.35rem; color: var(--text-primary); font-weight: 700; }
+.m365-field__count { color: var(--text-muted); font: 0.72rem var(--font-heading); white-space: nowrap; }
+.m365-field pre { max-height: 360px; overflow: auto; white-space: pre-wrap; overflow-wrap: anywhere; background: var(--bg-code); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 0.8rem; color: var(--text-secondary); font: 0.78rem/1.6 var(--font-body); }
+.m365-prompt { margin-top: 0.65rem; border-top: 1px solid var(--border); padding-top: 0.65rem; }
+.m365-prompt__title { color: var(--text-primary); font-weight: 700; margin-bottom: 0.3rem; }
+.m365-prompt__text { color: var(--text-secondary); white-space: pre-wrap; overflow-wrap: anywhere; font-size: 0.84rem; }
+.m365-copy { margin-top: 0.35rem; border: 1px solid var(--accent); border-radius: 999px; padding: 0.28rem 0.65rem; color: var(--accent); background: transparent; cursor: pointer; font: 600 0.7rem var(--font-heading); }
+.m365-copy:hover { color: var(--bg-primary); background: var(--accent); }
+.m365-back { display: block; margin: 1.5rem auto 0; }
+@media (min-width: 900px) { .m365-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 
 /* ==================== How to Use ==================== */
 .how-to {
@@ -1300,13 +1335,29 @@ img, svg, video, canvas {
 
 <!-- ==================== Hero ==================== -->
 <header class="hero" role="banner">
-  <h1 class="hero__title">AI <span class="hero__title-accent">Skill Hub</span></h1>
-  <p class="hero__subtitle">AI agents, skills &amp; prompt templates for QA & development. Built by a certified QA engineer.</p>
+  <h1 class="hero__title">AI <span class="hero__title-accent">Skill Hub</span> <span class="hero__title-accent">v2.0</span></h1>
+  <p class="hero__subtitle">Four task-focused roles. Reusable skills. Self-contained M365 agent profiles.</p>
   <p class="hero__description">
-    A catalogue of ready-to-use <strong>Agents</strong> (autonomous, multi-step workers), <strong>Skills</strong> (install-once specialists), and <strong>Prompt templates</strong> (copy-paste one-offs) — all plain Markdown, loaded straight from this repository. QA content is grounded in ISTQB standards.
+    A cross-platform catalogue of four role agents, reusable Agent Skills, standalone prompts, and Microsoft 365 Copilot configurations.
   </p>
-  <span class="hero__badge" id="skill-count">Agents · Skills · Prompt templates</span>
+  <div class="hero__meta">
+    <span class="hero__badge" id="skill-count">4 agents · 50 skills · 51 prompt templates</span>
+    <div class="version-control" aria-label="Application version">
+      <span class="version-control__label">V1.0</span>
+      <button class="version-switch" id="version-toggle" type="button" role="switch" aria-checked="true" aria-label="Switch to version 1.0" data-target="v1.html">
+        <span class="version-switch__thumb" aria-hidden="true"></span>
+      </button>
+      <span class="version-control__label" aria-current="page">V2.0</span>
+    </div>
+  </div>
 </header>
+
+<nav class="page-nav" aria-label="Application pages">
+  <button class="page-nav__button" type="button" data-page="catalogue" aria-current="page">Catalogue</button>
+  <button class="page-nav__button" type="button" data-page="m365-agents">M365 Agents</button>
+</nav>
+
+<div id="catalogue-page">
 
 <!-- ==================== What's in the Hub ==================== -->
 <section class="how-to" aria-label="Agents, skills and prompt templates explained">
@@ -1319,12 +1370,12 @@ img, svg, video, canvas {
       <div class="how-to__step">
         <span class="how-to__step-num how-to__step-num--agent">⚙</span>
         <h3 class="how-to__step-title">Agents</h3>
-        <p class="how-to__step-desc">Autonomous, multi-step workers for an agentic tool (Claude Code, Copilot agent mode, Cursor). An agent reads your repo, runs commands, and proposes changes — e.g. the Commit Message Writer inspects your staged diff and writes a Conventional Commit.</p>
+        <p class="how-to__step-desc">Four role profiles — Developer, Documentation Analyst, QA Engineer, and Automation QA Engineer. Each selects the most relevant reusable skill; task procedures live in skills rather than one agent per task.</p>
       </div>
       <div class="how-to__step">
         <span class="how-to__step-num">★</span>
         <h3 class="how-to__step-title">Skills</h3>
-        <p class="how-to__step-desc">Focused specialists you install <strong>once</strong> in a project and invoke on demand. Each skill packages a role, a tuned prompt, a deliverable shape, and a quality checklist for one job — e.g. generating ISTQB-aligned test cases from a user story.</p>
+        <p class="how-to__step-desc">Portable, task-specific procedures stored as Agent Skills. Multiple roles can select the same skill, and users can add skills with the included template.</p>
       </div>
       <div class="how-to__step">
         <span class="how-to__step-num">⚡</span>
@@ -1334,7 +1385,7 @@ img, svg, video, canvas {
       <div class="how-to__step">
         <span class="how-to__step-num">▤</span>
         <h3 class="how-to__step-title">All Plain Markdown</h3>
-        <p class="how-to__step-desc">Every item is one <code>.md</code> file: YAML frontmatter (id, name, summary, tags) plus a Markdown body — exactly what the card's <strong>YAML</strong> / <strong>Markdown</strong> toggles show. What you copy here is identical to the file in the repo.</p>
+        <p class="how-to__step-desc">Role profiles and skills are source Markdown. Skills follow the Agent Skills directory format; Copilot exports add the platform-specific profile header without making shared procedures Copilot-dependent.</p>
       </div>
     </div>
   </div>
@@ -1356,46 +1407,46 @@ img, svg, video, canvas {
     <div class="how-to__steps" role="tabpanel" data-usage-panel="skills">
       <div class="how-to__step">
         <span class="how-to__step-num">1</span>
-        <h3 class="how-to__step-title">Pick &amp; Copy for Copilot</h3>
-        <p class="how-to__step-desc">Browse the <strong>Skills</strong> section below, expand a card and switch the toggle to <strong>Copilot</strong> — it shows a ready-to-save <code>.prompt.md</code> file (frontmatter + body). Hit <strong>Copy</strong>.</p>
+        <h3 class="how-to__step-title">Pick a Reusable Skill</h3>
+        <p class="how-to__step-desc">Browse <strong>Skills</strong>, expand a card, and choose <strong>Agent Skill</strong> to copy its portable <code>SKILL.md</code> file.</p>
       </div>
       <div class="how-to__step">
         <span class="how-to__step-num">2</span>
-        <h3 class="how-to__step-title">Save as a Prompt File</h3>
-        <p class="how-to__step-desc">In your repo, save it as <code>.github/prompts/&lt;skill-id&gt;.prompt.md</code>. VS Code picks it up automatically — no extension settings needed (Copilot prompt files are on by default).</p>
+        <h3 class="how-to__step-title">Install in a Project</h3>
+        <p class="how-to__step-desc">Save it as <code>.github/skills/&lt;skill-name&gt;/SKILL.md</code>, or use the matching skills directory supported by your agent host.</p>
       </div>
       <div class="how-to__step">
         <span class="how-to__step-num">3</span>
-        <h3 class="how-to__step-title">Run It in Copilot Chat</h3>
-        <p class="how-to__step-desc">Type <code>/&lt;skill-id&gt;</code> in Copilot Chat (e.g. <code>/test-case-generator</code>), add your story or code, and send. For an always-on skill, put it in <code>.github/copilot-instructions.md</code> instead.</p>
+        <h3 class="how-to__step-title">Let the Agent Select It</h3>
+        <p class="how-to__step-desc">When supported by the host, the agent selects a skill when the task matches its description. Keep the task procedure in the skill, not duplicated in each role profile.</p>
       </div>
       <div class="how-to__step">
         <span class="how-to__step-num">4</span>
-        <h3 class="how-to__step-title">Any Other Tool</h3>
-        <p class="how-to__step-desc">No prompt-file support? Every skill includes a <strong>Ready-to-use prompt</strong> block — copy just that into the chat, replace the <code>[PLACEHOLDERS]</code>, and you get the same structured output.</p>
+        <h3 class="how-to__step-title">Create Your Own</h3>
+        <p class="how-to__step-desc">Use <code>v2/SKILL_TEMPLATE.md</code>, create <code>v2/Skills/&lt;name&gt;/SKILL.md</code>, link it from the relevant role, then run <code>python v2/generate_manifest.py</code>.</p>
       </div>
     </div>
 
     <div class="how-to__steps" role="tabpanel" data-usage-panel="agents" hidden>
       <div class="how-to__step">
         <span class="how-to__step-num how-to__step-num--agent">1</span>
-        <h3 class="how-to__step-title">What You Need</h3>
-        <p class="how-to__step-desc">Agents do multi-step work — reading files, running <code>git</code>, editing code — so they need <strong>Copilot agent mode</strong> (the mode picker in VS Code's Copilot Chat). Cursor and Claude Code work too. In a chat-only tool, fall back to the agent's prompt block.</p>
+        <h3 class="how-to__step-title">Choose a Role</h3>
+        <p class="how-to__step-desc">Select one of the four role profiles. Each chooses the smallest set of listed skills that fits the task; it does not contain a separate workflow for every possible job.</p>
       </div>
       <div class="how-to__step">
         <span class="how-to__step-num how-to__step-num--agent">2</span>
-        <h3 class="how-to__step-title">Copy for Copilot</h3>
-        <p class="how-to__step-desc">Expand an agent card, switch the toggle to <strong>Copilot</strong> and hit <strong>Copy</strong> — for agents the generated <code>.prompt.md</code> sets <code>mode: agent</code>, so Copilot runs it with file and terminal access. Save it as <code>.github/prompts/&lt;agent-id&gt;.prompt.md</code>.</p>
+        <h3 class="how-to__step-title">Export for Copilot</h3>
+        <p class="how-to__step-desc">Expand the role card, choose <strong>Copilot Agent</strong>, and save the generated profile as <code>.github/agents/&lt;id&gt;.agent.md</code>. The source role stays platform-neutral.</p>
       </div>
       <div class="how-to__step">
         <span class="how-to__step-num how-to__step-num--agent">3</span>
-        <h3 class="how-to__step-title">Make It Always Available</h3>
-        <p class="how-to__step-desc">Want the behaviour without typing <code>/&lt;agent-id&gt;</code>? Add the card's body to <code>.github/copilot-instructions.md</code> or your repo's <code>AGENTS.md</code> so Copilot agent mode (and the Copilot coding agent on github.com) always knows the workflow.</p>
+        <h3 class="how-to__step-title">Add Project Context</h3>
+        <p class="how-to__step-desc">The shared <code>project-context</code> skill inspects and maintains project notes under the existing <code>.copilot/</code> or <code>.vscode/</code> convention. Host-specific auto-loading differs; do not assume a context file is loaded everywhere.</p>
       </div>
       <div class="how-to__step">
         <span class="how-to__step-num how-to__step-num--agent">4</span>
         <h3 class="how-to__step-title">Invoke &amp; Review</h3>
-        <p class="how-to__step-desc">Run <code>/&lt;agent-id&gt;</code> in agent mode, or use the trigger phrases each card lists ("write a commit message for these changes"). The agent inspects your repo and proposes changes — always review the diff before committing or pushing anything.</p>
+        <p class="how-to__step-desc">Select the role in your agent host and describe the outcome. Review proposed edits and test evidence before committing, pushing, or publishing.</p>
       </div>
     </div>
 
@@ -1425,23 +1476,23 @@ img, svg, video, canvas {
     <div class="how-to__steps" role="tabpanel" data-usage-panel="repo" hidden>
       <div class="how-to__step">
         <span class="how-to__step-num">1</span>
-        <h3 class="how-to__step-title">Clone the Repository</h3>
-        <p class="how-to__step-desc">Everything on this page is loaded at runtime from three folders: <code>Agents/</code>, <code>Skills/</code> and <code>Prompts/</code> — one Markdown file per item, named after its id.</p>
+        <h3 class="how-to__step-title">Browse the v2 Structure</h3>
+        <p class="how-to__step-desc">Role profiles live in <code>v2/Agents/</code>; reusable skills live in <code>v2/Skills/&lt;name&gt;/SKILL.md</code>; the original standalone prompt set remains in <code>Prompts/</code>.</p>
       </div>
       <div class="how-to__step">
         <span class="how-to__step-num">2</span>
         <h3 class="how-to__step-title">File Anatomy</h3>
-        <p class="how-to__step-desc">Each file is YAML frontmatter (what the <strong>YAML</strong> toggle shows — the header for a Copilot/Claude skill file) followed by the full Markdown body (the <strong>Markdown</strong> toggle).</p>
+        <p class="how-to__step-desc">V2 roles are neutral Markdown profiles with linked skill IDs. Skills use the standard <code>name</code> and <code>description</code> frontmatter plus a task procedure in Markdown.</p>
       </div>
       <div class="how-to__step">
         <span class="how-to__step-num">3</span>
         <h3 class="how-to__step-title">Copy Files Directly</h3>
-        <p class="how-to__step-desc">Skip the browser entirely: copy <code>Skills/test-case-generator.md</code> or <code>Agents/error-fixer.md</code> into your project's <code>.github/prompts/</code> folder as <code>&lt;id&gt;.prompt.md</code> (the card's <strong>Copilot</strong> toggle adds the prompt-file header for you).</p>
+        <p class="how-to__step-desc">For example, copy <code>v2/Skills/test-design/SKILL.md</code> to <code>.github/skills/test-design/SKILL.md</code>, or export <code>v2/Agents/developer.md</code> as <code>.github/agents/developer.agent.md</code>.</p>
       </div>
       <div class="how-to__step">
         <span class="how-to__step-num">4</span>
         <h3 class="how-to__step-title">Run &amp; Extend Locally</h3>
-        <p class="how-to__step-desc">Serve the catalogue with <code>python -m http.server 8000</code> from the repo root. Drop your own <code>.md</code> file into a folder and refresh — it appears automatically. Run <code>python generate_content.py --scan</code> only to persist ordering in <code>manifest.json</code> (needed for hosts without folder listings, e.g. GitHub Pages).</p>
+        <p class="how-to__step-desc">Serve with <code>python -m http.server 8000</code>. Add custom skills with <code>v2/SKILL_TEMPLATE.md</code>, then run <code>python v2/generate_manifest.py</code> to update the static-host manifest.</p>
       </div>
     </div>
   </div>
@@ -1466,14 +1517,6 @@ img, svg, video, canvas {
       <button class="filter-pill filter-pill--section filter-pill--section-dev" data-section="agents" aria-pressed="false">Agents</button>
       <button class="filter-pill filter-pill--section filter-pill--section-qa" data-section="skills" aria-pressed="false">Skills</button>
       <button class="filter-pill filter-pill--section filter-pill--section-qa-prompts" data-section="prompts" aria-pressed="false">Prompts</button>
-      <button class="filter-pill filter-pill--section filter-pill--section-mcp" data-section="mcp" aria-pressed="false">MCP</button>
-      <button class="filter-pill filter-pill--section filter-pill--section-writing" data-section="writing" aria-pressed="false">Writing</button>
-    </div>
-    <div class="filter-bar__row" role="group" aria-label="Filter by role">
-      <span class="filter-bar__row-label">Role</span>
-      <button class="filter-pill filter-pill--role filter-pill--active" data-role="all" aria-pressed="true">All</button>
-      <button class="filter-pill filter-pill--role filter-pill--section-qa" data-role="qa" aria-pressed="false">QA</button>
-      <button class="filter-pill filter-pill--role filter-pill--section-dev" data-role="dev" aria-pressed="false">DEV</button>
     </div>
   </div>
 </nav>
@@ -1759,6 +1802,16 @@ await server.connect(new StdioServerTransport());</code></pre>
   </div>
 </footer>
 
+</div><!-- /#catalogue-page -->
+
+<section class="m365-page" id="m365-page" aria-labelledby="m365-title" hidden>
+  <h2 class="m365-page__heading" id="m365-title">M365 Agents</h2>
+  <p class="m365-page__intro">Microsoft 365 Copilot configurations for the same four roles. Each card provides a name, description, complete instruction prompt, and five ready-to-use starter prompt templates.</p>
+  <div class="m365-page__note"><strong>Agent Builder limits:</strong> name ≤30 characters, description ≤1,000, instruction prompt ≤8,000. Five starter prompts are within Microsoft’s declarative-agent maximum of 12. These prompts are self-contained and do not rely on shared Skills.</div>
+  <div class="m365-grid" id="m365-grid" aria-live="polite"></div>
+  <button class="page-nav__button m365-back" type="button" data-page="catalogue">Back to Catalogue</button>
+</section>
+
 <script>
 (function() {
   'use strict';
@@ -1769,6 +1822,7 @@ await server.connect(new StdioServerTransport());</code></pre>
   // belong to each folder. Drop a new .md file in a folder, add its filename
   // to manifest.json, and it shows up here automatically on the next load.
   let skills = [];
+  let m365Agents = [];
 
   // Minimal YAML-frontmatter parser. Supports the subset our files use:
   //   key: "double quoted scalar"
@@ -1823,7 +1877,9 @@ await server.connect(new StdioServerTransport());</code></pre>
       name: meta.name || fallbackId,
       folder: meta.folder || 'skills',
       section: meta.section || '',
-      summary: meta.summary || '',
+      summary: meta.summary || meta.description || '',
+      description: meta.description || meta.summary || '',
+      skills: meta.skills || [],
       istqbTopics: meta.istqbTopics || [],
       aiTools: meta.aiTools || [],
       tags: meta.tags || [],
@@ -1836,8 +1892,8 @@ await server.connect(new StdioServerTransport());</code></pre>
   async function bootstrap() {
     let manifest;
     try {
-      const res = await fetch('manifest.json', { cache: 'no-store' });
-      if (!res.ok) throw new Error('manifest.json -> HTTP ' + res.status);
+      const res = await fetch('v2/manifest.json', { cache: 'no-store' });
+      if (!res.ok) throw new Error('v2/manifest.json -> HTTP ' + res.status);
       manifest = await res.json();
     } catch (err) {
       showLoadError(err);
@@ -1846,28 +1902,9 @@ await server.connect(new StdioServerTransport());</code></pre>
 
     folders = manifest.folders || [];
 
-    // Auto-discover .md files that aren't in the manifest yet by reading the
-    // server's directory listing (python -m http.server, nginx autoindex, etc.
-    // render one). Drop a new file into Agents/, Skills/ or Prompts/ and it
-    // appears on refresh — no --scan needed. On hosts without folder listings
-    // (e.g. GitHub Pages) this fetch 404s and we silently fall back to the
-    // manifest alone.
-    await Promise.all(folders.map(async (folder) => {
-      try {
-        const res = await fetch(folder.path + '/', { cache: 'no-store' });
-        if (!res.ok) return;
-        const type = res.headers.get('content-type') || '';
-        if (!type.includes('text/html')) return;
-        const html = await res.text();
-        const re = /href="([^"]+\.md)"/gi;
-        folder.files = folder.files || [];
-        let m;
-        while ((m = re.exec(html)) !== null) {
-          const name = decodeURIComponent(m[1]).split('/').pop();
-          if (name && !folder.files.includes(name)) folder.files.push(name);
-        }
-      } catch (_) { /* no directory listing available — manifest only */ }
-    }));
+    // V2 skills live in nested Agent Skills directories. Use the explicit
+    // manifest so directory-listing differences across static hosts cannot
+    // alter the catalogue; run v2/generate_manifest.py after adding a skill.
 
     const loaded = [];
     await Promise.all(folders.flatMap(folder =>
@@ -1876,7 +1913,8 @@ await server.connect(new StdioServerTransport());</code></pre>
           const res = await fetch(folder.path + '/' + file, { cache: 'no-store' });
           if (!res.ok) throw new Error(folder.path + '/' + file + ' -> HTTP ' + res.status);
           const text = await res.text();
-          const skill = parseFrontmatter(text, file.replace(/\.md$/, ''));
+          const fallbackId = file.endsWith('/SKILL.md') ? file.split('/')[0] : file.replace(/\.md$/, '').split('/').pop();
+          const skill = parseFrontmatter(text, fallbackId);
           skill.folder = folder.key; // manifest folder wins over frontmatter
           loaded.push({ skill, order: folder.files.indexOf(file), folderKey: folder.key });
         } catch (err) {
@@ -1901,6 +1939,17 @@ await server.connect(new StdioServerTransport());</code></pre>
         (counts.agents || 0) + ' agents · ' +
         (counts.skills || 0) + ' skills · ' +
         (counts.prompts || 0) + ' prompt templates';
+    }
+
+    try {
+      const m365Response = await fetch('v2/m365-agents.json', { cache: 'no-store' });
+      if (!m365Response.ok) throw new Error('v2/m365-agents.json -> HTTP ' + m365Response.status);
+      const m365Payload = await m365Response.json();
+      m365Agents = m365Payload.agents || [];
+      renderM365Page();
+    } catch (err) {
+      const m365Grid = document.getElementById('m365-grid');
+      if (m365Grid) m365Grid.innerHTML = '<p class="skills__empty">Could not load the M365 agent profiles: ' + escapeHtml(String(err)) + '</p>';
     }
 
     applyHash(); // applies any #section/<id> deep link, then renders
@@ -2048,7 +2097,7 @@ await server.connect(new StdioServerTransport());</code></pre>
         const cb = item.match(/^\[([ xX])\]\s+(.*)$/);
         if (cb) {
           const checked = cb[1].toLowerCase() === 'x' ? ' checked' : '';
-          item = `<input type="checkbox" disabled${checked}> ` + cb[2];
+          item = `<input type="checkbox" disabled${checked}> ` + inlineFormat(cb[2]);
         } else {
           item = inlineFormat(item);
         }
@@ -2068,6 +2117,7 @@ await server.connect(new StdioServerTransport());</code></pre>
   }
 
   function inlineFormat(text) {
+    text = escapeHtml(text);
     // Bold
     text = text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
     // Inline code
@@ -2111,20 +2161,20 @@ await server.connect(new StdioServerTransport());</code></pre>
     return lines.join('\n');
   }
 
-  // A ready-to-save GitHub Copilot prompt file (.github/prompts/<id>.prompt.md).
-  // Agents run with full agent-mode capabilities; skills and prompts run as
-  // regular chat requests.
+  // Export each v2 item in the appropriate GitHub Copilot format without
+  // making the source role or skill platform-dependent.
   function skillToCopilot(skill) {
-    const mode = skill.folder === 'agents' ? 'agent' : 'ask';
+    if (skill.folder === 'agents') {
+      const desc = JSON.stringify(String(skill.description || skill.summary || skill.name));
+      const availableSkills = (skill.skills || []).map(id => '- ' + id).join('\n');
+      const body = skill.detailMd + '\n\n## Available reusable skills\n' + availableSkills;
+      return ['---', 'name: ' + skill.id, 'description: ' + desc, '---', '', body].join('\n');
+    }
+    if (skill.folder === 'skills') {
+      return ['---', skill.frontmatter || '', '---', '', skill.detailMd].join('\n');
+    }
     const desc = String(skill.summary || skill.name).replace(/'/g, "''");
-    return [
-      '---',
-      "description: '" + desc + "'",
-      'mode: ' + mode,
-      '---',
-      '',
-      skill.detailMd,
-    ].join('\n');
+    return ['---', "description: '" + desc + "'", 'mode: ask', '---', '', skill.detailMd].join('\n');
   }
 
 
@@ -2153,6 +2203,8 @@ await server.connect(new StdioServerTransport());</code></pre>
         const haystack = [
           skill.name,
           skill.summary,
+          skill.description || '',
+          ...(skill.skills || []),
           ...skill.tags,
           ...(skill.istqbTopics || []),
           ...(skill.aiTools || []),
@@ -2190,15 +2242,28 @@ await server.connect(new StdioServerTransport());</code></pre>
 
     function renderCard(skill) {
       const isExpanded = expandedId === skill.id;
+      const skillLinks = skill.folder === 'agents' && (skill.skills || []).length
+        ? `<div class="card__chips card__linked-skills"><span class="chip">Skills</span>${skill.skills.map(id => {
+            const linked = skills.find(item => item.folder === 'skills' && item.id === id);
+            const label = linked ? linked.name : id;
+            return `<a class="chip" href="#skills/${encodeURIComponent(id)}" aria-label="Open skill ${escapeHtml(label)}">${escapeHtml(label)}</a>`;
+          }).join('')}</div>`
+        : '';
+      const exportLabel = skill.folder === 'agents' ? 'Copilot Agent' : skill.folder === 'skills' ? 'Agent Skill' : 'Copilot Prompt';
+      const exportTitle = skill.folder === 'agents'
+        ? `Save as .github/agents/${skill.id}.agent.md`
+        : skill.folder === 'skills'
+        ? `Save as .github/skills/${skill.id}/SKILL.md`
+        : `Save as .github/prompts/${skill.id}.prompt.md`;
 
       return `
         <article
           class="card${isExpanded ? ' card--expanded' : ''}"
-          data-id="${skill.id}"
+          data-id="${escapeHtml(skill.id)}"
           tabindex="0"
           role="button"
           aria-expanded="${isExpanded}"
-          aria-label="${skill.name} — click to ${isExpanded ? 'collapse' : 'expand'} details"
+          aria-label="${escapeHtml(skill.name)} — click to ${isExpanded ? 'collapse' : 'expand'} details"
         >
           <div class="card__header">
             <div class="card__top-row">
@@ -2206,10 +2271,10 @@ await server.connect(new StdioServerTransport());</code></pre>
               <div class="card__badges">
                 ${isExpanded ? `
                   <div class="card__format-controls">
-                    <button class="card__format-btn" data-format="rendered" data-skill-id="${skill.id}" aria-label="Show rendered preview">Rendered</button>
-                    <button class="card__format-btn card__format-btn--active" data-format="markdown" data-skill-id="${skill.id}" aria-label="Show raw markdown">Markdown</button>
-                    <button class="card__format-btn" data-format="yaml" data-skill-id="${skill.id}" aria-label="Show YAML frontmatter">YAML</button>
-                    <button class="card__format-btn" data-format="copilot" data-skill-id="${skill.id}" aria-label="Show GitHub Copilot prompt file" title="Ready-to-save .github/prompts/${escapeHtml(skill.id)}.prompt.md">Copilot</button>
+                    <button class="card__format-btn" data-format="rendered" data-skill-id="${escapeHtml(skill.id)}" aria-label="Show rendered preview">Rendered</button>
+                    <button class="card__format-btn card__format-btn--active" data-format="markdown" data-skill-id="${escapeHtml(skill.id)}" aria-label="Show raw markdown">Markdown</button>
+                    <button class="card__format-btn" data-format="yaml" data-skill-id="${escapeHtml(skill.id)}" aria-label="Show YAML frontmatter">YAML</button>
+                    <button class="card__format-btn" data-format="copilot" data-skill-id="${escapeHtml(skill.id)}" aria-label="Show ${exportLabel} export" title="${escapeHtml(exportTitle)}">${exportLabel}</button>
                   </div>
                   <button class="card__copy-btn" data-copy="${escapeHtml(skill.id)}" aria-label="Copy to clipboard">Copy</button>
                   <button class="card__close-btn" data-close="true" aria-label="Close skill details">✕</button>
@@ -2217,6 +2282,7 @@ await server.connect(new StdioServerTransport());</code></pre>
               </div>
             </div>
             <p class="card__summary">${escapeHtml(skill.summary)}</p>
+            ${skillLinks}
           </div>
           <div class="card__detail">
             <div class="card__detail-inner">
@@ -2420,6 +2486,95 @@ await server.connect(new StdioServerTransport());</code></pre>
 
   usageTabs.forEach(tab => {
     tab.addEventListener('click', () => activateUsageTab(tab.dataset.usage));
+  });
+
+  function renderM365Page() {
+    const grid = document.getElementById('m365-grid');
+    if (!grid) return;
+    grid.innerHTML = m365Agents.map(agent => {
+      const promptCards = (agent.promptTemplates || []).map((prompt, index) => `
+        <div class="m365-prompt">
+          <div class="m365-prompt__title">${escapeHtml(prompt.title)}</div>
+          <div class="m365-prompt__text">${escapeHtml(prompt.text)}</div>
+          <button class="m365-copy" type="button" data-m365-agent="${escapeHtml(agent.id)}" data-m365-action="starter" data-m365-index="${index}">Copy starter prompt</button>
+        </div>`).join('');
+      const description = String(agent.description || '');
+      const instructions = String(agent.instructionPrompt || '');
+      return `
+        <article class="m365-card" data-m365-profile="${escapeHtml(agent.id)}">
+          <h3>${escapeHtml(agent.name)}</h3>
+          <div class="m365-field">
+            <div class="m365-field__heading"><span>Name</span><span class="m365-field__count">${agent.name.length}/30</span></div>
+            <button class="m365-copy" type="button" data-m365-agent="${escapeHtml(agent.id)}" data-m365-action="name">Copy name</button>
+          </div>
+          <div class="m365-field">
+            <div class="m365-field__heading"><span>Description</span><span class="m365-field__count">${description.length}/1000</span></div>
+            <p class="m365-card__description">${escapeHtml(description)}</p>
+            <button class="m365-copy" type="button" data-m365-agent="${escapeHtml(agent.id)}" data-m365-action="description">Copy description</button>
+          </div>
+          <div class="m365-field">
+            <div class="m365-field__heading"><span>Instruction prompt</span><span class="m365-field__count">${instructions.length}/8000</span></div>
+            <pre>${escapeHtml(instructions)}</pre>
+            <button class="m365-copy" type="button" data-m365-agent="${escapeHtml(agent.id)}" data-m365-action="instructions">Copy instruction prompt</button>
+          </div>
+          <div class="m365-field">
+            <div class="m365-field__heading"><span>Prompt templates / starter prompts</span><span class="m365-field__count">${(agent.promptTemplates || []).length}/12</span></div>
+            ${promptCards}
+          </div>
+        </article>`;
+    }).join('');
+  }
+
+  function setActivePage(page) {
+    const catalogue = document.getElementById('catalogue-page');
+    const m365 = document.getElementById('m365-page');
+    const showM365 = page === 'm365-agents';
+    if (catalogue) catalogue.hidden = showM365;
+    if (m365) m365.hidden = !showM365;
+    document.querySelectorAll('[data-page]').forEach(button => {
+      if (button.dataset.page === 'catalogue' || button.dataset.page === 'm365-agents') {
+        if (button.dataset.page === page) button.setAttribute('aria-current', 'page');
+        else button.removeAttribute('aria-current');
+      }
+    });
+    if (showM365) renderM365Page();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  document.querySelectorAll('[data-page]').forEach(button => {
+    button.addEventListener('click', () => setActivePage(button.dataset.page));
+  });
+
+  const m365Grid = document.getElementById('m365-grid');
+  if (m365Grid) m365Grid.addEventListener('click', function(event) {
+    const button = event.target.closest('[data-m365-action]');
+    if (!button) return;
+    const profile = m365Agents.find(agent => agent.id === button.dataset.m365Agent);
+    if (!profile) return;
+    const action = button.dataset.m365Action;
+    const text = action === 'name' ? profile.name
+      : action === 'description' ? profile.description
+      : action === 'instructions' ? profile.instructionPrompt
+      : (profile.promptTemplates[Number(button.dataset.m365Index)] || {}).text;
+    if (!text) return;
+    const original = button.textContent;
+    if (!navigator.clipboard) {
+      button.textContent = 'Copy unavailable';
+      setTimeout(() => { button.textContent = original; }, 1400);
+      return;
+    }
+    navigator.clipboard.writeText(text).then(() => {
+      button.textContent = 'Copied!';
+      setTimeout(() => { button.textContent = original; }, 1400);
+    }).catch(() => {
+      button.textContent = 'Copy unavailable';
+      setTimeout(() => { button.textContent = original; }, 1400);
+    });
+  });
+
+  const versionToggle = document.getElementById('version-toggle');
+  if (versionToggle) versionToggle.addEventListener('click', () => {
+    window.location.href = versionToggle.dataset.target;
   });
 
   // ==================== Initial Render ====================

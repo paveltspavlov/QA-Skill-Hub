@@ -1,174 +1,78 @@
 # QA Skill Hub
 
-A single-page web app that showcases a catalogue of ready-to-use AI **Agents**,
-**Skills**, and **Prompts** for QA and development work. Each item can be expanded
-to read its full reference, and copied — either as the original Markdown or as the
-YAML frontmatter you paste into a GitHub Copilot / Claude skill file.
+A static catalogue for reusable QA and software-development agents, Agent Skills, and prompt templates. The root page is **v2.0**; the version switch next to the banner opens the preserved **v1.0** catalogue.
 
-The content is **not** hard-coded in the page. It lives as individual Markdown
-files inside three folders, and the app loads them at runtime. Add a file, refresh,
-and it shows up.
+## What changed in v2.0
 
----
+- Exactly four cross-platform role agents: **Developer**, **Documentation Analyst**, **QA Engineer**, and **Automation QA Engineer**.
+- V2 has **50 reusable skills** (13 shared core workflows plus 37 specialist skills), exceeding the 47 skills in v1. Each role lists the relevant skills; skills can be shared across roles or added by users.
+- Project work begins by inspecting and maintaining concise context under the project’s established `.copilot/` or `.vscode/` convention.
+- A separate **M365 Agents** page shows Microsoft 365 Copilot versions of the same four roles, each with name, description, self-contained instruction prompt, and five starter-prompt templates. M365 instructions do not depend on shared Skills.
+- GitHub Copilot exports are adapters: role profiles export as `.agent.md`; skills remain standard `SKILL.md` files. The role instructions and skill procedures remain tool-neutral.
 
 ## Repository layout
 
-```
+```text
 .
-├── index.html            # the app (HTML + CSS + JS, no build step)
-├── manifest.json         # lists which .md files belong to each folder
-├── generate_content.py   # tooling to (re)generate files and rebuild the manifest
-├── Agents/               # one .md per Agent
-├── Skills/               # one .md per Skill
-└── Prompts/              # one .md per Prompt
+├── index.html                 # v2.0 app (default)
+├── v1.html                    # v1.0 app snapshot
+├── Agents/ Skills/ Prompts/   # preserved v1 content
+├── manifest.json              # preserved v1 manifest
+├── generate_content.py        # legacy v1 content helper
+├── v2/
+│   ├── Agents/                # four neutral role profiles
+│   ├── Skills/<name>/SKILL.md # reusable Agent Skills
+│   ├── manifest.json          # v2 catalogue manifest
+│   ├── m365-agents.json       # four M365 configurations
+│   ├── generate_manifest.py   # updates v2 manifest after content changes
+│   ├── SKILL_TEMPLATE.md      # create a custom skill
+│   └── RESEARCH-SOURCES.md    # official references used for v2
+└── tests/test_v2_catalog.py   # schema and catalogue checks
 ```
 
-Each `.md` file has a small **YAML frontmatter** block followed by a **Markdown body**:
+The app is plain HTML, CSS, JavaScript, JSON, and Markdown; there is no build step or runtime dependency installation.
 
-```markdown
----
-id: commit-message-writer
-name: "Commit Message Writer"
-folder: agents
-section: agent
-summary: "Analyzes staged git changes and writes a Conventional Commits message."
-tags:
-  - "git"
-  - "commits"
----
+## Run locally
 
-# Commit Message Writer
-
-## Role
-...the full reference body in Markdown...
-```
-
-- The **frontmatter** is what the app shows under the *YAML* toggle and what you
-  copy into a Copilot/Claude skill file's header.
-- The **body** (everything after the second `---`) is the full reference shown
-  in the expanded card and copied under the *Markdown* toggle.
-
----
-
-## Running the app
-
-The page reads the `Agents/`, `Skills/`, and `Prompts/` folders over HTTP, so it
-**must be served by a web server**. Opening `index.html` directly from disk
-(`file://`) is blocked by the browser, and the page will tell you so.
-
-From the project root:
+From the repository root:
 
 ```bash
 python -m http.server 8000
 ```
 
-Then open <http://localhost:8000/>.
+Open <http://localhost:8000/>. The app fetches Markdown and JSON over HTTP, so do not open the HTML files through `file://`.
 
-Any static file server works (`npx serve`, nginx, GitHub Pages, etc.) — the app is
-plain static files with no build step.
+## Use the catalogue
 
----
+- Use the large **V1.0 / V2.0** switch in the banner to compare versions.
+- In v2, filter the catalogue by **Agents**, **Skills**, or **Prompts**. Agent cards list their linked skills; select a skill link to open its procedure.
+- The **Copilot Agent** export is a GitHub Copilot custom-agent profile (`.github/agents/<id>.agent.md`). The **Agent Skill** export is a standard `SKILL.md` (`.github/skills/<name>/SKILL.md`). These are convenience exports; the underlying role and skill content is platform-neutral.
+- Select **M365 Agents** for the four Microsoft 365 Copilot configurations. The page shows field character counts and lets you copy each field or starter prompt.
+- Review and test any generated agent instructions before using them in a project.
 
-## Using the app
+## Add or update a v2 skill
 
-- **Browse** the three sections: **Agents**, **Skills**, **Prompts**.
-- **Filter** with the **Type** pills (All / Agents / Skills / Prompts / MCP)
-  and the **Role** pills (All / QA / DEV), or **search** by name, summary, tag,
-  or any text in the body. The **MCP** pill shows the Model Context Protocol
-  explainer plus the MCP-tagged skills. The role comes from each file's
-  `roles` frontmatter list when present, otherwise from its `section`
-  (`qa*` → QA, `dev*` / `mcp` → DEV).
-- **Click a card** to expand it. Inside an expanded card, toggle between:
-  - **Rendered** — the body formatted for reading.
-  - **Markdown** — the raw reference body.
-  - **YAML** — the file's frontmatter.
-  - **Copilot** — a ready-to-save GitHub Copilot prompt file
-    (`description` + `mode` frontmatter followed by the body; agents get
-    `mode: agent`, everything else `mode: ask`).
-- **Copy** copies whichever format is currently selected (Rendered copies the
-  raw Markdown).
-- **Deep links** — the URL hash tracks what you're looking at:
-  `#skills` selects a filter, `#skills/test-case-generator` also expands that
-  card. Share the link and the recipient lands on the same view.
+1. Create `v2/Skills/<skill-name>/SKILL.md`, using `v2/SKILL_TEMPLATE.md`.
+2. Keep `name` equal to the directory name; use lowercase letters, numbers, and single hyphens. Keep the `description` concise and state what the skill does and when it should be selected.
+3. Put the task procedure, expected output, checks, and references in the skill body. Do not duplicate the procedure in an agent profile.
+4. Add the skill ID to the `skills` list of each relevant v2 role profile in `v2/Agents/`. Reusing the same skill from multiple roles is encouraged.
+5. Rebuild the catalogue manifest and run validation:
 
-The landing page has a tabbed **How to Use Them** guide with the same
-information per content type; selecting a filter pill switches the guide to the
-matching tab.
+```bash
+python v2/generate_manifest.py
+python -m unittest tests.test_v2_catalog -v
+```
 
-### Where the copied content goes
+The v1 `generate_content.py` and root `manifest.json` remain for the legacy catalogue; they do not rewrite v2 content.
 
-The three content types are used differently:
+## Edit M365 agent profiles
 
-- **Agents** — need an agentic tool, primarily **GitHub Copilot agent mode**
-  (also Cursor, Claude Code). Use the card's **Copilot** toggle and save the
-  result as `.github/prompts/<agent-id>.prompt.md` — it carries `mode: agent`,
-  so running `/<agent-id>` in Copilot Chat gives it file and terminal access.
-  For an always-on workflow, add the body to `.github/copilot-instructions.md`
-  or `AGENTS.md`.
-- **Skills** — install once per project. Use the **Copilot** toggle and save as
-  `.github/prompts/<skill-id>.prompt.md`, then run `/<skill-id>` in Copilot
-  Chat. Tools without prompt-file support can use the skill's
-  *Ready-to-use prompt* block directly.
-- **Prompts** — nothing to install. Copy the prompt block, replace the
-  `[PLACEHOLDERS]`, and paste into any chat AI.
+Edit `v2/m365-agents.json`. Each profile must stay within Microsoft 365 Agent Builder limits: name 30 characters, description 1,000, instruction prompt 8,000. Keep exactly five starter prompts per profile. The current M365 schema allows up to 12 conversation starters; these v2 profiles are intentionally self-contained and do not use shared Skills.
 
-You can also skip the app entirely and copy the `.md` files straight from the
-`Agents/`, `Skills/`, and `Prompts/` folders — the Markdown body is identical
-to what the Copy button produces.
+## Version preservation
 
----
+V1 content remains in the original `Agents/`, `Skills/`, `Prompts/`, and `manifest.json`. `v1.html` preserves the prior app, with only a version switch added. V2 content is separate under `v2/`, so editing a v2 role or skill does not alter v1.
 
-## Adding new content
+## Research and design references
 
-There are two ways to add an item.
-
-### Option A — add a file by hand (recommended)
-
-1. Create a new `.md` file in the appropriate folder (`Agents/`, `Skills/`, or
-   `Prompts/`). Name it after its `id`, e.g. `Skills/my-new-skill.md`.
-2. Give it frontmatter and a body (see the format above). Minimum fields:
-   `id`, `name`, `folder` (`agents` | `skills` | `prompts`), and `summary`.
-   `tags`, `aiTools`, and `istqbTopics` are optional lists.
-3. Refresh the browser — the new card appears in its section automatically.
-   On servers that render folder indexes (`python -m http.server`, nginx
-   `autoindex`, `npx serve`, …) the app reads the directory listing and picks
-   up any `.md` file that isn't in the manifest yet.
-4. Optionally, persist it in the manifest:
-
-   ```bash
-   python generate_content.py --scan
-   ```
-
-   This rebuilds `manifest.json` from whatever `.md` files are present. Existing
-   ordering is preserved, brand-new files are appended, and deleted files are
-   dropped.
-
-> **When is `--scan` still needed?** Some static hosts (GitHub Pages, S3
-> without index listings) don't expose folder contents, so the app falls back
-> to `manifest.json` alone there. Run `--scan` before deploying to such a host,
-> or whenever you want to control the card order (the manifest's `files` arrays
-> define it).
-
-### Option B — regenerate everything
-
-`generate_content.py` (with no flags) regenerates **all** content files and the
-manifest from the embedded catalogue. This was used for the initial migration and
-will overwrite the folders — only use it if you want to rebuild from scratch.
-
----
-
-## Editing or removing content
-
-- **Edit** an item by editing its `.md` file and refreshing the browser. No
-  manifest change is needed for edits.
-- **Remove** an item by deleting its `.md` file, then running
-  `python generate_content.py --scan` to drop it from the manifest.
-
----
-
-## Notes
-
-- No dependencies and no build step — just Python 3 (only for the helper script
-  and the local server) and a browser.
-- Reordering: edit the `files` arrays in `manifest.json` directly to change the
-  order cards appear within a section.
+See [v2/RESEARCH-SOURCES.md](v2/RESEARCH-SOURCES.md) for the official GitHub, Agent Skills, Microsoft, ISTQB, Playwright, W3C, and OWASP sources used in the v2 update.

@@ -1,0 +1,2495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Skill Hub — AI-Powered Skills for QA & Development, Grounded in ISTQB Standards</title>
+<meta name="description" content="Plug-and-play AI skills for QA & development workflows — designed by a certified QA engineer, grounded in ISTQB standards.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+
+<style>
+/* ==================== Reset & Base ==================== */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --bg-primary: #14122b;
+  --bg-secondary: #1d1d40;
+  --bg-card: #232454;
+  --bg-card-hover: #2c2e66;
+  --bg-code: #100f24;
+  --text-primary: #f5f5ff;
+  --text-secondary: #c0c0e0;
+  --text-muted: #8a8ab2;
+  --accent: #2ce8c0;
+  --accent-dim: rgba(44, 232, 192, 0.18);
+  --accent-hover: #6cffdc;
+  --premium-color: #ffb84d;
+  --premium-dim: rgba(255, 184, 77, 0.18);
+  --free-color: #2ce8c0;
+  --free-dim: rgba(44, 232, 192, 0.18);
+  --border: #3a3a66;
+  --border-light: #4d4d7a;
+  --radius: 10px;
+  --radius-sm: 6px;
+  --shadow-card: 0 2px 8px rgba(0,0,0,0.3);
+  --shadow-hover: 0 8px 24px rgba(0,0,0,0.4);
+  --transition: 0.2s ease;
+  --font-heading: 'JetBrains Mono', monospace;
+  --font-body: 'DM Sans', sans-serif;
+  --max-width: 1400px;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg-primary);
+  background-image:
+    radial-gradient(ellipse 80% 50% at 20% 0%, rgba(108, 92, 255, 0.18), transparent 60%),
+    radial-gradient(ellipse 70% 50% at 85% 10%, rgba(44, 232, 192, 0.12), transparent 60%),
+    radial-gradient(ellipse 60% 40% at 50% 100%, rgba(255, 105, 180, 0.10), transparent 60%);
+  background-attachment: fixed;
+  color: var(--text-primary);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+img, svg, video, canvas {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* ==================== Hero ==================== */
+.hero {
+  text-align: center;
+  padding: 4rem 1.5rem 3rem;
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
+
+.hero__title {
+  font-family: var(--font-heading);
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+  margin-bottom: 0.5rem;
+}
+
+.hero__title-accent {
+  color: var(--accent);
+}
+
+.hero__subtitle {
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  color: var(--text-secondary);
+  font-weight: 400;
+  margin-bottom: 1.25rem;
+}
+
+.hero__description {
+  font-size: 1.05rem;
+  color: var(--text-secondary);
+  max-width: 600px;
+  margin: 0 auto 1.5rem;
+  line-height: 1.7;
+}
+
+.hero__badge {
+  display: inline-block;
+  font-family: var(--font-heading);
+  font-size: 0.8rem;
+  color: var(--accent);
+  background: var(--accent-dim);
+  border: 1px solid rgba(0, 212, 170, 0.3);
+  padding: 0.35rem 1rem;
+  border-radius: 50px;
+  letter-spacing: 0.02em;
+}
+
+.hero__meta {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.version-control {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.35rem 0.65rem;
+  border: 1px solid var(--border-light);
+  border-radius: 999px;
+  background: rgba(29, 29, 64, 0.82);
+}
+
+.version-control__label {
+  font: 700 0.85rem var(--font-heading);
+  color: var(--text-muted);
+}
+
+.version-control__label[aria-current="page"] { color: var(--text-primary); }
+
+.version-switch {
+  position: relative;
+  width: 72px;
+  height: 40px;
+  border: 2px solid var(--accent);
+  border-radius: 999px;
+  background: var(--accent-dim);
+  cursor: pointer;
+  transition: background var(--transition), box-shadow var(--transition);
+}
+
+.version-switch:hover { box-shadow: 0 0 0 4px var(--accent-dim); }
+.version-switch:focus-visible { outline: 3px solid var(--text-primary); outline-offset: 3px; }
+
+.version-switch__thumb {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--accent);
+  transition: transform var(--transition);
+}
+
+.version-switch[aria-checked="true"] .version-switch__thumb { transform: translateX(32px); }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+
+/* ==================== How to Use ==================== */
+.how-to {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 1.5rem 2rem;
+}
+
+.how-to__inner {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 2rem;
+}
+
+.how-to__title {
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.how-to__steps {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+}
+
+.how-to__step {
+  display: flex;
+  gap: 0.85rem;
+  align-items: flex-start;
+}
+
+.how-to__step-num {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 28px;
+  height: 28px;
+  background: var(--accent-dim);
+  color: var(--accent);
+  font-family: var(--font-heading);
+  font-size: 0.8rem;
+  font-weight: 700;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 212, 170, 0.3);
+  flex-shrink: 0;
+  margin-top: 0.1rem;
+}
+
+.how-to__step-title {
+  font-family: var(--font-heading);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 0.2rem;
+}
+
+.how-to__step-desc {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.how-to__step-desc code {
+  font-family: var(--font-heading);
+  font-size: 0.8rem;
+  background: var(--bg-code);
+  color: var(--accent);
+  padding: 0.1rem 0.35rem;
+  border-radius: 4px;
+}
+
+.how-to__divider {
+  height: 1px;
+  background: var(--border);
+  margin: 1.75rem 0;
+}
+
+.how-to__title-badge {
+  font-size: 0.65rem;
+  padding: 0.2rem 0.55rem;
+  border-radius: 50px;
+  background: rgba(255, 140, 50, 0.15);
+  color: #ff8c32;
+  border: 1px solid rgba(255, 140, 50, 0.3);
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  vertical-align: middle;
+  margin-left: 0.5rem;
+}
+
+.how-to__intro {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  text-align: center;
+  max-width: 640px;
+  margin: 0 auto 1.5rem;
+}
+
+.how-to__step-num--agent {
+  background: rgba(255, 140, 50, 0.15);
+  color: #ff8c32;
+  border-color: rgba(255, 140, 50, 0.3);
+}
+
+.how-to__tabs {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+.how-to__tab {
+  font-family: var(--font-heading);
+  font-size: 0.8rem;
+  font-weight: 500;
+  padding: 0.4rem 1rem;
+  border-radius: 50px;
+  background: transparent;
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: color var(--transition), border-color var(--transition), background var(--transition);
+}
+
+.how-to__tab:hover {
+  border-color: var(--border-light);
+  color: var(--text-primary);
+}
+
+.how-to__tab--active {
+  background: var(--accent-dim);
+  color: var(--accent);
+  border-color: rgba(0, 212, 170, 0.3);
+}
+
+.how-to__steps[hidden] {
+  display: none;
+}
+
+@media (min-width: 640px) {
+  .how-to__steps {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .how-to__steps {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* ==================== Filter Bar ==================== */
+.filter-bar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(15, 15, 26, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 1rem 1.5rem;
+}
+
+.filter-bar__inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.filter-bar__search {
+  position: relative;
+}
+
+.filter-bar__search-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  pointer-events: none;
+  font-size: 0.95rem;
+}
+
+.filter-bar__input {
+  width: 100%;
+  padding: 0.6rem 0.75rem 0.6rem 2.25rem;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color var(--transition);
+}
+
+.filter-bar__input::placeholder {
+  color: var(--text-muted);
+}
+
+.filter-bar__input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px var(--accent-dim);
+}
+
+.filter-bar__row {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.filter-bar__row-label {
+  font-family: var(--font-heading);
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  min-width: 2.6rem;
+}
+
+.filter-bar__divider {
+  width: 1px;
+  height: 24px;
+  background: var(--border);
+  margin: 0 0.25rem;
+  display: none;
+}
+
+.filter-pill {
+  font-family: var(--font-heading);
+  font-size: 0.72rem;
+  padding: 0.3rem 0.7rem;
+  border-radius: 50px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all var(--transition);
+  white-space: nowrap;
+  letter-spacing: 0.01em;
+}
+
+.filter-pill:hover {
+  border-color: var(--text-muted);
+  color: var(--text-primary);
+}
+
+.filter-pill:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.filter-pill--active {
+  background: var(--accent-dim);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.filter-pill--tier-free.filter-pill--active {
+  background: var(--free-dim);
+  border-color: var(--free-color);
+  color: var(--free-color);
+}
+
+.filter-pill--tier-premium.filter-pill--active {
+  background: var(--premium-dim);
+  border-color: var(--premium-color);
+  color: var(--premium-color);
+}
+
+.filter-pill--section-qa.filter-pill--active {
+  background: var(--accent-dim);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.filter-pill--section-dev.filter-pill--active {
+  background: rgba(140, 158, 255, 0.18);
+  border-color: #8c9eff;
+  color: #8c9eff;
+}
+
+.filter-pill--section-qa-prompts.filter-pill--active {
+  background: rgba(80, 232, 168, 0.18);
+  border-color: #50e8a8;
+  color: #50e8a8;
+}
+
+.filter-pill--section-dev-prompts.filter-pill--active {
+  background: rgba(255, 184, 77, 0.18);
+  border-color: #ffb84d;
+  color: #ffb84d;
+}
+
+.section-header--qa-prompts .section-header__title {
+  color: #50e8a8;
+}
+
+.section-header--dev-prompts .section-header__title {
+  color: #ffb84d;
+}
+
+.filter-pill--section-agent.filter-pill--active {
+  background: rgba(255, 140, 50, 0.15);
+  border-color: #ff8c32;
+  color: #ff8c32;
+}
+
+.filter-pill--section-mcp.filter-pill--active {
+  background: rgba(192, 132, 252, 0.15);
+  border-color: #c084fc;
+  color: #c084fc;
+}
+
+.section-header--mcp .section-header__title {
+  color: #c084fc;
+}
+
+.filter-pill--section-writing.filter-pill--active {
+  background: rgba(106, 169, 255, 0.15);
+  border-color: #6aa9ff;
+  color: #6aa9ff;
+}
+
+.section-header--writing .section-header__title {
+  color: #6aa9ff;
+}
+
+/* ==================== MCP Explainer ==================== */
+.mcp-explainer {
+  border-top: 1px solid var(--border);
+}
+.mcp-explainer__block {
+  margin-top: 2rem;
+}
+.mcp-explainer__block:first-of-type {
+  margin-top: 0.5rem;
+}
+.mcp-explainer h3.mcp-explainer__heading {
+  font-family: var(--font-heading);
+  font-size: 1.15rem;
+  color: #c084fc;
+  margin: 0 0 0.6rem 0;
+  letter-spacing: 0.02em;
+}
+.mcp-explainer p {
+  color: var(--text-primary);
+  line-height: 1.55;
+  margin: 0 0 0.75rem 0;
+}
+.mcp-explainer pre {
+  background: #0a0e27;
+  border: 1px solid var(--border);
+  padding: 12px 14px;
+  border-radius: 6px;
+  overflow-x: auto;
+  font-size: 0.82rem;
+  line-height: 1.45;
+  color: #d6dcec;
+  margin: 0.5rem 0 1rem 0;
+}
+.mcp-explainer code {
+  font-family: var(--font-mono, ui-monospace, monospace);
+}
+.mcp-explainer table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+}
+.mcp-explainer th, .mcp-explainer td {
+  border: 1px solid var(--border);
+  padding: 8px 10px;
+  text-align: left;
+  vertical-align: top;
+}
+.mcp-explainer th {
+  background: rgba(192, 132, 252, 0.08);
+  color: #c084fc;
+  font-weight: 600;
+}
+.mcp-explainer__diagram {
+  background: #0a0e27;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 14px;
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 0.78rem;
+  line-height: 1.4;
+  color: #c7d0ea;
+  white-space: pre;
+  overflow-x: auto;
+  margin: 0.5rem 0 1rem 0;
+}
+.mcp-explainer ol, .mcp-explainer ul {
+  color: var(--text-primary);
+  line-height: 1.55;
+  padding-left: 1.4rem;
+}
+.mcp-explainer li {
+  margin-bottom: 0.35rem;
+}
+.mcp-explainer__protocol {
+  margin-top: 1.2rem;
+}
+.mcp-explainer__protocol h4 {
+  font-family: var(--font-heading);
+  font-size: 0.95rem;
+  color: var(--accent);
+  margin: 0 0 0.4rem 0;
+}
+
+/* ==================== Section Headers ==================== */
+.section-header {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1rem;
+  margin-bottom: 0.25rem;
+}
+
+.section-header:first-child {
+  margin-top: 0;
+}
+
+.section-header__title {
+  font-family: var(--font-heading);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+}
+
+.section-header__line {
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.section-header__count {
+  font-family: var(--font-heading);
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.section-header__blurb {
+  grid-column: 1 / -1;
+  margin: -0.5rem 0 1.25rem;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+  max-width: 70ch;
+}
+
+.section-header--dev .section-header__title {
+  color: #7b8cff;
+}
+
+.section-header--agent .section-header__title {
+  color: #ff8c32;
+}
+
+/* ==================== Skill Grid ==================== */
+.skills {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 1.5rem;
+}
+
+.skills__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+.skills__empty {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  grid-column: 1 / -1;
+}
+
+.skills__empty-icon {
+  font-size: 2rem;
+  margin-bottom: 0.75rem;
+  opacity: 0.5;
+}
+
+/* ==================== Skill Card ==================== */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+  cursor: pointer;
+  min-width: 0;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-hover);
+  border-color: var(--border-light);
+}
+
+.card:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.card--expanded {
+  border-color: var(--accent);
+  transform: none;
+}
+
+.card--expanded:hover {
+  transform: none;
+}
+
+.card__copy-btn {
+  display: inline-flex;
+  align-items: center;
+  background: var(--accent-dim);
+  border: 1px solid var(--accent);
+  border-radius: 999px;
+  color: var(--accent);
+  font-family: var(--font-heading);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  padding: 0.3rem 0.7rem;
+  cursor: pointer;
+  transition: background var(--transition), color var(--transition);
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.card__copy-btn:hover {
+  background: var(--accent);
+  color: var(--bg);
+}
+
+.card__copy-btn--success {
+  background: rgba(80, 200, 160, 0.18);
+  border-color: #50c8a0;
+  color: #50c8a0;
+}
+
+.card__close-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  background: rgba(255,255,255,0.07);
+  border: 1px solid var(--border-light);
+  border-radius: 50%;
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: background var(--transition), color var(--transition), border-color var(--transition);
+  flex-shrink: 0;
+  line-height: 1;
+  padding: 0;
+}
+
+.card__close-btn:hover {
+  background: rgba(255,80,80,0.15);
+  border-color: rgba(255,80,80,0.4);
+  color: #ff5555;
+}
+
+.card__close-btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.card__header {
+  padding: 1.25rem;
+}
+
+.card__top-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.card__name {
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  flex-shrink: 0;
+}
+
+.card__badges {
+  display: flex;
+  gap: 0.4rem;
+  align-items: center;
+  margin-left: auto;
+}
+
+.badge {
+  font-family: var(--font-heading);
+  font-size: 0.65rem;
+  padding: 0.2rem 0.55rem;
+  border-radius: 50px;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.badge--category {
+  background: rgba(100, 100, 180, 0.15);
+  color: #8888cc;
+  border: 1px solid rgba(100, 100, 180, 0.25);
+}
+
+.badge--free {
+  background: var(--free-dim);
+  color: var(--free-color);
+  border: 1px solid rgba(0, 212, 170, 0.3);
+}
+
+.badge--premium {
+  background: var(--premium-dim);
+  color: var(--premium-color);
+  border: 1px solid rgba(240, 160, 48, 0.3);
+}
+
+.card__summary {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 0.75rem;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+.card__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-bottom: 0.5rem;
+}
+
+.chip {
+  font-size: 0.68rem;
+  padding: 0.15rem 0.5rem;
+  border-radius: 50px;
+  background: rgba(0, 212, 170, 0.08);
+  color: var(--text-muted);
+  border: 1px solid rgba(0, 212, 170, 0.12);
+  font-family: var(--font-heading);
+}
+
+.chip--trigger {
+  background: rgba(255, 140, 50, 0.08);
+  color: #cc8040;
+  border-color: rgba(255, 140, 50, 0.15);
+  font-style: italic;
+}
+
+.card__tools {
+  display: flex;
+  gap: 0.4rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.tool-tag {
+  font-size: 0.68rem;
+  padding: 0.15rem 0.5rem;
+  border-radius: var(--radius-sm);
+  background: var(--bg-secondary);
+  color: var(--text-muted);
+  font-family: var(--font-heading);
+}
+
+/* ==================== Card Detail (expanded) ==================== */
+.card__detail {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease;
+}
+
+.card--expanded .card__detail {
+  max-height: 50000px;
+}
+
+.card__detail-inner {
+  padding: 0 1.25rem 1.25rem;
+  border-top: 1px solid var(--border);
+  margin-top: 0;
+  padding-top: 1.25rem;
+}
+
+.card__detail-inner h3 {
+  font-family: var(--font-heading);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--accent);
+  margin: 1.25rem 0 0.5rem;
+}
+
+.card__detail-inner h3:first-child {
+  margin-top: 0;
+}
+
+.card__detail-inner p {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  margin-bottom: 0.5rem;
+}
+
+.card__detail-inner ul {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 0.5rem;
+}
+
+.card__detail-inner li {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  padding-left: 1.2rem;
+  position: relative;
+}
+
+.card__detail-inner li::before {
+  content: ">";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-family: var(--font-heading);
+  font-size: 0.8rem;
+}
+
+.card__detail-inner code {
+  font-family: var(--font-heading);
+  font-size: 0.82rem;
+  background: var(--bg-code);
+  color: var(--accent);
+  padding: 0.15rem 0.4rem;
+  border-radius: 4px;
+}
+
+.card__detail-inner pre {
+  background: var(--bg-code);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  border-radius: var(--radius-sm);
+  padding: 1rem;
+  overflow-x: auto;
+  margin: 0.75rem 0;
+  max-width: 100%;
+  word-break: break-word;
+  white-space: pre-wrap;
+}
+
+.card__detail-inner pre code {
+  background: none;
+  padding: 0;
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  line-height: 1.6;
+}
+
+/* Rendered-markdown view (elements parseMd emits beyond the base card styles) */
+.card__detail-view h1 {
+  font-family: var(--font-heading);
+  font-size: 1.05rem;
+  color: var(--text-primary);
+  margin: 0 0 0.75rem;
+}
+
+.card__detail-view h2 {
+  font-family: var(--font-heading);
+  font-size: 0.95rem;
+  color: var(--accent);
+  margin: 1.25rem 0 0.5rem;
+}
+
+.card__detail-view ol {
+  margin: 0 0 0.5rem 1.2rem;
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+/* Numbered items keep their numbers — no "> " bullet on top */
+.card__detail-view ol li {
+  padding-left: 0;
+}
+
+.card__detail-view ol li::before {
+  content: none;
+}
+
+.card__detail-view table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0.75rem 0;
+  font-size: 0.82rem;
+}
+
+.card__detail-view th,
+.card__detail-view td {
+  border: 1px solid var(--border);
+  padding: 6px 8px;
+  text-align: left;
+  color: var(--text-secondary);
+  vertical-align: top;
+}
+
+.card__detail-view th {
+  color: var(--accent);
+  background: var(--accent-dim);
+  font-weight: 600;
+}
+
+.card__detail-view blockquote {
+  border-left: 3px solid var(--accent);
+  padding-left: 0.75rem;
+  margin: 0.5rem 0;
+  color: var(--text-secondary);
+  font-size: 0.88rem;
+}
+
+.card__detail-view hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 1rem 0;
+}
+
+.card__premium-cta {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  padding: 0.75rem 1rem;
+  background: var(--premium-dim);
+  border: 1px solid rgba(240, 160, 48, 0.25);
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  color: var(--premium-color);
+}
+
+.card__premium-cta a {
+  color: var(--premium-color);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.card__premium-cta a:hover {
+  color: #ffbb55;
+}
+
+/* ==================== Footer ==================== */
+.footer {
+  text-align: center;
+  padding: 3rem 1.5rem 2rem;
+  border-top: 1px solid var(--border);
+  margin-top: 2rem;
+  max-width: var(--max-width);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.footer__credit {
+  font-family: var(--font-heading);
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.75rem;
+}
+
+.footer__cert {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-bottom: 1rem;
+}
+
+.footer__links {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.footer__link {
+  font-family: var(--font-heading);
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color var(--transition);
+}
+
+.footer__link:hover {
+  color: var(--accent);
+}
+
+.footer__link:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* ==================== Responsive ==================== */
+
+/* --- Mobile-first fixes --- */
+@media (max-width: 639px) {
+  .hero {
+    padding: 2.5rem 1rem 2rem;
+  }
+
+  .hero__title {
+    font-size: 1.75rem;
+    word-break: break-word;
+  }
+
+  .hero__subtitle {
+    font-size: 0.88rem;
+  }
+
+  .hero__description {
+    font-size: 0.92rem;
+  }
+
+  .hero__badge {
+    font-size: 0.72rem;
+    padding: 0.3rem 0.8rem;
+  }
+
+  .how-to {
+    padding: 0 1rem 1.5rem;
+  }
+
+  .how-to__title {
+    font-size: 1rem;
+  }
+
+  .how-to__intro {
+    font-size: 0.85rem;
+  }
+
+  .filter-bar {
+    padding: 0.75rem 1rem;
+  }
+
+  .filter-bar__row {
+    gap: 0.35rem;
+  }
+
+  #category-row {
+    max-height: 5.5rem;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 0.25rem;
+  }
+
+  .filter-pill {
+    font-size: 0.65rem;
+    padding: 0.25rem 0.55rem;
+  }
+
+  .card__header {
+    padding: 1rem;
+  }
+
+  .card__top-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.4rem;
+  }
+
+  .card__name {
+    font-size: 0.9rem;
+    flex-shrink: 1;
+    word-break: break-word;
+  }
+
+  .card__badges {
+    margin-left: 0;
+  }
+
+  .card__detail-inner {
+    padding: 0 1rem 1rem;
+    padding-top: 1rem;
+  }
+
+  .card__detail-inner pre {
+    font-size: 0.72rem;
+    padding: 0.75rem;
+  }
+
+  .skills {
+    padding: 1rem;
+  }
+
+  .how-to__inner {
+    padding: 1.25rem;
+  }
+
+  .footer {
+    padding: 1.5rem 1rem;
+  }
+
+  .footer__links {
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: center;
+  }
+}
+
+/* --- Extra-small phones --- */
+@media (max-width: 380px) {
+  .hero {
+    padding: 2rem 0.75rem 1.5rem;
+  }
+
+  .hero__title {
+    font-size: 1.5rem;
+  }
+
+  .hero__description {
+    font-size: 0.85rem;
+  }
+
+  .skills {
+    padding: 0.75rem;
+  }
+
+  .card__header {
+    padding: 0.85rem;
+  }
+
+  .card__name {
+    font-size: 0.85rem;
+  }
+
+  .filter-bar {
+    padding: 0.6rem 0.75rem;
+  }
+
+  .how-to {
+    padding: 0 0.75rem 1rem;
+  }
+
+  .how-to__inner {
+    padding: 1rem;
+  }
+}
+
+/* --- Tablet refinements --- */
+@media (min-width: 640px) and (max-width: 1023px) {
+  .hero {
+    padding: 3rem 1.5rem 2.5rem;
+  }
+
+  .skills {
+    padding: 1.25rem;
+  }
+}
+
+@media (min-width: 640px) {
+  .skills__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .filter-bar__divider {
+    display: block;
+  }
+
+  .hero__title {
+    font-size: 3rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .hero {
+    padding: 5rem 1.5rem 3.5rem;
+  }
+
+  .hero__title {
+    font-size: 3.25rem;
+  }
+
+  .skills__grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 1440px) {
+  .skills__grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* ==================== Card expand on grid — full width ==================== */
+.card--expanded {
+  grid-column: 1 / -1;
+}
+
+/* ==================== Scrollbar ==================== */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--border-light);
+}
+
+/* ==================== Selection ==================== */
+::selection {
+  background: var(--accent-dim);
+  color: var(--accent);
+}
+
+.card__format-btn {
+  display: inline-flex;
+  align-items: center;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  color: var(--text-muted);
+  font-family: var(--font-heading);
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 0.3rem 0.7rem;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.card__format-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.card__format-btn--active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--bg);
+}
+
+.card__format-controls {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+</style>
+</head>
+<body>
+
+<!-- ==================== Hero ==================== -->
+<header class="hero" role="banner">
+  <h1 class="hero__title">AI <span class="hero__title-accent">Skill Hub</span></h1>
+  <p class="hero__subtitle">AI agents, skills &amp; prompt templates for QA & development. Built by a certified QA engineer.</p>
+  <p class="hero__description">
+    A catalogue of ready-to-use <strong>Agents</strong> (autonomous, multi-step workers), <strong>Skills</strong> (install-once specialists), and <strong>Prompt templates</strong> (copy-paste one-offs) — all plain Markdown, loaded straight from this repository. QA content is grounded in ISTQB standards.
+  </p>
+  <div class="hero__meta">
+    <span class="hero__badge" id="skill-count">Agents · Skills · Prompt templates</span>
+    <div class="version-control" aria-label="Application version">
+      <span class="version-control__label" aria-current="page">V1.0</span>
+      <button class="version-switch" id="version-toggle" type="button" role="switch" aria-checked="false" aria-label="Switch to version 2.0" data-target="index.html">
+        <span class="version-switch__thumb" aria-hidden="true"></span>
+      </button>
+      <span class="version-control__label">V2.0</span>
+    </div>
+  </div>
+</header>
+
+<!-- ==================== What's in the Hub ==================== -->
+<section class="how-to" aria-label="Agents, skills and prompt templates explained">
+  <div class="how-to__inner">
+    <h2 class="how-to__title">Agents, Skills &amp; Prompt Templates</h2>
+    <p class="how-to__intro">
+      This hub catalogues three kinds of ready-to-use AI building blocks for QA and development work. All of them are plain Markdown files that live in this repository — browse them here and copy what you need, or take the files straight from the <code>Agents/</code>, <code>Skills/</code> and <code>Prompts/</code> folders.
+    </p>
+    <div class="how-to__steps">
+      <div class="how-to__step">
+        <span class="how-to__step-num how-to__step-num--agent">⚙</span>
+        <h3 class="how-to__step-title">Agents</h3>
+        <p class="how-to__step-desc">Autonomous, multi-step workers for an agentic tool (Claude Code, Copilot agent mode, Cursor). An agent reads your repo, runs commands, and proposes changes — e.g. the Commit Message Writer inspects your staged diff and writes a Conventional Commit.</p>
+      </div>
+      <div class="how-to__step">
+        <span class="how-to__step-num">★</span>
+        <h3 class="how-to__step-title">Skills</h3>
+        <p class="how-to__step-desc">Focused specialists you install <strong>once</strong> in a project and invoke on demand. Each skill packages a role, a tuned prompt, a deliverable shape, and a quality checklist for one job — e.g. generating ISTQB-aligned test cases from a user story.</p>
+      </div>
+      <div class="how-to__step">
+        <span class="how-to__step-num">⚡</span>
+        <h3 class="how-to__step-title">Prompt Templates</h3>
+        <p class="how-to__step-desc">Zero-install, copy-paste prompts for one-off tasks. Fill in the <code>[PLACEHOLDERS]</code> and paste into any chat AI — Claude, ChatGPT, Copilot Chat, Gemini. Nothing is saved in your project.</p>
+      </div>
+      <div class="how-to__step">
+        <span class="how-to__step-num">▤</span>
+        <h3 class="how-to__step-title">All Plain Markdown</h3>
+        <p class="how-to__step-desc">Every item is one <code>.md</code> file: YAML frontmatter (id, name, summary, tags) plus a Markdown body — exactly what the card's <strong>YAML</strong> / <strong>Markdown</strong> toggles show. What you copy here is identical to the file in the repo.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== How to Use (per-type tabs) ==================== -->
+<section class="how-to" aria-label="How to use">
+  <div class="how-to__inner">
+    <h2 class="how-to__title">How to Use Them</h2>
+    <p class="how-to__intro">Pick the type you're interested in. Every expanded card has a <strong>Copy</strong> button — or grab the identical file from the repository folder. Whatever the tool, always review AI output before committing it.</p>
+
+    <div class="how-to__tabs" role="tablist" aria-label="Usage guide by content type">
+      <button class="how-to__tab how-to__tab--active" role="tab" data-usage="skills" aria-selected="true">Use a Skill</button>
+      <button class="how-to__tab" role="tab" data-usage="agents" aria-selected="false">Use an Agent</button>
+      <button class="how-to__tab" role="tab" data-usage="prompts" aria-selected="false">Use a Prompt</button>
+      <button class="how-to__tab" role="tab" data-usage="repo" aria-selected="false">From the Repo</button>
+    </div>
+
+    <div class="how-to__steps" role="tabpanel" data-usage-panel="skills">
+      <div class="how-to__step">
+        <span class="how-to__step-num">1</span>
+        <h3 class="how-to__step-title">Pick &amp; Copy for Copilot</h3>
+        <p class="how-to__step-desc">Browse the <strong>Skills</strong> section below, expand a card and switch the toggle to <strong>Copilot</strong> — it shows a ready-to-save <code>.prompt.md</code> file (frontmatter + body). Hit <strong>Copy</strong>.</p>
+      </div>
+      <div class="how-to__step">
+        <span class="how-to__step-num">2</span>
+        <h3 class="how-to__step-title">Save as a Prompt File</h3>
+        <p class="how-to__step-desc">In your repo, save it as <code>.github/prompts/&lt;skill-id&gt;.prompt.md</code>. VS Code picks it up automatically — no extension settings needed (Copilot prompt files are on by default).</p>
+      </div>
+      <div class="how-to__step">
+        <span class="how-to__step-num">3</span>
+        <h3 class="how-to__step-title">Run It in Copilot Chat</h3>
+        <p class="how-to__step-desc">Type <code>/&lt;skill-id&gt;</code> in Copilot Chat (e.g. <code>/test-case-generator</code>), add your story or code, and send. For an always-on skill, put it in <code>.github/copilot-instructions.md</code> instead.</p>
+      </div>
+      <div class="how-to__step">
+        <span class="how-to__step-num">4</span>
+        <h3 class="how-to__step-title">Any Other Tool</h3>
+        <p class="how-to__step-desc">No prompt-file support? Every skill includes a <strong>Ready-to-use prompt</strong> block — copy just that into the chat, replace the <code>[PLACEHOLDERS]</code>, and you get the same structured output.</p>
+      </div>
+    </div>
+
+    <div class="how-to__steps" role="tabpanel" data-usage-panel="agents" hidden>
+      <div class="how-to__step">
+        <span class="how-to__step-num how-to__step-num--agent">1</span>
+        <h3 class="how-to__step-title">What You Need</h3>
+        <p class="how-to__step-desc">Agents do multi-step work — reading files, running <code>git</code>, editing code — so they need <strong>Copilot agent mode</strong> (the mode picker in VS Code's Copilot Chat). Cursor and Claude Code work too. In a chat-only tool, fall back to the agent's prompt block.</p>
+      </div>
+      <div class="how-to__step">
+        <span class="how-to__step-num how-to__step-num--agent">2</span>
+        <h3 class="how-to__step-title">Copy for Copilot</h3>
+        <p class="how-to__step-desc">Expand an agent card, switch the toggle to <strong>Copilot</strong> and hit <strong>Copy</strong> — for agents the generated <code>.prompt.md</code> sets <code>mode: agent</code>, so Copilot runs it with file and terminal access. Save it as <code>.github/prompts/&lt;agent-id&gt;.prompt.md</code>.</p>
+      </div>
+      <div class="how-to__step">
+        <span class="how-to__step-num how-to__step-num--agent">3</span>
+        <h3 class="how-to__step-title">Make It Always Available</h3>
+        <p class="how-to__step-desc">Want the behaviour without typing <code>/&lt;agent-id&gt;</code>? Add the card's body to <code>.github/copilot-instructions.md</code> or your repo's <code>AGENTS.md</code> so Copilot agent mode (and the Copilot coding agent on github.com) always knows the workflow.</p>
+      </div>
+      <div class="how-to__step">
+        <span class="how-to__step-num how-to__step-num--agent">4</span>
+        <h3 class="how-to__step-title">Invoke &amp; Review</h3>
+        <p class="how-to__step-desc">Run <code>/&lt;agent-id&gt;</code> in agent mode, or use the trigger phrases each card lists ("write a commit message for these changes"). The agent inspects your repo and proposes changes — always review the diff before committing or pushing anything.</p>
+      </div>
+    </div>
+
+    <div class="how-to__steps" role="tabpanel" data-usage-panel="prompts" hidden>
+      <div class="how-to__step">
+        <span class="how-to__step-num">1</span>
+        <h3 class="how-to__step-title">No Install Needed</h3>
+        <p class="how-to__step-desc">Expand a card in the <strong>Prompts</strong> section and hit <strong>Copy</strong>. Each card tells you <em>when to use</em> the prompt and what output to expect.</p>
+      </div>
+      <div class="how-to__step">
+        <span class="how-to__step-num">2</span>
+        <h3 class="how-to__step-title">Fill the Placeholders</h3>
+        <p class="how-to__step-desc">Replace every <code>[PLACEHOLDER]</code> — system description, user story, code, logs — before sending. The more concrete the input, the better the output.</p>
+      </div>
+      <div class="how-to__step">
+        <span class="how-to__step-num">3</span>
+        <h3 class="how-to__step-title">Paste Anywhere</h3>
+        <p class="how-to__step-desc">Prompts are plain text and tool-agnostic: Claude, ChatGPT, Copilot Chat, Gemini — anything with a chat box works.</p>
+      </div>
+      <div class="how-to__step">
+        <span class="how-to__step-num">4</span>
+        <h3 class="how-to__step-title">Promote to a Skill</h3>
+        <p class="how-to__step-desc">Reusing the same prompt every sprint? Save it as a skill file in your project (see the <em>Use a Skill</em> tab) so your assistant can trigger it automatically instead of you pasting it each time.</p>
+      </div>
+    </div>
+
+    <div class="how-to__steps" role="tabpanel" data-usage-panel="repo" hidden>
+      <div class="how-to__step">
+        <span class="how-to__step-num">1</span>
+        <h3 class="how-to__step-title">Clone the Repository</h3>
+        <p class="how-to__step-desc">Everything on this page is loaded at runtime from three folders: <code>Agents/</code>, <code>Skills/</code> and <code>Prompts/</code> — one Markdown file per item, named after its id.</p>
+      </div>
+      <div class="how-to__step">
+        <span class="how-to__step-num">2</span>
+        <h3 class="how-to__step-title">File Anatomy</h3>
+        <p class="how-to__step-desc">Each file is YAML frontmatter (what the <strong>YAML</strong> toggle shows — the header for a Copilot/Claude skill file) followed by the full Markdown body (the <strong>Markdown</strong> toggle).</p>
+      </div>
+      <div class="how-to__step">
+        <span class="how-to__step-num">3</span>
+        <h3 class="how-to__step-title">Copy Files Directly</h3>
+        <p class="how-to__step-desc">Skip the browser entirely: copy <code>Skills/test-case-generator.md</code> or <code>Agents/error-fixer.md</code> into your project's <code>.github/prompts/</code> folder as <code>&lt;id&gt;.prompt.md</code> (the card's <strong>Copilot</strong> toggle adds the prompt-file header for you).</p>
+      </div>
+      <div class="how-to__step">
+        <span class="how-to__step-num">4</span>
+        <h3 class="how-to__step-title">Run &amp; Extend Locally</h3>
+        <p class="how-to__step-desc">Serve the catalogue with <code>python -m http.server 8000</code> from the repo root. Drop your own <code>.md</code> file into a folder and refresh — it appears automatically. Run <code>python generate_content.py --scan</code> only to persist ordering in <code>manifest.json</code> (needed for hosts without folder listings, e.g. GitHub Pages).</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== Filter Bar ==================== -->
+<nav class="filter-bar" role="navigation" aria-label="Skill filters">
+  <div class="filter-bar__inner">
+    <div class="filter-bar__search">
+      <span class="filter-bar__search-icon" aria-hidden="true">&#x2315;</span>
+      <input
+        type="search"
+        class="filter-bar__input"
+        id="search-input"
+        placeholder="Search skills by name, keyword, or tag..."
+        aria-label="Search skills"
+      >
+    </div>
+    <div class="filter-bar__row">
+      <span class="filter-bar__row-label">Type</span>
+      <button class="filter-pill filter-pill--section filter-pill--active" data-section="all" aria-pressed="true">All</button>
+      <button class="filter-pill filter-pill--section filter-pill--section-dev" data-section="agents" aria-pressed="false">Agents</button>
+      <button class="filter-pill filter-pill--section filter-pill--section-qa" data-section="skills" aria-pressed="false">Skills</button>
+      <button class="filter-pill filter-pill--section filter-pill--section-qa-prompts" data-section="prompts" aria-pressed="false">Prompts</button>
+      <button class="filter-pill filter-pill--section filter-pill--section-mcp" data-section="mcp" aria-pressed="false">MCP</button>
+      <button class="filter-pill filter-pill--section filter-pill--section-writing" data-section="writing" aria-pressed="false">Writing</button>
+    </div>
+    <div class="filter-bar__row" role="group" aria-label="Filter by role">
+      <span class="filter-bar__row-label">Role</span>
+      <button class="filter-pill filter-pill--role filter-pill--active" data-role="all" aria-pressed="true">All</button>
+      <button class="filter-pill filter-pill--role filter-pill--section-qa" data-role="qa" aria-pressed="false">QA</button>
+      <button class="filter-pill filter-pill--role filter-pill--section-dev" data-role="dev" aria-pressed="false">DEV</button>
+    </div>
+  </div>
+</nav>
+
+<!-- ==================== MCP Explainer (visible only when MCP filter is active) ==================== -->
+<section id="mcp-explainer" class="how-to mcp-explainer" aria-label="Model Context Protocol explainer" hidden>
+  <div class="how-to__inner">
+    <h2 class="how-to__title">Model Context Protocol (MCP)</h2>
+    <p class="how-to__intro">
+      MCP is an open standard for connecting LLMs to tools, data, and other systems. Think of it as <em>USB-C for AI</em> &mdash; one wire, many devices. The four sections below explain what MCP is, how it works, how it compares to other LLM&ndash;tool APIs, and how to build your own MCP server.
+    </p>
+
+    <!-- 1. What is MCP -->
+    <div class="mcp-explainer__block">
+      <h3 class="mcp-explainer__heading">1. What is MCP?</h3>
+      <p>
+        The <strong>Model Context Protocol</strong> is an open, JSON-RPC&ndash;based protocol introduced by Anthropic in late 2024. It standardises how AI applications (<em>hosts</em> like Claude Desktop, Claude Code, Cursor, Zed) discover and call <em>tools</em>, read <em>resources</em>, and use prompt templates exposed by external <em>servers</em> &mdash; without each integration being one-off glue code.
+      </p>
+      <div class="how-to__steps">
+        <div class="how-to__step">
+          <span class="how-to__step-num">★</span>
+          <h3 class="how-to__step-title">Open Standard</h3>
+          <p class="how-to__step-desc">Vendor-neutral spec with SDKs for Python, TypeScript, Go, Rust, Java, C#. Anyone can build a server; any compliant host can use it.</p>
+        </div>
+        <div class="how-to__step">
+          <span class="how-to__step-num">⚙</span>
+          <h3 class="how-to__step-title">Three Primitives</h3>
+          <p class="how-to__step-desc"><strong>Tools</strong> (LLM-invoked actions), <strong>Resources</strong> (read-only data the model can pull in), <strong>Prompts</strong> (reusable templates the user can pick).</p>
+        </div>
+        <div class="how-to__step">
+          <span class="how-to__step-num">⇄</span>
+          <h3 class="how-to__step-title">JSON-RPC 2.0</h3>
+          <p class="how-to__step-desc">Bidirectional messages over <code>stdio</code>, Server-Sent Events, or Streamable HTTP. Includes capability negotiation, lifecycle, and progress events.</p>
+        </div>
+        <div class="how-to__step">
+          <span class="how-to__step-num">⌂</span>
+          <h3 class="how-to__step-title">Host ⇄ Client ⇄ Server</h3>
+          <p class="how-to__step-desc">Host runs the LLM. Client (one per server) speaks MCP. Server exposes capabilities. Boundaries keep permissions and trust scoped per integration.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. How MCP works -->
+    <div class="mcp-explainer__block">
+      <h3 class="mcp-explainer__heading">2. How MCP Works</h3>
+      <p>The host (e.g. Claude Desktop) spawns an MCP <em>client</em> for each configured server. Client and server perform a JSON-RPC handshake, then the host can list and call capabilities on demand:</p>
+      <div class="mcp-explainer__diagram">┌──────────────┐        ┌──────────────┐        ┌──────────────┐
+│     HOST     │        │    CLIENT    │        │    SERVER    │
+│ (Claude app) │ ◄────► │  (per-server │ ◄────► │ (your code:  │
+│   + LLM      │        │  MCP shim)   │        │  filesystem, │
+│              │        │              │        │  GitHub, DB) │
+└──────────────┘        └──────────────┘        └──────────────┘
+        ▲                                              ▲
+        │                                              │
+        └─── user prompt ──────► tools/call ──────► business logic
+                                  ◄── result ◄──</div>
+      <p><strong>Lifecycle:</strong></p>
+      <ol>
+        <li><code>initialize</code> &mdash; client and server exchange protocol version + capabilities (tools, resources, prompts, sampling, roots).</li>
+        <li><code>tools/list</code>, <code>resources/list</code>, <code>prompts/list</code> &mdash; host fetches catalog. Tool descriptions are sent to the LLM as part of its system prompt.</li>
+        <li><code>tools/call</code> &mdash; when the LLM emits a tool call, the host forwards it to the server, which executes and returns content.</li>
+        <li><code>notifications/*</code> &mdash; server can push <code>tools/list_changed</code>, progress, log events; client can cancel.</li>
+        <li><code>shutdown</code> &mdash; clean teardown.</li>
+      </ol>
+      <p><strong>Transports:</strong></p>
+      <ul>
+        <li><strong>stdio</strong> &mdash; server is a child process, messages over stdin/stdout. Best for local tools.</li>
+        <li><strong>Streamable HTTP</strong> &mdash; single endpoint, supports resumable streams. Best for remote/multi-tenant servers.</li>
+        <li><strong>SSE</strong> (legacy) &mdash; older HTTP+Server-Sent-Events transport, being phased out in favour of Streamable HTTP.</li>
+      </ul>
+    </div>
+
+    <!-- 3. Other APIs -->
+    <div class="mcp-explainer__block">
+      <h3 class="mcp-explainer__heading">3. Other APIs for Connecting LLMs to Tools</h3>
+      <p>MCP is one of several approaches. Each makes different trade-offs about <em>scope</em> (single LLM call vs. long-running agent), <em>discovery</em> (static vs. dynamic), and <em>transport</em>.</p>
+
+      <div class="mcp-explainer__protocol">
+        <h4>Anthropic native tool use (Messages API)</h4>
+        <p>Tools are declared inline in each API call. The model returns a <code>tool_use</code> block; your code executes and replies with <code>tool_result</code>. No separate server &mdash; tools live in your application.</p>
+        <pre><code>response = client.messages.create(
+    model="claude-opus-4-7",
+    tools=[{
+        "name": "get_weather",
+        "description": "Get current weather for a city.",
+        "input_schema": {
+            "type": "object",
+            "properties": {"city": {"type": "string"}},
+            "required": ["city"]
+        }
+    }],
+    messages=[{"role": "user", "content": "Weather in Sofia?"}]
+)</code></pre>
+      </div>
+
+      <div class="mcp-explainer__protocol">
+        <h4>OpenAI function calling / tools</h4>
+        <p>Conceptually identical to Anthropic native tools: JSON-Schema function declarations passed per request. Mature ecosystem, single vendor.</p>
+        <pre><code>resp = openai.chat.completions.create(
+  model="gpt-4o",
+  tools=[{
+    "type": "function",
+    "function": {
+      "name": "get_weather",
+      "parameters": {"type": "object", "properties": {"city": {"type":"string"}}}
+    }
+  }],
+  messages=[{"role":"user","content":"Weather in Sofia?"}]
+)</code></pre>
+      </div>
+
+      <div class="mcp-explainer__protocol">
+        <h4>Google Agent-to-Agent (A2A)</h4>
+        <p>Open protocol announced by Google (2025) for <strong>agent-to-agent</strong> collaboration, not LLM-to-tool. Each agent publishes an <code>AgentCard</code> at <code>/.well-known/agent.json</code> describing its skills; other agents delegate <em>Tasks</em> to it via JSON-RPC over HTTPS, with streaming updates and artifacts.</p>
+        <pre><code>// Agent Card (served at /.well-known/agent.json)
+{
+  "name": "TravelPlannerAgent",
+  "description": "Books flights and hotels.",
+  "url": "https://travel.example.com/a2a",
+  "skills": [
+    { "id": "book-flight",
+      "description": "Book a flight given origin, destination, dates" }
+  ],
+  "capabilities": { "streaming": true, "pushNotifications": true }
+}
+
+// Caller delegates a task
+POST /a2a  { "method": "tasks/send",
+             "params": { "id": "t-123",
+                         "message": { "role": "user",
+                                      "parts": [{"text": "Book SOF→LHR May 12"}] } } }</code></pre>
+        <p><strong>MCP vs A2A:</strong> MCP exposes <em>tools/data</em> to a single LLM in a single host; A2A coordinates <em>autonomous agents</em> across organizations. They are complementary, not competing &mdash; an A2A agent often uses MCP internally to reach its own tools.</p>
+      </div>
+
+      <div class="mcp-explainer__protocol">
+        <h4>LangChain / LlamaIndex tools</h4>
+        <p>Library-level abstraction. Tools are Python/TS objects bound to an agent loop run by your code. Great for prototyping; tightly coupled to the framework.</p>
+        <pre><code>from langchain_core.tools import tool
+
+@tool
+def get_weather(city: str) -> str:
+    """Get current weather for a city."""
+    return weather_api.lookup(city)
+
+agent = create_react_agent(llm, tools=[get_weather])</code></pre>
+      </div>
+
+      <div class="mcp-explainer__protocol">
+        <h4>OpenAPI-as-tools (ReAct / Toolformer style)</h4>
+        <p>Feed an OpenAPI/Swagger spec to the LLM; it picks endpoints to call. Zero protocol overhead but no permission model and no streaming &mdash; the LLM is essentially curling raw HTTP.</p>
+        <pre><code># Spec is summarised into the prompt
+POST /pets   body: { name, species }   → 201 Pet
+GET  /pets/{id}                         → 200 Pet
+
+# Model output (parsed by your runtime)
+{ "action": "GET", "path": "/pets/42" }</code></pre>
+      </div>
+
+      <div class="mcp-explainer__protocol">
+        <h4>MCP vs REST</h4>
+        <p>REST is a general-purpose request/response style for client–server data access. MCP is a <em>protocol on top of JSON-RPC</em> built specifically for an LLM to discover and invoke capabilities at runtime. They solve different problems and often live side-by-side: an MCP server frequently <em>wraps</em> a REST API and re-exposes it in a form the model can use safely.</p>
+        <table>
+          <thead>
+            <tr><th>Aspect</th><th>REST</th><th>MCP</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Primary consumer</td><td>Human-written client code</td><td>An LLM driving a host application</td></tr>
+            <tr><td>Message style</td><td>HTTP verbs + URIs (resource-oriented)</td><td>JSON-RPC 2.0 methods (action-oriented)</td></tr>
+            <tr><td>Discovery</td><td>OpenAPI / docs read at design time</td><td><code>tools/list</code>, <code>resources/list</code> at runtime — the model reads the catalog every session</td></tr>
+            <tr><td>Schema purpose</td><td>Validate inputs, generate clients</td><td>Tell the LLM <em>when</em> and <em>how</em> to call — descriptions are part of the contract</td></tr>
+            <tr><td>Statefulness</td><td>Stateless by convention</td><td>Stateful session: capability negotiation, progress, cancellation, notifications</td></tr>
+            <tr><td>Transport</td><td>HTTP/HTTPS only</td><td>stdio, Streamable HTTP, SSE</td></tr>
+            <tr><td>Auth</td><td>OAuth, bearer, mTLS — between services</td><td>Per-host trust boundary; remote MCP adds OAuth on top</td></tr>
+            <tr><td>Streaming</td><td>Optional (SSE / WebSocket bolt-on)</td><td>First-class: progress events, partial results, cancellation</td></tr>
+            <tr><td>Errors</td><td>HTTP status + body shape varies</td><td>Structured <code>{ isError: true, content }</code> the model can reason about</td></tr>
+            <tr><td>Versioning</td><td>URL or header-based, manual</td><td>Protocol-version handshake on <code>initialize</code></td></tr>
+            <tr><td>Side effects</td><td>Implied by HTTP verb (GET safe, POST/DELETE not)</td><td>Implied by tool name + description; convention, not enforced</td></tr>
+            <tr><td>Typical deployment</td><td>One service, many clients</td><td>One server, one host process per user session</td></tr>
+            <tr><td>When to use</td><td>Public API, browser/mobile clients, machine-to-machine</td><td>Letting an LLM safely act on a system without bespoke prompt-engineering</td></tr>
+          </tbody>
+        </table>
+        <p><strong>Rule of thumb:</strong> if a human or another service is calling it, expose REST. If an LLM is calling it, expose MCP — and have the MCP server call your REST API underneath.</p>
+      </div>
+
+      <h4 style="margin-top:1.2rem;">At a glance</h4>
+      <table>
+        <thead>
+          <tr><th>Protocol</th><th>Scope</th><th>Discovery</th><th>Transport</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>MCP</td><td>LLM ⇄ tools/data, per host</td><td>Dynamic <code>tools/list</code></td><td>stdio · HTTP · SSE</td><td>Open standard, multi-vendor adoption</td></tr>
+          <tr><td>Anthropic / OpenAI tools</td><td>Single API call</td><td>Static (in request)</td><td>HTTPS</td><td>Vendor-specific, GA</td></tr>
+          <tr><td>Google A2A</td><td>Agent ⇄ agent</td><td>Agent Card</td><td>JSON-RPC / HTTPS, streaming</td><td>Open spec, 2025</td></tr>
+          <tr><td>LangChain / LlamaIndex</td><td>In-process agent loop</td><td>Code registration</td><td>n/a (library)</td><td>Framework</td></tr>
+          <tr><td>OpenAPI-as-tools</td><td>Ad-hoc REST</td><td>OpenAPI spec</td><td>HTTPS</td><td>Pattern, not a protocol</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 4. How to create an MCP server -->
+    <div class="mcp-explainer__block">
+      <h3 class="mcp-explainer__heading">4. How to Create an MCP Server</h3>
+      <p>The fastest path is the official <strong>Python SDK</strong> (<code>pip install mcp</code>) using the <code>FastMCP</code> helper. The example below exposes one tool that the LLM can call.</p>
+      <ol>
+        <li><strong>Install the SDK</strong> &mdash; <code>pip install "mcp[cli]"</code> (the <code>cli</code> extra ships the MCP Inspector for testing).</li>
+        <li><strong>Write the server</strong> &mdash; one file is enough for a working server.</li>
+      </ol>
+      <pre><code># server.py
+from mcp.server.fastmcp import FastMCP
+
+mcp = FastMCP("weather-server")
+
+@mcp.tool()
+def get_weather(city: str) -> str:
+    """Return the current weather for a city."""
+    # Replace with a real API call.
+    return f"It's 18°C and clear in {city}."
+
+@mcp.resource("weather://recent")
+def recent_lookups() -> str:
+    """Most recent cities the user looked up."""
+    return "Sofia, London, Berlin"
+
+if __name__ == "__main__":
+    mcp.run(transport="stdio")</code></pre>
+      <ol start="3">
+        <li><strong>Register the server</strong> with a host. For Claude Desktop, edit <code>claude_desktop_config.json</code>:</li>
+      </ol>
+      <pre><code>{
+  "mcpServers": {
+    "weather": {
+      "command": "python",
+      "args": ["/abs/path/to/server.py"]
+    }
+  }
+}</code></pre>
+      <ol start="4">
+        <li><strong>Test with the Inspector</strong> before wiring it into a host:</li>
+      </ol>
+      <pre><code>npx @modelcontextprotocol/inspector python server.py
+# → Opens a browser UI to list tools, call them, and inspect raw JSON-RPC.</code></pre>
+      <ol start="5">
+        <li><strong>Restart the host</strong>. The new tool now appears in Claude's tool palette and the model can call it.</li>
+      </ol>
+
+      <h4 style="margin-top:1rem;">TypeScript equivalent</h4>
+      <pre><code>// server.ts — npm i @modelcontextprotocol/sdk zod
+import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
+import { z } from "zod";
+
+const server = new McpServer({ name: "weather-server", version: "1.0.0" });
+
+server.tool(
+  "get_weather",
+  { city: z.string().describe("City name") },
+  async ({ city }) => ({
+    content: [{ type: "text", text: `It's 18°C and clear in ${city}.` }]
+  })
+);
+
+await server.connect(new StdioServerTransport());</code></pre>
+      <p><strong>Production checklist:</strong> declare a JSON Schema for every tool input, return structured errors with <code>isError: true</code>, scope side-effects to a clearly-named tool (don't hide writes inside a "get"), add timeouts, log to stderr (stdout is the protocol channel), and pin the protocol version your SDK was tested against.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== Skill Grid ==================== -->
+<main class="skills" role="main">
+  <div class="skills__grid" id="skills-grid">
+    <!-- Cards rendered by JS -->
+  </div>
+</main>
+
+<!-- ==================== Footer ==================== -->
+<footer class="footer" role="contentinfo">
+  <p class="footer__credit">Built by Pavel</p>
+  <p class="footer__cert">ISTQB CTFL &middot; AI Testing &middot; GenAI Testing</p>
+  <div class="footer__links">
+    <a href="https://github.com/paveltspavlov" class="footer__link" target="_blank" rel="noopener noreferrer">GitHub</a>
+    <a href="https://www.linkedin.com/in/pavel-ts-pavlov/" class="footer__link" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+    <a href="mailto:pavel_ts_pavlov@outlook.com?subject=Skill%20Suggestion" class="footer__link">Suggest a Skill</a>
+  </div>
+</footer>
+
+<script>
+(function() {
+  'use strict';
+
+  // ==================== Load Data ====================
+  // Content now lives as .md files (YAML frontmatter + body) inside the
+  // Agents/, Skills/ and Prompts/ folders. manifest.json lists which files
+  // belong to each folder. Drop a new .md file in a folder, add its filename
+  // to manifest.json, and it shows up here automatically on the next load.
+  let skills = [];
+
+  // Minimal YAML-frontmatter parser. Supports the subset our files use:
+  //   key: "double quoted scalar"
+  //   key: bare scalar
+  //   key:
+  //     - "list item"
+  // Returns { meta, body } where body is everything after the closing ---.
+  function parseFrontmatter(text, fallbackId) {
+    text = text.replace(/^﻿/, '').replace(/\r\n/g, '\n');
+    const meta = {};
+    let body = text;
+    let rawFrontmatter = '';
+
+    const fm = text.match(/^---\n([\s\S]*?)\n---\n?([\s\S]*)$/);
+    if (fm) {
+      rawFrontmatter = fm[1];
+      body = fm[2];
+      const lines = rawFrontmatter.split('\n');
+      let i = 0;
+      const unquote = (v) => {
+        v = v.trim();
+        if (v.length >= 2 && v[0] === '"' && v[v.length - 1] === '"') {
+          return v.slice(1, -1).replace(/\\"/g, '"').replace(/\\\\/g, '\\');
+        }
+        return v;
+      };
+      while (i < lines.length) {
+        const line = lines[i];
+        const m = line.match(/^([A-Za-z0-9_-]+):\s*(.*)$/);
+        if (!m) { i++; continue; }
+        const key = m[1];
+        const inline = m[2];
+        if (inline === '') {
+          // collect following "  - item" lines as an array
+          const arr = [];
+          let j = i + 1;
+          while (j < lines.length && /^\s*-\s+/.test(lines[j])) {
+            arr.push(unquote(lines[j].replace(/^\s*-\s+/, '')));
+            j++;
+          }
+          meta[key] = arr;
+          i = j;
+        } else {
+          meta[key] = unquote(inline);
+          i++;
+        }
+      }
+    }
+
+    return {
+      id: meta.id || fallbackId,
+      name: meta.name || fallbackId,
+      folder: meta.folder || 'skills',
+      section: meta.section || '',
+      summary: meta.summary || '',
+      istqbTopics: meta.istqbTopics || [],
+      aiTools: meta.aiTools || [],
+      tags: meta.tags || [],
+      roles: meta.roles || [],
+      detailMd: body.trim(),
+      frontmatter: rawFrontmatter.trim(),
+    };
+  }
+
+  async function bootstrap() {
+    let manifest;
+    try {
+      const res = await fetch('manifest.json', { cache: 'no-store' });
+      if (!res.ok) throw new Error('manifest.json -> HTTP ' + res.status);
+      manifest = await res.json();
+    } catch (err) {
+      showLoadError(err);
+      return;
+    }
+
+    folders = manifest.folders || [];
+
+    // Auto-discover .md files that aren't in the manifest yet by reading the
+    // server's directory listing (python -m http.server, nginx autoindex, etc.
+    // render one). Drop a new file into Agents/, Skills/ or Prompts/ and it
+    // appears on refresh — no --scan needed. On hosts without folder listings
+    // (e.g. GitHub Pages) this fetch 404s and we silently fall back to the
+    // manifest alone.
+    await Promise.all(folders.map(async (folder) => {
+      try {
+        const res = await fetch(folder.path + '/', { cache: 'no-store' });
+        if (!res.ok) return;
+        const type = res.headers.get('content-type') || '';
+        if (!type.includes('text/html')) return;
+        const html = await res.text();
+        const re = /href="([^"]+\.md)"/gi;
+        folder.files = folder.files || [];
+        let m;
+        while ((m = re.exec(html)) !== null) {
+          const name = decodeURIComponent(m[1]).split('/').pop();
+          if (name && !folder.files.includes(name)) folder.files.push(name);
+        }
+      } catch (_) { /* no directory listing available — manifest only */ }
+    }));
+
+    const loaded = [];
+    await Promise.all(folders.flatMap(folder =>
+      (folder.files || []).map(async (file) => {
+        try {
+          const res = await fetch(folder.path + '/' + file, { cache: 'no-store' });
+          if (!res.ok) throw new Error(folder.path + '/' + file + ' -> HTTP ' + res.status);
+          const text = await res.text();
+          const skill = parseFrontmatter(text, file.replace(/\.md$/, ''));
+          skill.folder = folder.key; // manifest folder wins over frontmatter
+          loaded.push({ skill, order: folder.files.indexOf(file), folderKey: folder.key });
+        } catch (err) {
+          console.error('Failed to load', folder.path + '/' + file, err);
+        }
+      })
+    ));
+
+    // preserve folder order, then file order within each folder
+    const folderRank = {};
+    folders.forEach((f, idx) => { folderRank[f.key] = idx; });
+    loaded.sort((a, b) =>
+      (folderRank[a.folderKey] - folderRank[b.folderKey]) || (a.order - b.order));
+    skills = loaded.map(x => x.skill);
+
+    // Hero badge reflects whatever is actually in the folders.
+    const badge = document.getElementById('skill-count');
+    if (badge) {
+      const counts = {};
+      skills.forEach(s => { counts[s.folder] = (counts[s.folder] || 0) + 1; });
+      badge.textContent =
+        (counts.agents || 0) + ' agents · ' +
+        (counts.skills || 0) + ' skills · ' +
+        (counts.prompts || 0) + ' prompt templates';
+    }
+
+    applyHash(); // applies any #section/<id> deep link, then renders
+  }
+
+  function showLoadError(err) {
+    grid.innerHTML = `
+      <div class="skills__empty">
+        <div class="skills__empty-icon">&#x26A0;</div>
+        Couldn't load the content files.<br>
+        <span style="font-size:0.8rem;color:var(--text-muted);display:block;margin-top:0.75rem;line-height:1.5;">
+          This page reads the <code>Agents/</code>, <code>Skills/</code> and <code>Prompts/</code> folders over HTTP,
+          so it must be served by a web server &mdash; opening the file directly (<code>file://</code>) is blocked by the browser.<br>
+          Run <code>python -m http.server</code> in this folder, then open <code>http://localhost:8000/</code>.
+        </span>
+        <span style="font-size:0.7rem;color:var(--text-muted);display:block;margin-top:0.5rem;">${escapeHtml(String(err))}</span>
+      </div>`;
+  }
+
+  // ==================== State ====================
+  let activeSection = 'all';
+  let activeRole = 'all';
+  let searchQuery = '';
+  let expandedId = null;
+  let folders = [];
+
+  // QA / DEV classification: explicit `roles` frontmatter wins, otherwise it
+  // is derived from `section` (qa / qa-prompts → qa, dev / dev-prompts / mcp
+  // → dev). Unclassifiable items show under both roles.
+  function skillRoles(skill) {
+    if (skill.roles && skill.roles.length) {
+      return skill.roles.map(r => String(r).toLowerCase());
+    }
+    const sec = (skill.section || '').toLowerCase();
+    if (sec.includes('qa')) return ['qa'];
+    if (sec.includes('dev') || sec === 'mcp') return ['dev'];
+    return ['qa', 'dev'];
+  }
+
+  // ==================== DOM Refs ====================
+  const grid = document.getElementById('skills-grid');
+  const searchInput = document.getElementById('search-input');
+  const sectionPills = document.querySelectorAll('[data-section]');
+
+  // ==================== Minimal Markdown Parser ====================
+  function parseMd(md) {
+    const lines = md.split('\n');
+    let html = '';
+    let inCodeBlock = false;
+    let codeContent = '';
+    let listType = null; // 'ul' | 'ol' | null
+    let tableRows = null; // array of arrays while inside a table
+
+    const closeList = () => { if (listType) { html += `</${listType}>`; listType = null; } };
+    const closeTable = () => {
+      if (!tableRows) return;
+      if (tableRows.length) {
+        const [head, ...body] = tableRows;
+        html += '<table><thead><tr>' + head.map(c => '<th>' + inlineFormat(c) + '</th>').join('') + '</tr></thead>';
+        if (body.length) {
+          html += '<tbody>' + body.map(r => '<tr>' + r.map(c => '<td>' + inlineFormat(c) + '</td>').join('') + '</tr>').join('') + '</tbody>';
+        }
+        html += '</table>';
+      }
+      tableRows = null;
+    };
+    const splitTableRow = (line) => {
+      let s = line.trim();
+      if (s.startsWith('|')) s = s.slice(1);
+      if (s.endsWith('|')) s = s.slice(0, -1);
+      return s.split('|').map(c => c.trim());
+    };
+    const isTableSeparator = (line) => /^\s*\|?\s*:?-{2,}:?\s*(\|\s*:?-{2,}:?\s*)+\|?\s*$/.test(line);
+
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i];
+
+      // Code block toggle
+      if (line.trim().startsWith('```')) {
+        if (inCodeBlock) {
+          html += '<pre><code>' + escapeHtml(codeContent.replace(/\n$/, '')) + '</code></pre>';
+          codeContent = '';
+          inCodeBlock = false;
+        } else {
+          closeList(); closeTable();
+          inCodeBlock = true;
+        }
+        continue;
+      }
+      if (inCodeBlock) { codeContent += line + '\n'; continue; }
+
+      // Table: row starts with | and next line is separator, OR we're already in a table
+      if (line.trim().startsWith('|')) {
+        if (!tableRows) {
+          const next = lines[i + 1] || '';
+          if (isTableSeparator(next)) {
+            closeList();
+            tableRows = [splitTableRow(line)];
+            i++; // skip separator
+            continue;
+          }
+        } else {
+          tableRows.push(splitTableRow(line));
+          continue;
+        }
+      } else if (tableRows) {
+        closeTable();
+      }
+
+      // Empty line
+      if (line.trim() === '') { closeList(); continue; }
+
+      // Horizontal rule
+      if (/^\s*---+\s*$/.test(line)) { closeList(); html += '<hr>'; continue; }
+
+      // Headings (## must come before #)
+      const hMatch = line.match(/^(#{1,6})\s+(.*)$/);
+      if (hMatch) {
+        closeList();
+        const level = hMatch[1].length;
+        html += `<h${level}>` + inlineFormat(hMatch[2]) + `</h${level}>`;
+        continue;
+      }
+
+      // Blockquote
+      if (line.startsWith('> ') || line.trim() === '>') {
+        closeList();
+        html += '<blockquote>' + inlineFormat(line.replace(/^>\s?/, '')) + '</blockquote>';
+        continue;
+      }
+
+      // Ordered list
+      const olMatch = line.match(/^\s*\d+\.\s+(.*)$/);
+      if (olMatch) {
+        if (listType !== 'ol') { closeList(); html += '<ol>'; listType = 'ol'; }
+        html += '<li>' + inlineFormat(olMatch[1]) + '</li>';
+        continue;
+      }
+
+      // Unordered list (incl. checklist [ ] / [x])
+      const ulMatch = line.match(/^\s*[-*]\s+(.*)$/);
+      if (ulMatch) {
+        if (listType !== 'ul') { closeList(); html += '<ul>'; listType = 'ul'; }
+        let item = ulMatch[1];
+        const cb = item.match(/^\[([ xX])\]\s+(.*)$/);
+        if (cb) {
+          const checked = cb[1].toLowerCase() === 'x' ? ' checked' : '';
+          item = `<input type="checkbox" disabled${checked}> ` + inlineFormat(cb[2]);
+        } else {
+          item = inlineFormat(item);
+        }
+        html += '<li>' + item + '</li>';
+        continue;
+      }
+
+      // Paragraph
+      closeList();
+      html += '<p>' + inlineFormat(line) + '</p>';
+    }
+
+    closeList(); closeTable();
+    if (inCodeBlock) html += '<pre><code>' + escapeHtml(codeContent.replace(/\n$/, '')) + '</code></pre>';
+
+    return html;
+  }
+
+  function inlineFormat(text) {
+    text = escapeHtml(text);
+    // Bold
+    text = text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+    // Inline code
+    text = text.replace(/`([^`]+)`/g, '<code>$1</code>');
+    return text;
+  }
+
+  function escapeHtml(text) {
+    return text
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  // ==================== Render ====================
+
+  // The "YAML format" is the file's frontmatter — exactly what you paste into a
+  // GitHub Copilot / Claude skill file's header. We keep the raw block parsed
+  // from the .md file so what you copy matches the file verbatim; if it's
+  // missing for any reason we rebuild an equivalent block from the fields.
+  function skillToYaml(skill) {
+    if (skill.frontmatter && skill.frontmatter.trim()) {
+      return skill.frontmatter.trim();
+    }
+    const dq = (s) => '"' + String(s).replace(/\\/g, '\\\\').replace(/"/g, '\\"') + '"';
+    const lines = [];
+    lines.push('id: ' + skill.id);
+    lines.push('name: ' + dq(skill.name));
+    lines.push('folder: ' + skill.folder);
+    if (skill.section) lines.push('section: ' + skill.section);
+    lines.push('summary: ' + dq(skill.summary));
+    const listField = (key, vals) => {
+      if (!vals || vals.length === 0) return;
+      lines.push(key + ':');
+      vals.forEach(v => lines.push('  - ' + dq(v)));
+    };
+    listField('istqbTopics', skill.istqbTopics);
+    listField('aiTools', skill.aiTools);
+    listField('tags', skill.tags);
+    return lines.join('\n');
+  }
+
+  // A ready-to-save GitHub Copilot prompt file (.github/prompts/<id>.prompt.md).
+  // Agents run with full agent-mode capabilities; skills and prompts run as
+  // regular chat requests.
+  function skillToCopilot(skill) {
+    const mode = skill.folder === 'agents' ? 'agent' : 'ask';
+    const desc = String(skill.summary || skill.name).replace(/'/g, "''");
+    return [
+      '---',
+      "description: '" + desc + "'",
+      'mode: ' + mode,
+      '---',
+      '',
+      skill.detailMd,
+    ].join('\n');
+  }
+
+
+  function render() {
+    const isMcp = (skill) =>
+      (skill.tags || []).includes('mcp') || skill.id.startsWith('mcp-');
+    const isWriting = (skill) =>
+      (skill.section || '') === 'writing' || (skill.tags || []).includes('writing');
+
+    const filtered = skills.filter(skill => {
+      // Section filter — grouped by folder (agents / skills / prompts),
+      // plus the virtual "mcp" (MCP-tagged skills + explainer) and
+      // "writing" (prose/editing skills) sections.
+      if (activeSection === 'mcp') {
+        if (!isMcp(skill)) return false;
+      } else if (activeSection === 'writing') {
+        if (!isWriting(skill)) return false;
+      } else if (activeSection !== 'all' && skill.folder !== activeSection) {
+        return false;
+      }
+      // Role filter (QA / DEV)
+      if (activeRole !== 'all' && !skillRoles(skill).includes(activeRole)) return false;
+      // Search filter — metadata and full markdown body
+      if (searchQuery) {
+        const q = searchQuery.toLowerCase();
+        const haystack = [
+          skill.name,
+          skill.summary,
+          ...skill.tags,
+          ...(skill.istqbTopics || []),
+          ...(skill.aiTools || []),
+          skill.detailMd
+        ].join(' ').toLowerCase();
+        if (!haystack.includes(q)) return false;
+      }
+      return true;
+    });
+
+    // The MCP explainer is only relevant while the MCP pill is active.
+    const mcpExplainer = document.getElementById('mcp-explainer');
+    if (mcpExplainer) mcpExplainer.hidden = activeSection !== 'mcp';
+
+    if (filtered.length === 0) {
+      grid.innerHTML = '<div class="skills__empty"><div class="skills__empty-icon">&#x2609;</div>No skills match your filters.<br>Try adjusting your search.</div>';
+      return;
+    }
+
+    // One on-page section per content folder, in manifest order.
+    const cssByKey = {
+      agents: '',
+      skills: 'section-header--dev',
+      prompts: 'section-header--qa-prompts',
+    };
+    const sections = activeSection === 'mcp'
+      ? [{ key: 'skills', label: 'MCP', blurb: 'Skills for designing, building, testing and integrating Model Context Protocol servers.', cssClass: 'section-header--mcp' }]
+      : activeSection === 'writing'
+      ? [{ key: 'skills', label: 'Writing', blurb: 'Skills for clear prose — drafting, editing, and removing AI writing patterns.', cssClass: 'section-header--writing' }]
+      : (folders.length ? folders : [
+          { key: 'agents', label: 'Agents' },
+          { key: 'skills', label: 'Skills' },
+          { key: 'prompts', label: 'Prompts' },
+        ]).map(f => ({ key: f.key, label: f.label, blurb: f.blurb, cssClass: cssByKey[f.key] || '' }));
+
+    function renderCard(skill) {
+      const isExpanded = expandedId === skill.id;
+
+      return `
+        <article
+          class="card${isExpanded ? ' card--expanded' : ''}"
+          data-id="${escapeHtml(skill.id)}"
+          tabindex="0"
+          role="button"
+          aria-expanded="${isExpanded}"
+          aria-label="${escapeHtml(skill.name)} — click to ${isExpanded ? 'collapse' : 'expand'} details"
+        >
+          <div class="card__header">
+            <div class="card__top-row">
+              <span class="card__name">${escapeHtml(skill.name)}</span>
+              <div class="card__badges">
+                ${isExpanded ? `
+                  <div class="card__format-controls">
+                    <button class="card__format-btn" data-format="rendered" data-skill-id="${escapeHtml(skill.id)}" aria-label="Show rendered preview">Rendered</button>
+                    <button class="card__format-btn card__format-btn--active" data-format="markdown" data-skill-id="${escapeHtml(skill.id)}" aria-label="Show raw markdown">Markdown</button>
+                    <button class="card__format-btn" data-format="yaml" data-skill-id="${escapeHtml(skill.id)}" aria-label="Show YAML frontmatter">YAML</button>
+                    <button class="card__format-btn" data-format="copilot" data-skill-id="${escapeHtml(skill.id)}" aria-label="Show GitHub Copilot prompt file" title="Ready-to-save .github/prompts/${escapeHtml(skill.id)}.prompt.md">Copilot</button>
+                  </div>
+                  <button class="card__copy-btn" data-copy="${escapeHtml(skill.id)}" aria-label="Copy to clipboard">Copy</button>
+                  <button class="card__close-btn" data-close="true" aria-label="Close skill details">✕</button>
+                ` : ''}
+              </div>
+            </div>
+            <p class="card__summary">${escapeHtml(skill.summary)}</p>
+          </div>
+          <div class="card__detail">
+            <div class="card__detail-inner">
+              <div class="card__detail-view" data-view="rendered" style="display: none;">${parseMd(skill.detailMd)}</div>
+              <pre class="card__detail-raw" data-view="markdown"><code>${escapeHtml(skill.detailMd)}</code></pre>
+              <pre class="card__detail-raw" data-view="yaml" style="display: none;"><code>${escapeHtml(skillToYaml(skill))}</code></pre>
+              <pre class="card__detail-raw" data-view="copilot" style="display: none;"><code>${escapeHtml(skillToCopilot(skill))}</code></pre>
+            </div>
+          </div>
+        </article>
+      `;
+    }
+
+    let html = '';
+    for (const section of sections) {
+      const sectionSkills = filtered.filter(s => s.folder === section.key);
+      if (sectionSkills.length === 0) continue;
+      html += `
+        <div class="section-header ${section.cssClass}">
+          <span class="section-header__title">${escapeHtml(section.label)}</span>
+          <span class="section-header__line"></span>
+          <span class="section-header__count">${sectionSkills.length} item${sectionSkills.length !== 1 ? 's' : ''}</span>
+        </div>
+      `;
+      if (section.blurb) {
+        html += `<p class="section-header__blurb">${escapeHtml(section.blurb)}</p>`;
+      }
+      html += sectionSkills.map(renderCard).join('');
+    }
+    grid.innerHTML = html;
+    updateHash();
+  }
+
+  // ==================== Events ====================
+  // Card click
+  grid.addEventListener('click', function(e) {
+    const card = e.target.closest('.card');
+    if (!card) return;
+    if (e.target.tagName === 'A') return;
+    const id = card.dataset.id;
+
+    // Close button — always close
+    if (e.target.closest('[data-close]')) {
+      expandedId = null;
+      render();
+      return;
+    }
+
+
+    // Format toggle
+    const formatBtn = e.target.closest('[data-format]');
+    if (formatBtn) {
+      e.stopPropagation();
+      const format = formatBtn.dataset.format;
+      const card = e.target.closest('.card');
+      if (!card) return;
+
+      card.querySelectorAll('[data-format]').forEach(btn => {
+        btn.classList.toggle('card__format-btn--active', btn.dataset.format === format);
+      });
+      card.querySelectorAll('[data-view]').forEach(view => {
+        view.style.display = view.dataset.view === format ? 'block' : 'none';
+      });
+      return;
+    }
+
+    // Copy markdown button
+    const copyBtn = e.target.closest('[data-copy]');
+    if (copyBtn) {
+      e.stopPropagation();
+      const skill = skills.find(s => s.id === copyBtn.dataset.copy);
+      if (!skill) return;
+      const card = e.target.closest('.card');
+      const activeFormat = card.querySelector('[data-format].card__format-btn--active');
+      const format = activeFormat ? activeFormat.dataset.format : 'markdown';
+      const contentToCopy =
+        format === 'yaml' ? skillToYaml(skill) :
+        format === 'copilot' ? skillToCopilot(skill) :
+        skill.detailMd; // rendered + markdown both copy the source markdown
+      navigator.clipboard.writeText(contentToCopy).then(() => {
+        const original = copyBtn.textContent;
+        copyBtn.textContent = 'Copied!';
+        copyBtn.classList.add('card__copy-btn--success');
+        setTimeout(() => { copyBtn.textContent = original; copyBtn.classList.remove('card__copy-btn--success'); }, 1500);
+      });
+      return;
+    }
+
+    // Clicking inside the expanded detail section should NOT close the card
+    if (e.target.closest('.card__detail') && expandedId === id) return;
+
+    // Toggle open/close via header click
+    expandedId = expandedId === id ? null : id;
+    render();
+  });
+
+  grid.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' || e.key === ' ') {
+      const card = e.target.closest('.card');
+      if (!card) return;
+      e.preventDefault();
+      const id = card.dataset.id;
+      if (e.target.closest('[data-close]')) {
+        expandedId = null;
+      } else {
+        expandedId = expandedId === id ? null : id;
+      }
+      render();
+    }
+  });
+
+  // Search
+  searchInput.addEventListener('input', function() {
+    searchQuery = this.value.trim();
+    expandedId = null;
+    render();
+  });
+
+  // Section pills
+  function setActiveSection(key) {
+    activeSection = key;
+    sectionPills.forEach(p => {
+      const isActive = p.dataset.section === key;
+      p.classList.toggle('filter-pill--active', isActive);
+      p.setAttribute('aria-pressed', isActive);
+    });
+    activateUsageTab(key); // keep the usage guide in step with the filter
+  }
+
+  sectionPills.forEach(pill => {
+    pill.addEventListener('click', function() {
+      setActiveSection(this.dataset.section);
+      expandedId = null;
+      render();
+    });
+  });
+
+  // Role pills (QA / DEV)
+  const rolePills = document.querySelectorAll('[data-role]');
+  rolePills.forEach(pill => {
+    pill.addEventListener('click', function() {
+      activeRole = this.dataset.role;
+      rolePills.forEach(p => {
+        const isActive = p.dataset.role === activeRole;
+        p.classList.toggle('filter-pill--active', isActive);
+        p.setAttribute('aria-pressed', isActive);
+      });
+      expandedId = null;
+      render();
+    });
+  });
+
+  // ==================== Deep links ====================
+  // #agents | #skills | #prompts | #mcp select a filter; #<section>/<id>
+  // additionally expands that card, e.g. #skills/test-case-generator.
+  const SECTION_KEYS = ['all', 'agents', 'skills', 'prompts', 'mcp', 'writing'];
+  let hashReady = false; // suppress hash writes until the initial hash is applied
+
+  function updateHash() {
+    if (!hashReady) return;
+    const target = expandedId
+      ? '#' + activeSection + '/' + encodeURIComponent(expandedId)
+      : (activeSection === 'all' ? '' : '#' + activeSection);
+    if (location.hash === target || (!target && !location.hash)) return;
+    history.replaceState(null, '', target || location.pathname + location.search);
+  }
+
+  function applyHash() {
+    hashReady = false;
+    const raw = decodeURIComponent(location.hash.replace(/^#/, ''));
+    if (raw) {
+      const slash = raw.indexOf('/');
+      const sec = slash === -1 ? raw : raw.slice(0, slash);
+      const id = slash === -1 ? '' : raw.slice(slash + 1);
+      if (SECTION_KEYS.includes(sec)) setActiveSection(sec);
+      if (id && skills.some(s => s.id === id)) expandedId = id;
+    }
+    hashReady = true;
+    render();
+    if (expandedId) {
+      const el = grid.querySelector('.card--expanded');
+      if (el) el.scrollIntoView({ block: 'start', behavior: 'smooth' });
+    }
+  }
+
+  window.addEventListener('hashchange', applyHash);
+
+  // ==================== Usage-guide tabs ====================
+  const usageTabs = document.querySelectorAll('[data-usage]');
+  const usagePanels = document.querySelectorAll('[data-usage-panel]');
+
+  function activateUsageTab(key) {
+    if (![...usagePanels].some(p => p.dataset.usagePanel === key)) return;
+    usageTabs.forEach(t => {
+      const on = t.dataset.usage === key;
+      t.classList.toggle('how-to__tab--active', on);
+      t.setAttribute('aria-selected', on);
+    });
+    usagePanels.forEach(p => { p.hidden = p.dataset.usagePanel !== key; });
+  }
+
+  usageTabs.forEach(tab => {
+    tab.addEventListener('click', () => activateUsageTab(tab.dataset.usage));
+  });
+
+  // ==================== Initial Render ====================
+  const versionToggle = document.getElementById('version-toggle');
+  if (versionToggle) versionToggle.addEventListener('click', () => { window.location.href = versionToggle.dataset.target; });
+  bootstrap();
+})();
+</script>
+</body>
+</html>
