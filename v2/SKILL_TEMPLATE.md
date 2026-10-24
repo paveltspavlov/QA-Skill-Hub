@@ -10,20 +10,26 @@ description: <What the skill does and when an agent should select it.>
 
 # <Skill title>
 
-## Use when
-<State the task trigger and scope.>
+## When to Use
+<State the exact trigger and counter-trigger.>
+
+## Required Inputs
+<List required and optional inputs. Mark which missing inputs block correctness and which allow a conditional draft.>
 
 ## Procedure
-1. Inspect the supplied context and project conventions.
-2. Ask only for information that blocks a correct or safe result.
-3. Perform the task steps in a bounded, evidence-based way.
-4. Verify the result; state checks that did not run.
+1. Inspect the supplied source, project context, and established conventions.
+2. Separate explicit evidence from inference. Ask only for information that changes correctness, safety, scope, or expected output.
+3. Follow the task-specific steps below, with observable completion checks.
+4. Verify the result with the narrowest relevant check; state commands and results actually observed.
 
-## Output
-<Exact expected deliverable and fields.>
+## Output Contract
+<Specify the exact heading structure, table columns, required fields, status values, and what each field must contain. Include a compact example for ambiguous or high-risk outputs.>
 
-## Quality and safety checks
-<Traceability, non-goals, permissions, and uncertainty handling.>
+## Quality Gate
+<Add task-specific, checkable acceptance criteria. A missing critical criterion blocks a ready result.>
+
+## Evidence and Uncertainty
+<Identify acceptable evidence and provenance. Never invent facts, test results, sources, expected behavior, or metrics. Distinguish observation, inference, and recommendation; ask, qualify, or abstain when the evidence is insufficient. Apply the evidence-readiness-gate skill.>
 
 ## References
 - [Official source](https://example.org/)

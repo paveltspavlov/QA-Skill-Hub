@@ -27,6 +27,11 @@ This note records the official guidance used to shape the v2 agent, skill, expor
 - Spark tuning skills use actual plans/statistics and consider partitioning, joins, caching, and adaptive execution as workload-dependent options.[25]
 - MCP-specific skills describe tools and their input schemas while requiring explicit user consent and clear side-effect boundaries.[26]
 - WebSocket skills account for connection lifecycle and the browser API's lack of built-in backpressure.[27]
+- Skills now specify task-specific required inputs, a concrete output contract, a checkable quality gate, and evidence/uncertainty handling; examples are included for complex deliverables.[4][32]
+- Context7 is an optional documentation retrieval route: resolve the exact library, query a relevant concept, pin the version when known, and verify consequential behavior against the official docs or repository.[28][29][30]
+- Structured output schemas constrain response shape, not semantic truth; output values and factual claims still require evidence and validation.[31]
+- The 75% gate measures evidence readiness, not the probability of correctness. Research describes calibration difficulties outside the evaluated setting and warns that high-confidence predictions can still be wrong.[33][34]
+- AI system testing and risk guidance must be tailored to the system, its users, risk tolerance, and resources rather than presented as a universal compliance result.[35]
 
 ## Scope and caveats
 
@@ -35,7 +40,7 @@ Automatic skill discovery, context-file loading, tool availability, and packagin
 
 Repository review found that legacy agent files use `name` and `summary` frontmatter but have no M365 property-length validator. V2 uses Microsoft’s documented Agent Builder limits and validates them in both the UI and tests.
 
-The v1 catalogue remains intact. V2 provides 50 skills: 13 shared core workflows plus 37 specialist skills carried forward and revised from v1's broad development, data, MCP, and QA catalogues. The separate v1 page retains the original 14 agents, 47 skills, and 51 prompts.
+The v1 catalogue remains intact. V2 provides 62 skills: 13 shared core workflows, 37 specialist skills carried forward and revised from v1, 11 focused workflows restored from the legacy agent set, and one shared evidence-readiness gate. The separate v1 page retains the original 14 agents, 47 skills, and 51 prompts.
 
 ## Sources
 
@@ -122,3 +127,24 @@ The v1 catalogue remains intact. V2 provides 50 skills: 13 shared core workflows
 [27] https://developer.mozilla.org/en-US/docs/Web/API/WebSocket
     > "The `WebSocket` API has no way to apply backpressure, therefore when messages arrive faster than the application can process them, the application will either fill up the device's memory by buffering those messages, become unresponsive due to 100% CPU usage, or both."
     > "The `WebSocket` object provides the API for creating and managing a WebSocket connection to a server, as well as for sending and receiving data on the connection."
+[28] https://context7.com/docs/resources/all-clients
+    > "The Context7 MCP server exposes two tools."
+    > "Fetch documentation context for a library and a specific question."
+[29] https://context7.com/docs/api-guide
+    > "You can pin a specific version with either `/owner/repo/<version>` or `/owner/repo@<version>`."
+    > "Use Search Library followed by Get Context when your application needs to inspect or choose a specific documentation source."
+[30] https://context7.com/docs/library-updates
+    > "The refresh is triggered in the background and does not affect the response time of your current request."
+    > "You will receive the existing documentation immediately while the update runs asynchronously."
+[31] https://platform.openai.com/docs/guides/structured-outputs
+    > "Structured Outputs is a feature that ensures the model will always generate responses that adhere to your supplied JSON Schema, so you don’t need to worry about the model omitting a required key, or hallucinating an invalid enum value."
+    > "Structured Outputs can still contain mistakes."
+[32] https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices
+    > "Be specific about the desired output format and constraints."
+    > "Provide instructions as sequential steps using numbered lists or bullet points when the order or completeness of steps matters."
+[33] https://arxiv.org/abs/2207.05221
+    > "Models perform well at predicting P(IK) and partially generalize across tasks, though they struggle with calibration of P(IK) on new tasks."
+[34] https://arxiv.org/abs/2208.12084
+    > "They may still allow for wrong predictions that have high confidence, or skip correct predictions that have low confidence."
+[35] https://doi.org/10.6028/NIST.AI.600-1
+    > "A profile is an implementation of the AI RMF functions, categories, and subcategories for a specific setting, application, or technology – in this case, Generative AI (GAI) – based on the requirements, risk tolerance, and resources of the Framework user."

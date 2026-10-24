@@ -5,10 +5,11 @@ A static catalogue for reusable QA and software-development agents, Agent Skills
 ## What changed in v2.0
 
 - Exactly four cross-platform role agents: **Developer**, **Documentation Analyst**, **QA Engineer**, and **Automation QA Engineer**.
-- V2 has **50 reusable skills** (13 shared core workflows plus 37 specialist skills), exceeding the 47 skills in v1. Each role lists the relevant skills; skills can be shared across roles or added by users.
+- V2 has **62 reusable skills**: the 50-skill core/specialist catalogue, 11 restored specialist workflows from the v1 agent set, and a shared evidence-readiness gate. Each role links relevant skills; users can add and link their own.
 - Project work begins by inspecting and maintaining concise context under the project’s established `.copilot/` or `.vscode/` convention.
 - A separate **M365 Agents** page shows Microsoft 365 Copilot versions of the same four roles, each with name, description, self-contained instruction prompt, and five starter-prompt templates. M365 instructions do not depend on shared Skills.
 - GitHub Copilot exports are adapters: role profiles export as `.agent.md`; skills remain standard `SKILL.md` files. The role instructions and skill procedures remain tool-neutral.
+- Every role applies an evidence-readiness gate: 75% means checklist evidence coverage, not probability of correctness. Below threshold, unscorable, or critical failures require clarification, a qualified partial answer, or abstention; unsupported facts and fabricated verification are prohibited.
 
 ## Repository layout
 
@@ -54,7 +55,7 @@ Open <http://localhost:8000/>. The app fetches Markdown and JSON over HTTP, so d
 
 1. Create `v2/Skills/<skill-name>/SKILL.md`, using `v2/SKILL_TEMPLATE.md`.
 2. Keep `name` equal to the directory name; use lowercase letters, numbers, and single hyphens. Keep the `description` concise and state what the skill does and when it should be selected.
-3. Put the task procedure, expected output, checks, and references in the skill body. Do not duplicate the procedure in an agent profile.
+3. Include `When to Use`, `Required Inputs`, `Procedure`, `Output Contract`, `Quality Gate`, and `Evidence and Uncertainty` sections. Specify exact deliverable fields and checkable acceptance criteria; include a worked example for ambiguous or high-risk outputs. Apply the evidence-readiness-gate; never invent facts, sources, expected results, or verification.
 4. Add the skill ID to the `skills` list of each relevant v2 role profile in `v2/Agents/`. Reusing the same skill from multiple roles is encouraged.
 5. Rebuild the catalogue manifest and run validation:
 

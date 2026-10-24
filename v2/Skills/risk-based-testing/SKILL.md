@@ -5,17 +5,25 @@ description: "Prioritize testing by product risk, change impact, likelihood, exp
 
 # Risk-Based Testing
 
+## When to Use
+Use to prioritize regression, release validation, exploratory effort, or a constrained test window based on product and change risk. It supports decisions; it does not by itself certify release readiness or quantify probability.
+
+## Required Inputs
+Clarify release/change scope, decision owner and deadline, available test capacity, affected users/workflows/data, architecture/dependencies, recent changes and defects, usage/exposure evidence, severity definitions, existing tests/runtime, and acceptance criteria. If likelihood or impact scale is not defined, agree a qualitative scale before ranking.
+
 ## Procedure
-1. Define the decision, scope, release/change, and available testing time.
-2. Identify quality risks from user impact, data/security exposure, change size, complexity, dependencies, usage frequency, and failure history.
-3. Rate likelihood and impact using an agreed scale. If no scale exists, use qualitative labels and state their meaning; do not invent precise probabilities.
-4. Map each material risk to a test, evidence source, owner, and residual risk.
-5. Prioritize tests by expected risk reduction, dependencies, and execution cost. Explain what is deferred and why.
-6. Reassess priorities when new evidence, failures, or scope changes appear.
+1. Identify credible failure conditions from changed code, requirements, integrations, operational history, and user context. Separate known defects from potential risks.
+2. Score each risk using the agreed impact and likelihood/exposure scale, with definitions and evidence. Use qualitative `Low/Medium/High` only when scales are explicitly explained; avoid arbitrary multiplication or percentages.
+3. Map risks to mitigations/tests: scenario, level, oracle, data/environment, owner, execution cost, and evidence needed. Prefer checks that reduce high-impact uncertainty efficiently; account for dependency/order constraints.
+4. Rank by rationale, not a bare score. Include security/privacy/safety and data-loss concerns as explicit risks. Define release gate or escalation only from authorized policy.
+5. Make the time trade-off explicit: prioritized tests, deferred tests, rationale, residual risk, and a trigger to resume deferred work. Reprioritize when new evidence arrives.
+6. During execution, update risk state with results and preserve failed/unrun distinctions. Do not treat test coverage percentages as risk reduction by themselves.
 
-## Output
-A risk register and ordered test plan with rationale, coverage gaps, time trade-offs, and release caveats.
+## Output Contract
+Return a risk register `Risk ID | Failure condition | Affected asset/users | Impact | Likelihood/exposure | Evidence | Rating/rationale | Test/mitigation | Owner | Residual risk`; a business-path matrix `Path | Risk | Selected tier | Existing coverage | Gap`; and three selectable tiers. Smoke: release-blocking checks only. Core: high-risk critical paths and key error states. Full: all in-scope regression and risk-based exploration. For each tier list test IDs, dependencies, exit evidence, and duration only when the project supplied a basis. End with deferred scope, residual risks, and release caveats. Sample: `R-1 | migration drops populated field | customer data | high impact per owner scale | likelihood unquantified; schema diff present | migration test from supported prior state | High, rationale: irreversible data impact | backup+upgrade verification | DB owner | rollback unverified`.
 
-## References
-- [ISTQB CTFL v4.0](https://istqb.org/certifications/certified-tester-foundation-level-ctfl-v4-0/)
-- [OWASP Web Security Testing Guide](https://owasp.org/www-project-web-security-testing-guide/latest)
+## Quality Gate
+Scales have definitions; evidence backs ratings; tests map to risks; costs and dependencies are considered; residual risks and deferred coverage are explicit; release decisions cite policy/owner and actual results. Critical risks cannot be averaged into a low aggregate score.
+
+## Evidence and Uncertainty
+Ground risk statements in requirements, change diffs, defects, usage, architecture, and test results. Label hypotheses and unknown likelihood. Apply four evidence checks—scope clarity, traceable material claims, complete deliverable, relevant verification—25 points each; below 75/100, ask, qualify, or abstain. Never guess confidence percentages. Critical safety, authorization, privacy, or acceptance failures block readiness regardless of score.

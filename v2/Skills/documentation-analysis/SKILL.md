@@ -1,25 +1,26 @@
 ---
 name: documentation-analysis
-description: "Analyze, draft, and update technical documentation using repository evidence and traceable sources. Use for READMEs, guides, specifications, release notes, and source-grounded explanations."
+description: "Use when auditing documentation for accuracy, coverage, and actionable gaps."
 ---
 
-# Documentation Analysis
+## When to Use
+Use to review project docs, API references, migration notes, onboarding guides, or compare documentation to source behavior.
+
+## Required Inputs
+Require document paths/version, intended audience, scope/questions, source-of-truth code/config/spec, release/version context, and desired output format. Identify whether review includes external links, generated docs, or only repository content.
 
 ## Procedure
-1. Inspect the requested document and project context before editing. Identify audience, purpose, scope, canonical terminology, and relevant source files.
-2. Check factual accuracy, missing steps, conflicting statements, stale versions, broken relative links, heading structure, and traceability.
-3. For external or version-specific claims, prefer official primary sources. Record a direct link and the relevant section; keep claim and source aligned. If a source is inaccessible, state that limitation.
-4. Draft or edit only the requested scope. Preserve voice and structure unless the task asks for a redesign. Avoid duplicating instructions that belong in repository context files.
-5. Verify links/commands against files or actual execution when possible. Clearly distinguish verified facts, recommendations, and unknowns.
+1. Read relevant docs and inspect their linked code, config, API spec, and tests; establish the source-of-truth and version.
+2. Extract concrete claims, steps, prerequisites, examples, names, and promised behavior.
+3. Verify each material claim against current repository evidence or official version-matched docs; mark unsupported claims instead of assuming.
+4. Find omissions that would block the stated audience/task, contradictory instructions, stale paths/versions, and examples that fail under the documented setup.
+5. If edits are requested, make minimal targeted changes, preserve authoritative generated content, then run doc lint/build/link/example checks that exist.
 
-## Output
-The revised document or proposed text, a short list of material changes, source links, and unresolved verification items.
+## Output Contract
+Return: **Scope/source versions**; **Findings table** (severity, document location, claim or gap, evidence, recommended correction); **Coverage checklist** for the requested task; **Edits made** if authorized; **Verification** (exact checks). Cite paths/anchors and nearby lines where available.
 
-## Quality checks
-- No fabricated versions, flags, examples, or project behavior.
-- Relative links are used for repository files where appropriate.
-- Instructions are concise, complete, and testable by the intended reader.
+## Quality Gate
+Every finding points to an actual passage or task-critical omission and a checkable source; separate factual errors from style suggestions. Do not infer intended behavior from prose alone when code contradicts it. Confirm links/examples where tools allow; label unverified external or version-specific details. Do not fabricate missing sections, citations, or build results.
 
-## References
-- [GitHub Copilot custom instructions](https://docs.github.com/en/copilot/concepts/prompting-and-context/custom-instructions)
-- [GitHub prompt files](https://docs.github.com/en/copilot/concepts/prompting-and-context/prompt-files)
+## Evidence and Uncertainty
+Assess evidence readiness, not probability of correctness. Check: (1) scope and acceptance are clear; (2) material claims trace to supplied requirements, inspected repository evidence, or official documentation for the actual version; (3) every required deliverable field is present and facts, inferences, assumptions, and unknowns are separated; (4) relevant verification ran, or the unverified scope and reason are explicit. Award 25 points only for each evidenced, applicable pass; justify and exclude genuinely inapplicable checks from the denominator. At 75% or higher, deliver with remaining gaps disclosed. Below 75%, ask for missing information, qualify a limited provisional result, or abstain. Critical authorization, security, privacy, data-integrity, or acceptance gaps block readiness regardless of score. Never invent a confidence percentage, source, command, test result, or behavior. Context7 is optional retrieval only; verify consequential claims in official version-matched documentation or the repository. Report only checks actually performed.

@@ -1,26 +1,26 @@
 ---
 name: project-context
-description: "Inspect project structure and maintain concise, evidence-based project context. Use before repository work or when a project’s context files need updating."
+description: "Use when building a concise, evidence-linked map of an unfamiliar repository, or when deciding where project context belongs. Inspect `.copilot/` and `.vscode/` when present; follow the convention already used by the repository and avoid duplicate or conflicting context files."
 ---
 
-# Project Context
+## When to Use
+Use before a substantial code task when architecture, entry points, conventions, or tests are unclear; refresh stale context after structural changes. Do not substitute assumptions for source inspection.
 
-Use when work depends on understanding a repository or when its reusable project context should be created or refreshed.
+## Required Inputs
+Require repository root, task/domain focus, target branches or working-tree scope, any onboarding docs, and desired context size. Use only accessible files and respect secrets, generated files, vendored code, and user modifications.
 
 ## Procedure
-1. Inspect the repository root, README, manifests/configuration, test commands, and relevant source folders. Search for existing guidance in `AGENTS.md`, `CLAUDE.md`, `.copilot/`, `.vscode/`, and `.github/copilot-instructions.md`.
-2. Identify the canonical context location from existing files and repository conventions. Update a context file already used by the project. If `.copilot/` has project guidance, prefer its context file; otherwise use `.vscode/` when a VS Code workspace is established. If both folders exist with relevant context, update the canonical existing file and avoid duplicates; if their instructions conflict, ask which source is authoritative. If neither folder has context, use `.vscode/project-context.md` only when the project clearly uses a VS Code workspace; otherwise create `.copilot/project-context.md`.
-3. Update the existing file in place when possible. Preserve unrelated settings and user-authored instructions. Do not overwrite IDE settings, secrets, or generated files.
-4. Keep the context short and verifiable: project purpose; language/framework and versions; important folders; setup/test/build commands; style and architecture conventions; data/security constraints; known unknowns.
-5. Cite evidence paths (for example, `pyproject.toml`, `package.json`, a workflow file) for technical claims. Mark uncertain details instead of guessing.
-6. Do not copy credentials, personal data, or large source files into context.
+1. Read repo guidance and inventory top-level structure, package/build manifests, entry points, tests, config, and README/design docs relevant to task.
+2. Trace one or two concrete execution paths from entry point through modules, data/API boundaries and test coverage; avoid exhaustive codebase summaries.
+3. Record languages/frameworks and versions from manifests, scripts and lockfiles, distinguishing declared vs installed.
+4. Map conventions, critical files, commands and dependencies with paths; verify commands from project config rather than guessing.
+5. Note gaps, contradictions, stale docs, untested flows and uninspected areas. Re-check any map used for consequential change against current file contents.
 
-## Output
-Report the context file inspected or changed, the evidence used, unresolved facts, and any files not modified.
+## Output Contract
+Return: **Repository identity/branch/status**; **Task scope**; **Stack/version evidence**; **Relevant file map** (path and role); **Execution/data flow**; **Conventions**; **Available checks** (command source); **Unknown/uninspected areas**. Cite paths and line/symbol names where practical; keep unrelated modules out.
 
-## Portability note
-`.vscode/` and `.copilot/` are the requested portable project-context locations, but hosts differ in which files they automatically load. Do not claim automatic loading. If the user requests GitHub Copilot auto-loading, explain the separate `.github/copilot-instructions.md` adapter and create it only when asked.
+## Quality Gate
+All claims trace to inspected files or command output; do not infer deployment topology or runtime state from a package manifest. Preserve current user changes and never expose secret values. A context map is a navigation aid, not proof that all code was audited. State inspection limits and revalidate before implementation.
 
-## References
-- [GitHub Copilot custom instructions](https://docs.github.com/en/copilot/concepts/prompting-and-context/custom-instructions)
-- [GitHub custom-instructions support matrix](https://docs.github.com/en/copilot/reference/custom-instructions-support)
+## Evidence and Uncertainty
+Assess evidence readiness, not probability of correctness. Check: (1) scope and acceptance are clear; (2) material claims trace to supplied requirements, inspected repository evidence, or official documentation for the actual version; (3) every required deliverable field is present and facts, inferences, assumptions, and unknowns are separated; (4) relevant verification ran, or the unverified scope and reason are explicit. Award 25 points only for each evidenced, applicable pass; justify and exclude genuinely inapplicable checks from the denominator. At 75% or higher, deliver with remaining gaps disclosed. Below 75%, ask for missing information, qualify a limited provisional result, or abstain. Critical authorization, security, privacy, data-integrity, or acceptance gaps block readiness regardless of score. Never invent a confidence percentage, source, command, test result, or behavior. Context7 is optional retrieval only; verify consequential claims in official version-matched documentation or the repository. Report only checks actually performed.

@@ -69,7 +69,19 @@
         "stop-slop/SKILL.md",
         "test-oracle-creator/SKILL.md",
         "warehouse-cost-analyzer/SKILL.md",
-        "websocket-implementer/SKILL.md"
+        "websocket-implementer/SKILL.md",
+        "ai-test-strategy/SKILL.md",
+        "commit-message-writer/SKILL.md",
+        "database-migration-generator/SKILL.md",
+        "dependency-updater/SKILL.md",
+        "e2e-test-architecture/SKILL.md",
+        "environment-config-auditor/SKILL.md",
+        "error-handling-auditor/SKILL.md",
+        "evidence-readiness-gate/SKILL.md",
+        "file-scaffolder/SKILL.md",
+        "performance-test-planner/SKILL.md",
+        "pull-request-description-writer/SKILL.md",
+        "release-notes-writer/SKILL.md"
       ]
     },
     {

@@ -1,16 +1,28 @@
 ---
 name: pipeline-dag-builder
-description: "Design a data or job pipeline DAG from explicit dependencies, freshness, and recovery requirements. Use when tasks must be scheduled and orchestrated."
+description: "Design or implement a scheduled data/job DAG from explicit dependencies, freshness, and recovery requirements. Use for orchestration workflows."
 ---
 
 # Pipeline DAG Builder
 
-## Procedure
-1. Extract tasks, inputs/outputs, dependency edges, schedule, data freshness, runtime, and ownership.
-2. Inspect the orchestration framework already in use. Do not assume Airflow, Prefect, or another scheduler without evidence.
-3. Make retries bounded and safe; define idempotency, backfill/catch-up, timeouts, sensors, and failure notifications.
-4. Avoid hidden dependencies and cyclic graphs. State data contracts and prevent concurrent runs from corrupting shared outputs.
-5. Add validation for graph structure and a failure/retry path; document deployment and rollback.
+## When to Use
+Use to design or change a workflow DAG, task graph, schedule, backfill, retries, or failure notifications. Do not assume Airflow, Prefect, or a default retry policy.
 
-## Output
-A DAG/flow plan or code in the existing framework, with dependency and recovery notes.
+## Required Inputs
+Tasks, inputs/outputs, dependency rules, schedule/timezone, freshness or SLA, runtime/resource limits, framework/version, owner, data idempotency, and recovery requirements.
+
+## Procedure
+1. Build the directed dependency graph and check for cycles, hidden dependencies, and tasks with no declared outputs.
+2. Define task contracts: input, output, side effects, idempotency key, timeout, success condition, and ownership.
+3. Specify schedule, concurrency, retries/backoff, failure classification, alerting, catch-up/backfill, and pause/recovery behavior based on project conventions.
+4. Check overlapping runs and partial writes; make outputs atomic or safe to resume where feasible.
+5. Validate DAG parsing and simulate success, failure, retry, backfill, and dependency-skip paths.
+
+## Output Contract
+Return a DAG table with task ID, purpose, inputs, outputs, upstream dependencies, schedule/trigger, retry/timeout, idempotency, owner, and failure response. Include a diagram when useful, deployment/config changes, verification commands/results, and operational runbook notes.
+
+## Quality Gate
+Every task has an explicit dependency and failure policy. No cycle or unsafe concurrent write is introduced. Retry is bounded and cannot duplicate irreversible effects. SLA values are sourced or marked undecided.
+
+## Evidence and Uncertainty
+Cite framework version and existing workflow patterns. Ask before choosing schedule, SLA, or recovery semantics that affect production. Apply the evidence-readiness-gate.
